@@ -6,8 +6,8 @@ matrix operator+ (matrix& l, matrix& r){
 		matrix temp(0,0);
 		return temp;
 	}
-		else{
-		matrix mtemp(l.row,r.col);
+	else{
+		matrix mtemp(l.row, r.col);
 		for(int i = 0 ; i < l.row ; ++i){
 			vector< pair<int,int> > temp;
 			for(int j = 0 ; j < l.col ; ++j) temp.push_back(l.arr[i][j] + r.arr[i][j]); 
@@ -56,6 +56,13 @@ matrix operator* (matrix& l, matrix& r){
 	}
 }
 
+//from here
+void matrix::
+set_arr(int r, int c, pair<int, int> num) {
+	if(arr.size() != 0 && arr[0].size() != 0 && r < row && c < col && r >= 0 && c >= 0) arr[r][c] = num;
+}
+//changed
+
 void matrix::
 fill(){
 	size_t idx;
@@ -80,10 +87,20 @@ fill(){
 				simplify(p);
 				temp.push_back( p );
 			}
-			}
+		}
 		arr.push_back(temp);
 	}
 }
+//from here
+void matrix::
+initialize() {
+	for(int i = 0; i < row; i++) {
+		vector<pair<int, int>> temp;
+		for(int j = ; j < col; j++)
+			temp.push_back(make_pair(0,1));
+		arr.push_back(temp);
+	}
+}//changed
 
 void matrix::
 show(){
@@ -133,11 +150,7 @@ pair<int,int> operator*(pair<int,int>& l, pair<int,int>& r){
 	return p;
 }
 
-
-		
-
-
-int main(){
+int LAcalculator_main(){
 	char op;
 	int row , col;
 	cin >> row >> col;
