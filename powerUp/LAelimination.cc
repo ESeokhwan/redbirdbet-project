@@ -61,6 +61,14 @@ int main(){
 	mat.fill();
 	mat.show();
 	matrix elim21 = remove_entry_matrix(2,1,mat);
+	
+	cout << endl;
 	elim21.show();
+	
+	matrix result(2,2);
+	result = elim21 * mat;
+	
+	cout << endl;
+	result.show();
 	return 0;
 }
