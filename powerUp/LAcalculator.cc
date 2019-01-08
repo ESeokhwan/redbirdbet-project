@@ -58,7 +58,7 @@ matrix operator* (matrix& l, matrix& r){
 
 //from here
 void matrix::
-set_arr(int r, int c, pair<int, int> num) {
+set_arr (int r, int c, pair<int, int> num) {
 	if(arr.size() != 0 && arr[0].size() != 0 && r < row && c < col && r >= 0 && c >= 0) arr[r][c] = num;
 }
 //changed
@@ -95,24 +95,41 @@ fill(){
 void matrix::
 initialize() {
 	for(int i = 0; i < row; i++) {
-		vector<pair<int, int>> temp;
-		for(int j = ; j < col; j++)
+		vector<pair<int, int> > temp;
+		for(int j = 0; j < col; j++)
 			temp.push_back(make_pair(0,1));
 		arr.push_back(temp);
 	}
 }//changed
 
+//from here
 void matrix::
 show(){
-	for(int i = 0 ; i < row ; ++i){
-		cout << '[' << ' ';
-		for(int j = 0 ; j < col ; ++j){
-			if(arr[i][j].second == 1) cout << arr[i][j].first << ' ';
-			else cout << arr[i][j].first << '/' << arr[i][j].second << ' ';
-		}
-		cout << ']' << endl;
-	}
+	if(row*col==0) cout << "[]" << endl;
+	else{
+        int colNum[row] = {0,};
+        vector<int> colMax; 
+        for(int i = 0 ; i < col ; ++i){
+            for(int j = 0 ; j < row ; ++j)
+                colNum[j] = countNumberLength(arr[j][i]);
+            int max = -1; 
+            for(int k = 0 ; k < row ; ++k) max = max > colNum[k] ? max : colNum[k];
+            colMax.push_back(max);
+        }
+
+        for(int i = 0 ; i < row ; ++i){
+            cout << '[' << ' '; 
+            for(int j = 0 ; j < col ; ++j){
+                blank(colMax[j] - countNumberLength(arr[i][j]));
+                if(arr[i][j].second == 1) cout << arr[i][j].first << ' ';
+                else cout << arr[i][j].first << '/' << arr[i][j].second << ' ';
+            }
+            cout << ']' << endl;
+        }
+    }
 }
+//changed	
+
 
 
 void simplify(pair<int,int>& p){
@@ -149,6 +166,36 @@ pair<int,int> operator*(pair<int,int>& l, pair<int,int>& r){
 	simplify(p);
 	return p;
 }
+//addStart
+int countNumberLength(const pair<int,int>& p){
+    int len;
+    int num1 = p.first , num2 = p.second;
+    bool neg = num1 < 0;
+    if(num2 == 1) len = 0;
+    else{
+        len = 1;
+        while(num2!=0){
+            len++;
+            num2 /= 10;
+        }
+    }
+
+    if(neg){
+        len++;
+        num1 = -num1;
+    }
+
+    while(num1!=0){
+        len++;
+        num1 /= 10;
+    }
+    return len;
+}
+
+void blank(int num){
+    for(int i = 0 ; i < num ; ++i) cout << ' ';
+}
+//addEnd
 
 int LAcalculator_main(){
 	char op;

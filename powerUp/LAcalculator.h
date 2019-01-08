@@ -18,7 +18,7 @@ class matrix{
 		int get_col() { return col; }
 		vector< vector< pair<int, int> > > get_arr() { return arr; }
 
-		void set_arr(int r, int c);
+		void set_arr(int r, int c, pair<int,int>);
 //changed
 
 		friend matrix operator+ (matrix& l, matrix& r);
@@ -26,12 +26,15 @@ class matrix{
 		friend matrix operator* (matrix& l, matrix& r);
 		void fill();
 		void initialize();
-		void show();
+		void show();//powerup!
 };
 
 void simplify(pair<int,int>&);
 pair<int,int> operator+(pair<int,int>&, pair<int,int>&);
 pair<int,int> operator-(pair<int,int>&, pair<int,int>&);
 pair<int,int> operator*(pair<int,int>&, pair<int,int>&);
+void blank(int num);						//added for matrix.show()
+int countNumberLength(const pair<int,int>&);//added for matrix.show()
+
 
 int LAcalculator_main();
