@@ -19,7 +19,7 @@ matrix move_to_last_row(matrix mat, int row) {
 	result.initialize();
 	for(int i = 0; i < mat.get_row(); i++)
 		result.set_arr(i, i, make_pair(1,1));
-	result.set_arr(row, row. make_pair(0,1));
+	result.set_arr(row, row, make_pair(0,1));
 	result.set_arr(row, mat.get_row() - 1, make_pair(1,1));
 	for(int i = row + 1; i < mat.get_row(); i++) {
 		result.set_arr(i, i-1, make_pair(1,1));
@@ -28,16 +28,23 @@ matrix move_to_last_row(matrix mat, int row) {
 	return result;
 }
 
-matrix remove_entry_matrix(int i, int j, const matrix& mat){
-	pair<int,int> entry1 = mat.arr[i][j], entry2 = mat.arr[i-1][j];
-	entry2 = make_pair(entry2.second, entry2.first);
-	multiflier = make_pair( -(entry1.first*entry2.first),
-							entry1.second*entry2.second);
+matrix remove_entry_matrix(int i, int j, matrix& mat){
+	vector< vector< pair<int,int> > > arr = mat.get_arr();
+	i--;j--;
+	pair<int,int> entry1 = arr[i][j], entry2 = arr[i-1][j];
+	pair<int,int> multifier;
+	if(entry2.first > 0)
+		multifier = make_pair( -(entry1.first*entry2.second),
+								entry1.second*entry2.first);
+	else
+		multifier = make_pair( (entry1.first*entry2.second),
+				               -entry1.second*entry2.first);
+	simplify(multifier);
 	matrix result(mat.get_row(), mat.get_row());
 	result.initialize();
 	for(int k = 0 ; k < mat.get_row() ; ++k)
 		result.set_arr(k, k, make_pair(1,1));
-	result.set_arr(i, j, multiflier);
+	result.set_arr(i, j, multifier);
 	return result;
 }
 
@@ -47,4 +54,13 @@ matrix eliminatation_matrix(matrix mat) {
 
 
 
-	
+int main(){
+	int r,c;
+	cin >> r >> c;
+	matrix mat(r,c);
+	mat.fill();
+	mat.show();
+	matrix elim21 = remove_entry_matrix(2,1,mat);
+	elim21.show();
+	return 0;
+}

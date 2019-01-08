@@ -184,6 +184,7 @@ int countNumberLength(const pair<int,int>& p){
         len++;
         num1 = -num1;
     }
+	if(num1 == 0) len++;
 
     while(num1!=0){
         len++;
