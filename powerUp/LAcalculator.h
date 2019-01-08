@@ -10,6 +10,7 @@ class matrix{
 		int row, col;
 		vector< vector< pair<int,int> > > arr;
 	public:
+		matrix() : row(0), col(0) {};
 		matrix (int r, int c) : row(r), col(c) {}
 		matrix (const matrix& mat){row = mat.row; col = mat.col; arr = mat.arr;}
 

@@ -30,8 +30,8 @@ matrix move_to_last_row(matrix mat, int row) {
 
 matrix remove_entry_matrix(int i, int j, matrix& mat){
 	vector< vector< pair<int,int> > > arr = mat.get_arr();
-	i--;j--;
-	pair<int,int> entry1 = arr[i][j], entry2 = arr[i-1][j];
+//	i--;j--;
+	pair<int,int> entry1 = arr[i][j], entry2 = arr[j][j];//바 꿈 but have to change again for rref I think
 	pair<int,int> multifier;
 	if(entry2.first > 0)
 		multifier = make_pair( -(entry1.first*entry2.second),
@@ -48,6 +48,36 @@ matrix remove_entry_matrix(int i, int j, matrix& mat){
 	return result;
 }
 
+matrix eliminate(matrix mat) {
+	matrix temp;
+	bool has_zero_pivot;
+	int num_of_pivots = min(mat.get_row(), mat.get_col());
+	for(int i = 0; i < num_of_pivots; i++) {
+		cout << "i : " << i << endl;
+		has_zero_pivot = false;
+		for(int j = i; j < mat.get_row();j++) {
+			cout << "j : " << j << endl;
+			if(mat.get_arr()[i][i].first != 0) break;
+			temp = move_to_last_row(mat, i);
+			mat = temp * mat;
+			if(j == mat.get_row() - 1) has_zero_pivot = true;
+			cout << "j end" << endl;
+		}
+		if(has_zero_pivot == false) {
+			for(int j = i+1; j < mat.get_row();j++) {
+				cout << "j2 : " << j << endl;
+				temp = remove_entry_matrix(j,i,mat);
+				mat = temp * mat;
+				mat.show();
+				cout << "j2 end"  << endl;
+			}
+		}
+		else break;//to do for rref
+		cout << "i end" << endl;
+	}
+	return mat;
+}
+
 matrix eliminatation_matrix(matrix mat) {
 	//todo
 }
@@ -60,15 +90,12 @@ int main(){
 	matrix mat(r,c);
 	mat.fill();
 	mat.show();
-	matrix elim21 = remove_entry_matrix(2,1,mat);
-	
+	cout << "a" << endl;
+
+	matrix eliminated = eliminate(mat);
+		
 	cout << endl;
-	elim21.show();
+	eliminated.show();
 	
-	matrix result(2,2);
-	result = elim21 * mat;
-	
-	cout << endl;
-	result.show();
 	return 0;
 }
