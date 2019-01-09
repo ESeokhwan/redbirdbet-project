@@ -20,18 +20,19 @@ matrix move_to_last_row(matrix mat, int row) {
 	for(int i = 0; i < mat.get_row(); i++)
 		result.set_arr(i, i, make_pair(1,1));
 	result.set_arr(row, row, make_pair(0,1));
-	result.set_arr(row, mat.get_row() - 1, make_pair(1,1));
-	for(int i = row + 1; i < mat.get_row(); i++) {
-		result.set_arr(i, i-1, make_pair(1,1));
+	result.set_arr(mat.get_row() - 1, row, make_pair(1,1));
+	for(int i = row; i < mat.get_row(); i++) {
 		result.set_arr(i, i, make_pair(0,1));
+		result.set_arr(i, i+1, make_pair(1,1));
 	}
+	cout << "permutation" << endl;
+	result.show();
 	return result;
 }
 
-matrix remove_entry_matrix(int i, int j, matrix& mat){
+matrix remove_entry_matrix(matrix& mat, int substitution_row, int row, int col){
 	vector< vector< pair<int,int> > > arr = mat.get_arr();
-//	i--;j--;
-	pair<int,int> entry1 = arr[i][j], entry2 = arr[j][j];//바 꿈 but have to change again for rref I think
+	pair<int,int> entry1 = arr[row][col], entry2 = arr[substitution_row][col];//바 꿈 but have to change again for rref I think
 	pair<int,int> multifier;
 	if(entry2.first > 0)
 		multifier = make_pair( -(entry1.first*entry2.second),
@@ -42,9 +43,9 @@ matrix remove_entry_matrix(int i, int j, matrix& mat){
 	simplify(multifier);
 	matrix result(mat.get_row(), mat.get_row());
 	result.initialize();
-	for(int k = 0 ; k < mat.get_row() ; ++k)
-		result.set_arr(k, k, make_pair(1,1));
-	result.set_arr(i, j, multifier);
+	for(int i = 0 ; i < mat.get_row() ; ++i)
+		result.set_arr(i, i, make_pair(1,1));
+	result.set_arr(row, col, multifier);
 	return result;
 }
 
@@ -54,25 +55,29 @@ matrix eliminate(matrix mat) {
 	int num_of_pivots = min(mat.get_row(), mat.get_col());
 	for(int i = 0; i < num_of_pivots; i++) {
 		cout << "i : " << i << endl;
-		has_zero_pivot = false;
-		for(int j = i; j < mat.get_row();j++) {
+		for(int j = i; j < mat.get_col(); j++) {
+			has_zero_pivot = false;
 			cout << "j : " << j << endl;
-			if(mat.get_arr()[i][i].first != 0) break;
-			temp = move_to_last_row(mat, i);
-			mat = temp * mat;
-			if(j == mat.get_row() - 1) has_zero_pivot = true;
+			for(int k = i; k < mat.get_row(); k++) {
+				cout << "k : " << k << endl;
+				if(mat.get_arr()[i][j].first != 0) break;
+				temp = move_to_last_row(mat, i);
+				mat = temp * mat;
+				if(k == mat.get_row() - 1) has_zero_pivot = true;
+				cout << has_zero_pivot << "k end" << endl;
+			}
+			if(has_zero_pivot == false) {
+				for(int k = i+1; k < mat.get_row();k++) {
+					cout << "k2 : " << k << endl;
+					temp = remove_entry_matrix(mat, i, k, j);
+					mat = temp * mat;
+					mat.show();
+					cout << "k2 end"  << endl;
+				}
+				break;
+			}
 			cout << "j end" << endl;
 		}
-		if(has_zero_pivot == false) {
-			for(int j = i+1; j < mat.get_row();j++) {
-				cout << "j2 : " << j << endl;
-				temp = remove_entry_matrix(j,i,mat);
-				mat = temp * mat;
-				mat.show();
-				cout << "j2 end"  << endl;
-			}
-		}
-		else break;//to do for rref
 		cout << "i end" << endl;
 	}
 	return mat;
