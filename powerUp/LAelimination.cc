@@ -41,7 +41,7 @@ matrix remove_entry_matrix(matrix& mat, int substitution_row, int row, int col){
 	result.initialize();
 	for(int i = 0 ; i < mat.get_row() ; ++i)
 		result.set_arr(i, i, make_pair(1,1));
-	result.set_arr(row, col, multiflyer);
+	result.set_arr(row, substitution_row, multiflyer);
 	return result;
 }
 

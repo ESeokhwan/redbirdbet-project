@@ -136,7 +136,7 @@ void simplify(pair<int,int>& p){
 		r = p.second > 0 ? p.second : -p.second;
 	int m = l > r ? l : r;
 
-	if(p.first < 0 && p.first*p.second > 0){
+	if((p.first < 0 && p.first*p.second > 0)||p.second==-1){
 		p.first = -p.first;
 		p.second = -p.second;
 	}
