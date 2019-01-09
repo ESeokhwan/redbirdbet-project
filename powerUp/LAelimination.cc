@@ -19,9 +19,9 @@ matrix move_to_last_row(matrix mat, int row) {
 	result.initialize();
 	for(int i = 0; i < mat.get_row(); i++)
 		result.set_arr(i, i, make_pair(1,1));
-	result.set_arr(row, row, make_pair(0,1));
+	result.set_arr(mat.get_row() - 1, mat.get_row() - 1, make_pair(0,1));
 	result.set_arr(mat.get_row() - 1, row, make_pair(1,1));
-	for(int i = row; i < mat.get_row(); i++) {
+	for(int i = row; i < mat.get_row() - 1; i++) {
 		result.set_arr(i, i, make_pair(0,1));
 		result.set_arr(i, i+1, make_pair(1,1));
 	}
@@ -66,7 +66,7 @@ matrix eliminate(matrix mat) {
 				if(k == mat.get_row() - 1) has_zero_pivot = true;
 				cout << has_zero_pivot << "k end" << endl;
 			}
-			if(has_zero_pivot == false) {
+			if(!has_zero_pivot) {
 				for(int k = i+1; k < mat.get_row();k++) {
 					cout << "k2 : " << k << endl;
 					temp = remove_entry_matrix(mat, i, k, j);
