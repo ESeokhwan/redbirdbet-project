@@ -65,6 +65,7 @@ matrix eliminate(matrix mat) {
 			if(!has_zero_pivot) {
 				for(int k = i+1; k < mat.get_row();k++) {
 					cout << "k2 : " << k << endl;
+					mat.show();
 					temp = remove_entry_matrix(mat, i, k, j);
 					mat = temp * mat;
 					mat.show();
