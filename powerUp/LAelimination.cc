@@ -33,19 +33,15 @@ matrix move_to_last_row(matrix mat, int row) {
 matrix remove_entry_matrix(matrix& mat, int substitution_row, int row, int col){
 	vector< vector< pair<int,int> > > arr = mat.get_arr();
 	pair<int,int> entry1 = arr[row][col], entry2 = arr[substitution_row][col];//바 꿈 but have to change again for rref I think
-	pair<int,int> multifier;
-	if(entry2.first > 0)
-		multifier = make_pair( -(entry1.first*entry2.second),
-								entry1.second*entry2.first);
-	else
-		multifier = make_pair( (entry1.first*entry2.second),
-				               -entry1.second*entry2.first);
-	simplify(multifier);
+	pair<int,int> multiflyer = make_pair( -(entry1.first*entry2.second),
+								           entry1.second*entry2.first);
+
+	simplify(multiflyer);
 	matrix result(mat.get_row(), mat.get_row());
 	result.initialize();
 	for(int i = 0 ; i < mat.get_row() ; ++i)
 		result.set_arr(i, i, make_pair(1,1));
-	result.set_arr(row, col, multifier);
+	result.set_arr(row, col, multiflyer);
 	return result;
 }
 

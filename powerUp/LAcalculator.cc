@@ -91,7 +91,7 @@ fill(){
 		arr.push_back(temp);
 	}
 }
-//from here
+
 void matrix::
 initialize() {
 	for(int i = 0; i < row; i++) {
@@ -100,9 +100,10 @@ initialize() {
 			temp.push_back(make_pair(0,1));
 		arr.push_back(temp);
 	}
-}//changed
+}
 
-//from here
+
+
 void matrix::
 show(){
 	if(row*col==0) cout << "[]" << endl;
@@ -128,15 +129,18 @@ show(){
         }
     }
 }
-//changed	
-
-
 
 void simplify(pair<int,int>& p){
 	int count = 0;
 	int l = p.first > 0 ? p.first : -p.first,
 		r = p.second > 0 ? p.second : -p.second;
 	int m = l > r ? l : r;
+
+	if(p.first < 0 && p.first*p.second > 0){
+		p.first = -p.first;
+		p.second = -p.second;
+	}
+
 	for(int i = m ; i > 1 ; --i)
 		if( p.first%i == 0 && p.second%i == 0){
 			count++;
@@ -166,7 +170,7 @@ pair<int,int> operator*(pair<int,int>& l, pair<int,int>& r){
 	simplify(p);
 	return p;
 }
-//addStart
+
 int countNumberLength(const pair<int,int>& p){
     int len;
     int num1 = p.first , num2 = p.second;
@@ -196,7 +200,7 @@ int countNumberLength(const pair<int,int>& p){
 void blank(int num){
     for(int i = 0 ; i < num ; ++i) cout << ' ';
 }
-//addEnd
+
 
 int LAcalculator_main(){
 	char op;
