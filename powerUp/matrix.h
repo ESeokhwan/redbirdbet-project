@@ -69,5 +69,5 @@ class matrix{
 		matrix eliminate();
 		matrix transpose();
 		matrix permutation_matrix();
-//		matrix get_elimination_matrix();
+		matrix elimination_matrix();
 };

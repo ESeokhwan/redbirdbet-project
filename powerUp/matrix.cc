@@ -234,8 +234,8 @@ move_a_row_to_last_row(int row) {
 		result.set_arr(i, i, make_pair(0,1));
 		result.set_arr(i, i+1, make_pair(1,1));
 	}
-	cout << "permutation" << endl;
-	result.show();
+//	cout << "permutation" << endl;
+//result.show();
 	for(int i = row ; i < this -> get_row(); ++i) this -> increase_permutation_count();
 	return result;
 }
@@ -263,36 +263,33 @@ eliminate() {
 	bool has_zero_pivot;
 	int num_of_pivots = min(mat.get_row(), mat.get_col());
 	for(int i = 0; i < num_of_pivots; i++) {
-		cout << "i : " << i << endl;
+//		cout << "i : " << i << endl;
 		for(int j = i; j < mat.get_col(); j++) {
 			has_zero_pivot = false;
-			cout << "j : " << j << endl;
+//			cout << "j : " << j << endl;
 			for(int k = i; k < mat.get_row(); k++) {
-				cout << "k : " << k << endl;
+//				cout << "k : " << k << endl;
 				if(mat.get_arr()[i][j].first != 0) break;
 				temp = mat.move_a_row_to_last_row(i);
-				permutation_matrix = temp * permutation_matrix;
 				mat = temp * mat;
-				mat.show();
+//				mat.show();
 				if(k == mat.get_row() - 1) has_zero_pivot = true;
-				cout << has_zero_pivot << "k end" << endl;
+//				cout << has_zero_pivot << "k end" << endl;
 			}
 			if(!has_zero_pivot) {
 				for(int k = i+1; k < mat.get_row();k++) {
-					cout << "k2 : " << k << endl;
-					mat.show();
+//					cout << "k2 : " << k << endl;
+//					mat.show();
 					temp = mat.remove_entry(i, k, j);
-					inverse_per_mat = permutation_matrix.transpose();
-					elimination_matrix = inverse_per_mat * temp * elimination_matrix;
 					mat = temp * mat;
-					mat.show();
-					cout << "k2 end"  << endl;
+//					mat.show();
+//					cout << "k2 end"  << endl;
 				}
 				break;
 			}
-			cout << "j end" << endl;
+//			cout << "j end" << endl;
 		}
-		cout << "i end" << endl;
+//		cout << "i end" << endl;
 	}
 	return mat;
 }
@@ -300,38 +297,28 @@ eliminate() {
 matrix matrix::
 permutation_matrix() {
 	matrix mat = *this;
+	matrix permutation_matrix(row, row);
 	matrix temp;
 	bool has_zero_pivot;
 	int num_of_pivots = min(mat.get_row(), mat.get_col());
 	for(int i = 0; i < num_of_pivots; i++) {
-		cout << "i : " << i << endl;
 		for(int j = i; j < mat.get_col(); j++) {
 			has_zero_pivot = false;
-			cout << "j : " << j << endl;
 			for(int k = i; k < mat.get_row(); k++) {
-				cout << "k : " << k << endl;
 				if(mat.get_arr()[i][j].first != 0) break;
 				temp = mat.move_a_row_to_last_row(i);
 				permutation_matrix = temp * permutation_matrix;
 				mat = temp * mat;
-				mat.show();
 				if(k == mat.get_row() - 1) has_zero_pivot = true;
-				cout << has_zero_pivot << "k end" << endl;
 			}
 			if(!has_zero_pivot) {
 				for(int k = i+1; k < mat.get_row();k++) {
-					cout << "k2 : " << k << endl;
-					mat.show();
 					temp = mat.remove_entry(i, k, j);
 					mat = temp * mat;
-					mat.show();
-					cout << "k2 end"  << endl;
 				}
 				break;
 			}
-			cout << "j end" << endl;
 		}
-		cout << "i end" << endl;
 	}
 	return permutation_matrix;
 }
@@ -339,14 +326,20 @@ permutation_matrix() {
 matrix matrix::
 elimination_matrix() {
 	matrix mat = permutation_matrix() * *this;
+	matrix elimination_matrix(row, row);
 	matrix temp;
 	int num_of_pivots = min(col, row);
-	int zeropivo
+	int num_of_zeropivots = 0;
 	for(int i = 0; i < num_of_pivots; i++) {
-		
-				
-
-		
+		while(mat.arr[i][i+num_of_zeropivots] == make_pair(0,1))
+			num_of_zeropivots++;
+		for(int j = i+1; j < row; j++) {
+			temp = mat.remove_entry(i, j, i+num_of_zeropivots);
+			mat = temp * mat;
+			elimination_matrix = temp * elimination_matrix;
+		}
+	}
+	return elimination_matrix;
 }
 
 matrix matrix::

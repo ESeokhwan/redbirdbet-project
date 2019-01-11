@@ -5,6 +5,8 @@ int main(){
 	cin >> r >> c;
 	matrix mat(r,c);
 	mat.fill();
+
+	cout << endl;
 	mat.show();
 
 	matrix eliminated = mat.eliminate();
@@ -12,6 +14,14 @@ int main(){
 	cout << endl;
 	cout << "eliminated matrix" << endl;
 	eliminated.show();
+
+	cout << endl;
+	cout << "permutation_matrix" << endl;
+	mat.permutation_matrix().show();
+
+	cout << endl;
+	cout << "elimination_matrix" << endl;
+	mat.elimination_matrix().show();
 	
 	return 0;
 }
