@@ -1,6 +1,8 @@
 #include "LAelimination.h"
 
-matrix permutation_matrix(matrix mat, int row1, int row2) {
+int matrix::permutation_count = 0;
+
+matrix change_two_rows(matrix mat, int row1, int row2) {
 	matrix result(mat.get_row(), mat.get_row());
 	result.initialize();
 	for(int i = 0; i < mat.get_row(); i++) {
@@ -28,13 +30,13 @@ matrix move_to_last_row(matrix mat, int row) {
 	}
 //	cout << "permutation" << endl;
 //	result.show();
-	for(int i = 0 ; i < (mat.get_row() - 1) - row ; ++i) mat.incre_perCount();
+	for(int i = row ; i < mat.get_row(); ++i) mat.incre_perCount();
 	return result;
 }
 
 matrix remove_entry_matrix(matrix& mat, int substitution_row, int row, int col){
 	vector< vector< pair<int,int> > > arr = mat.get_arr();
-	pair<int,int> entry1 = arr[row][col], entry2 = arr[substitution_row][col];//바 꿈 but have to change again for rref I think
+	pair<int,int> entry1 = arr[row][col], entry2 = arr[substitution_row][col];
 	pair<int,int> multiflyer = make_pair( -(entry1.first*entry2.second),
 								           entry1.second*entry2.first);
 
@@ -81,6 +83,9 @@ matrix eliminate(matrix mat) {
 	}
 	return mat;
 }
+
+matrix permutation_matrix(matrix mat) {
+
 
 matrix eliminatation_matrix(matrix mat) {
 	//todo
