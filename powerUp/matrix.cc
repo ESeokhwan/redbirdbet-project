@@ -4,55 +4,103 @@ using namespace std;
 int matrix::permutation_count = 0;
 
 //simplification of fraction
-void simplify(pair<int,int>& p){
+void fraction::
+simplify(){
 	int count = 0;
-	int l = p.first > 0 ? p.first : -p.first,
-		r = p.second > 0 ? p.second : -p.second;
+	int l = fract.first > 0 ? fract.first : -fract.first,
+		r = fract.second > 0 ? fract.second : -fract.second;
 	int m = l > r ? l : r;
 
-	if((p.first < 0 && p.first*p.second > 0)||p.second==-1){
-		p.first = -p.first;
-		p.second = -p.second;
+	if((fract.first < 0 && fract.first*fract.second > 0) || fract.second==-1){
+		fract.first = -fract.first;
+		fract.second = -fract.second;
+	}
+	if( fract.second < 0 && fract.first > 0){
+		fract.first = -fract.first;
+		fract.second =-fract.second;
 	}
 
 	for(int i = m ; i > 1 ; --i)
-		if( p.first%i == 0 && p.second%i == 0){
+		if( fract.first%i == 0 && fract.second%i == 0){
 			count++;
-			p.first /= i;
-			p.second /= i;
+			fract.first /= i;
+			fract.second /= i;
 		}
+	setLength();
 }
 
-pair<int,int> operator+(pair<int,int>& l, pair<int,int>& r){
-	int num1 = l.first*r.second + l.second*r.first,
-		num2 = l.second*r.second;
-	pair<int,int> p = make_pair(num1,num2);
-	simplify(p);
+fraction operator+(fraction& l, fraction& r){
+	int num1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
+		num2 = l.fract.second*r.fract.second;
+	fraction p( make_pair(num1,num2) );
+	p.simplify();
 	return p;
 }
-pair<int,int> operator-(pair<int,int>& l, pair<int,int>& r){
-    int num1 = l.first*r.second - l.second*r.first,
-        num2 = l.second*r.second;
-    pair<int,int> p = make_pair(num1,num2);
-    simplify(p);
+fraction operator-(fraction& l, fraction& r){
+    int num1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
+		num2 = l.fract.second*r.fract.second;
+
+    fraction p( make_pair(num1,num2) );
+    p.simplify();
     return p;
 }
-pair<int,int> operator*(pair<int,int>& l, pair<int,int>& r){
-	int num1 = l.first*r.first,
-		num2 = l.second*r.second;
-	pair<int,int> p = make_pair(num1,num2);
-	simplify(p);
+fraction operator*(fraction& l, fraction& r){
+	int num1 = l.fract.first * r.fract.first,
+		num2 = l.fract.second * r.fract.second;
+	fraction p( make_pair(num1,num2) );
+	p.simplify();
 	return p;
 }
+fraction operator/(fraction& l, fraction& r){
+	fraction reverse_r( make_pair(r.fract.second , r.fract.first));
+	fraction result = l * reverse_r;
+	return result;
+}
+fraction operator-(fraction& rhs){
+	fraction result(-rhs.fract.first,rhs.fract.second); 
+	return result;
+}
+ostream& operator<<(ostream& out, fraction& rhs){
+	if(rhs.fract.second == 1) return out << rhs.fract.first << ' ';
+	else return out << rhs.fract.first << '/' << rhs.fract.second << ' ';
+}
 
+istream& operator>>(istream& in, fraction& rhs){
+ 	size_t idx;
+	int num1,num2;
+	string str;
+	cin >> str;
+	idx = str.find("/");
+	bool is_integer = (idx==-1);
+
+	if(!is_integer) str = str.substr(0,idx) + " " + str.substr(idx+1);
+	istringstream iss(str);
+
+	if(is_integer){
+ 		iss >> num1;
+		rhs.fract = make_pair(num1,1);
+	}
+	else{
+	   	iss >> num1 >> num2;
+		rhs.fract = make_pair(num1,num2);
+	}
+
+ 	rhs.simplify();
+}
+		
 void blank(int num){
     for(int i = 0 ; i < num ; ++i) cout << ' ';
 }
-
+//instead of make_pair
+fraction make_entry(int num1, int num2){
+	fraction result(num1,num2); 
+	return result;
+}
 //to make a better print of pair(such as 3/10).
-int countNumberLength(const pair<int,int>& p){
+void fraction::
+setLength(){
     int len;
-    int num1 = p.first , num2 = p.second;
+    int num1 = fract.first , num2 = fract.second;
     bool neg = num1 < 0;
     if(num2 == 1) len = 0;
     else{
@@ -67,13 +115,14 @@ int countNumberLength(const pair<int,int>& p){
         len++;
         num1 = -num1;
     }
+
 	if(num1 == 0) len++;
 
     while(num1!=0){
         len++;
         num1 /= 10;
     }
-    return len;
+    length = len;
 }
 
 matrix operator+ (matrix& l, matrix& r){
@@ -113,9 +162,9 @@ matrix operator* (matrix l, matrix r){
 		matrix temp(l.row, r.col);
 		for(int i = 0 ; i < l.row ; ++i){
 			for(int j = 0 ; j < r.col ; ++j){
-				pair<int,int> p  = make_pair(0,1);
+				fraction p(make_pair(0,1));
 				for(int k = 0 ; k < l.col ; ++k) {
-					pair<int,int> q = l.arr[i][k]*r.arr[k][j];
+					fraction q = l.arr[i][k]*r.arr[k][j];
 					p = p + q;
 				}
 				temp.arr[i][j] = p;
@@ -126,60 +175,40 @@ matrix operator* (matrix l, matrix r){
 }
 
 void matrix::
-set_arr (int r, int c, pair<int, int> num) {
+set_arr (int r, int c, fraction num) {
 	if(arr.size() != 0 && arr[0].size() != 0 && r < row && c < col && r >= 0 && c >= 0) arr[r][c] = num;
 }
 
 void matrix::
 fill(){
-	size_t idx;
-	int num1,num2;
-	for(int i = 0 ; i < row ; ++i){
-		for(int j = 0 ; j < col ; ++j){
-			string str;
-			cin >> str;
-			idx = str.find("/");
-			
-			if(idx==-1){
-				istringstream iss(str);
-				iss >> num1;
-				arr[i][j] = make_pair(num1,1);
-			}
-			
-			else{
-				istringstream iss(str.substr(0,idx) + " " + str.substr(idx+1));
-				iss >> num1 >> num2;
-				pair<int,int> p = make_pair(num1,num2);
-				simplify(p);
-				arr[i][j] = p;
-			}
-		}
-	}
+	for(int i = 0 ; i < row ; ++i)
+		for(int j = 0 ; j < col ; ++j)
+			cin >> arr[i][j];
 }
 
 void matrix::
 initialize() {
-	for(int i = 0; i < row; i++) {
-		vector<pair<int, int> > temp;
-		for(int j = 0; j < col; j++)
-			temp.push_back(make_pair(0,1));
-		arr.push_back(temp);
-	}
+	fraction f(make_pair(0,1));
+	vector<fraction> temp;
+	for(int i = 0 ; i < col ; ++i) temp.push_back(f);
+	for(int i = 0 ; i < row ; ++i) arr.push_back(temp);
 }
 
 //square matrix일 때만 identity_matrix가 나오게 할까?
 void matrix::
 make_identity_matrix() {
 	initialize();
+	fraction f(make_pair(1,1));
 	for(int i = 0; i < min(row,col); i++)
-		arr[i][i] = make_pair(1,1);
+		arr[i][i] = f;
 }
 
 void matrix::
 make_all_entry_zero() {
+	fraction zero_entry(make_pair(0,1));
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
-			arr[i][j] = make_pair(0,1);
+			arr[i][j] = zero_entry;
 }
 
 void matrix::
@@ -190,7 +219,7 @@ show(){
         vector<int> colMax; 
         for(int i = 0 ; i < col ; ++i){
             for(int j = 0 ; j < row ; ++j)
-                colNum[j] = countNumberLength(arr[j][i]);
+                colNum[j] = arr[j][i].getLength();
             int max = -1; 
             for(int k = 0 ; k < row ; ++k) max = max > colNum[k] ? max : colNum[k];
             colMax.push_back(max);
@@ -199,13 +228,20 @@ show(){
         for(int i = 0 ; i < row ; ++i){
             cout << '[' << ' '; 
             for(int j = 0 ; j < col ; ++j){
-                blank(colMax[j] - countNumberLength(arr[i][j]));
-                if(arr[i][j].second == 1) cout << arr[i][j].first << ' ';
-                else cout << arr[i][j].first << '/' << arr[i][j].second << ' ';
+                blank(colMax[j] - arr[i][j].getLength());
+                cout << arr[i][j];
             }
             cout << ']' << endl;
         }
     }
+}
+
+
+void matrix::
+matrix_simplification(){
+	for(int i = 0 ; i < row ; ++i)
+		for(int j = 0 ; j < col ; ++j)
+			arr[i][j].simplify();
 }
 
 matrix matrix::
@@ -214,11 +250,11 @@ change_two_rows(int row1, int row2) {
 	result.make_all_entry_zero();
 	for(int i = 0; i < this -> get_row(); i++) {
 		if(i == row1)
-			result.set_arr(i, row2, make_pair(1,1));
+			result.set_arr(i, row2, make_entry(1,1));
 		else if(i == row2)
-			result.set_arr(i, row1, make_pair(1,1));
+			result.set_arr(i, row1, make_entry(1,1));
 		else
-			result.set_arr(i, i, make_pair(1,1));
+			result.set_arr(i, i, make_entry(1,1));
 	}
 	this -> increase_permutation_count();
 	return result;
@@ -229,10 +265,10 @@ move_a_row_to_last_row(int row) {
 	matrix result(this -> get_row(), this -> get_row());
 	
 	result.set_arr(this -> get_row() - 1, this -> get_row() - 1, make_pair(0,1));
-	result.set_arr(this -> get_row() - 1, row, make_pair(1,1));
+	result.set_arr(this -> get_row() - 1, row, make_entry(1,1));
 	for(int i = row; i < this -> get_row() - 1; i++) {
-		result.set_arr(i, i, make_pair(0,1));
-		result.set_arr(i, i+1, make_pair(1,1));
+		result.set_arr(i, i, make_entry(0,1));
+		result.set_arr(i, i+1, make_entry(1,1));
 	}
 //	cout << "permutation" << endl;
 //result.show();
@@ -242,16 +278,15 @@ move_a_row_to_last_row(int row) {
 
 matrix matrix::
 remove_entry(int substitution_row, int row, int col) {
-	vector< vector< pair<int,int> > > arr = this -> get_arr();
-	pair<int,int> entry1 = arr[row][col], entry2 = arr[substitution_row][col];
-	pair<int,int> multiflyer = make_pair( -(entry1.first*entry2.second),
-								           entry1.second*entry2.first);
+	vector< vector<fraction> > arr = this -> get_arr();
+	fraction entry1 = arr[row][col], entry2 = -arr[substitution_row][col];
+    fraction multiflyer = entry1 / entry2;
 
-	simplify(multiflyer);
+	multiflyer.simplify();
 	matrix result(this -> get_row(), this -> get_row());
 	result.make_all_entry_zero();
 	for(int i = 0 ; i < this -> get_row() ; ++i)
-		result.set_arr(i, i, make_pair(1,1));
+		result.set_arr(i, i, make_entry(1,1));
 	result.set_arr(row, substitution_row, multiflyer);
 	return result;
 }
@@ -269,7 +304,7 @@ eliminate() {
 //			cout << "j : " << j << endl;
 			for(int k = i; k < mat.get_row(); k++) {
 //				cout << "k : " << k << endl;
-				if(mat.get_arr()[i][j].first != 0) break;
+				if(!mat.get_arr()[i][j].is_zero()) break;
 				temp = mat.move_a_row_to_last_row(i);
 				mat = temp * mat;
 //				mat.show();
@@ -305,7 +340,7 @@ permutation_matrix() {
 		for(int j = i; j < mat.get_col(); j++) {
 			has_zero_pivot = false;
 			for(int k = i; k < mat.get_row(); k++) {
-				if(mat.get_arr()[i][j].first != 0) break;
+				if(!mat.get_arr()[i][j].is_zero()) break;
 				temp = mat.move_a_row_to_last_row(i);
 				permutation_matrix = temp * permutation_matrix;
 				mat = temp * mat;
@@ -331,7 +366,7 @@ elimination_matrix() {
 	int num_of_pivots = min(col, row);
 	int num_of_zeropivots = 0;
 	for(int i = 0; i < num_of_pivots; i++) {
-		while(mat.arr[i][i+num_of_zeropivots] == make_pair(0,1))
+		while(mat.arr[i][i+num_of_zeropivots].is_zero())
 			num_of_zeropivots++;
 		for(int j = i+1; j < row; j++) {
 			temp = mat.remove_entry(i, j, i+num_of_zeropivots);
@@ -339,6 +374,7 @@ elimination_matrix() {
 			elimination_matrix = temp * elimination_matrix;
 		}
 	}
+	elimination_matrix.matrix_simplification();
 	return elimination_matrix;
 }
 
@@ -362,5 +398,25 @@ transpose() {
 //	eliminate();
 //	return *Felimination_matrix_ptr;
 //}
+
+
+void matrix::
+find_determinant(){
+	if(row!=col)
+		cout << "not a square matrix" << endl;
+	else{
+		matrix temp = *this;
+		fraction result(1,1);
+		temp = temp.eliminate();
+		for(int i = 0 ; i < temp.get_row() ; ++i)
+			result = result * temp.get_arr()[i][i];
+		this -> determinant = result;
+	}
+}
+
+
+		
+		
+
 
 

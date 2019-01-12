@@ -6,19 +6,43 @@
 #include <algorithm>
 using namespace std;
 
-void simplify(pair<int,int>&);
-pair<int,int> operator+(pair<int,int>&, pair<int,int>&);
-pair<int,int> operator-(pair<int,int>&, pair<int,int>&);
-pair<int,int> operator*(pair<int,int>&, pair<int,int>&);
+class fraction{
+	protected:
+		pair<int,int> fract;
+		int length;
+	public:
+		fraction() : fract(make_pair(1,1)) , length(1) {}
+		fraction(pair<int,int> p){
+			fract = p;
+			setLength();
+		}
+		fraction(int num1, int num2){
+			fract = make_pair(num1,num2);
+			setLength();
+		}
+		fraction(const fraction& rhs){fract = rhs.fract; length = rhs.length;}
 
+		void simplify();
+		friend fraction operator+(fraction&, fraction&);
+		friend fraction operator-(fraction&, fraction&);
+		friend fraction operator*(fraction&, fraction&);
+		friend fraction operator/(fraction&, fraction&);
+		friend fraction operator-(fraction&);//
+		friend ostream& operator<<(ostream& out, fraction& rhs);
+		friend istream& operator>>(istream& in, fraction& rhs);
+		void setLength();
+		int getLength() {return length;}
+		bool is_zero(){return fract.first == 0;}
+};
 void blank(int num);
-int countNumberLength(const pair<int,int>&);
+fraction make_entry(int num1, int num2);
 
 class matrix{
 	protected:
 		int row, col;
 		static int permutation_count;
-		vector< vector< pair<int,int> > > arr;
+		vector< vector<fraction> > arr;
+		fraction determinant;
 //		matrix* permutation_matrix_ptr;
 //		matrix* elimination_matrix_ptr;
 
@@ -43,10 +67,10 @@ class matrix{
 
 		int get_row() { return row; }
 		int get_col() { return col; }
-		vector< vector< pair<int, int> > > get_arr() { return arr; }
+		vector< vector<fraction> > get_arr() { return arr; }
 		int get_permutation_count() { return permutation_count; }
 
-		void set_arr(int r, int c, pair<int,int>);
+		void set_arr(int r, int c, fraction);
 		
 		void increase_permutation_count(){ permutation_count++; }
 		
@@ -62,6 +86,7 @@ class matrix{
 		
 		void fill();
 		void show();
+		void matrix_simplification();
 
 		matrix change_two_rows(int row1, int row2);
 		matrix move_a_row_to_last_row(int row);
@@ -70,4 +95,7 @@ class matrix{
 		matrix transpose();
 		matrix permutation_matrix();
 		matrix elimination_matrix();
+
+		void find_determinant();
+		fraction get_determinant(){return determinant;}
 };
