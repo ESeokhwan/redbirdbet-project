@@ -6,7 +6,7 @@
 #include <algorithm>
 using namespace std;
 
-class fraction{
+class fraction{//How can we treat the error devided by zero.
 	protected:
 		pair<int,int> fract;
 		int length;
@@ -23,6 +23,13 @@ class fraction{
 		fraction(const fraction& rhs){fract = rhs.fract; length = rhs.length;}
 
 		void simplify();
+
+		bool operator==(int num);
+		bool operator==(double num);
+		bool operator==(float num);
+		bool operator==(const fraction& fraction);
+		bool operator==(pair<int, int> fraction);
+
 		friend fraction operator+(fraction&, fraction&);
 		friend fraction operator-(fraction&, fraction&);
 		friend fraction operator*(fraction&, fraction&);
@@ -95,6 +102,8 @@ class matrix{
 		matrix transpose();
 		matrix permutation_matrix();
 		matrix elimination_matrix();
+
+		matrix inverse_matrix();
 
 		void find_determinant();
 		fraction get_determinant(){return determinant;}

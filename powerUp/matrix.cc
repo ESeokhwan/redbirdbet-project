@@ -29,6 +29,56 @@ simplify(){
 	setLength();
 }
 
+bool fraction::
+operator==(int num) {
+	if(fract.second == 0)
+		return false;
+	if((fract.first)%(fract.second) == 0)
+		if(fract.first/fract.second == num)
+			return true;
+	return false;
+}
+
+bool fraction::
+operator==(double num) {
+	if(fract.second == 0)
+		return false;
+	if((double)fract.first/(double)fract.second == num)
+			return true;
+	return false;
+}
+
+bool fraction::
+operator==(float num) {
+	if(fract.second == 0)
+		return false;
+	if((float)fract.first/(float)fract.second == num)
+			return true;
+	return false;
+}
+
+bool fraction::
+operator==(const fraction& rhs) {
+	simplify();
+	fraction temp(rhs);
+	temp.simplify();
+	if(fract.first == temp.fract.first &&
+			fract.second == temp.fract.second)
+		return true;
+	return false;
+}
+
+bool fraction::
+operator==(pair<int, int> rhs) {
+	fraction temp(rhs.first, rhs.second);
+	simplify();
+	temp.simplify();
+	if(fract.first == temp.fract.first &&
+			fract.second == temp.fract.second)
+		return true;
+	return false;
+}
+
 fraction operator+(fraction& l, fraction& r){
 	int num1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
 		num2 = l.fract.second*r.fract.second;
@@ -379,6 +429,43 @@ elimination_matrix() {
 }
 
 matrix matrix::
+inverse_matrix() {
+	matrix eliminated;
+	matrix result;
+	matrix remove_entry;
+	bool singular = false;
+	if(row != col)
+		return result;
+	else {
+		eliminated = this -> eliminate();
+		for(int i = 0; i < row; i++) {
+			if(eliminated.arr[i][i] == 0) {
+				singular = true;
+				return result;
+			}
+		}
+	}
+	matrix elimination_matrix = this -> elimination_matrix();
+	for(int i = row - 1; i >= 0; i--) {
+		for(int j = i - 1; j >= 0; j--) {
+			remove_entry = eliminated.remove_entry(i, j, i);
+			elimination_matrix = remove_entry * elimination_matrix;
+			eliminated = remove_entry * eliminated;
+		}
+	}
+	matrix inverse_of_diagonal(row, row);
+	for(int i = 0; i < row; i++) {
+		fraction one;
+		inverse_of_diagonal.set_arr(i, i, one / eliminated.arr[i][i]);
+	}
+
+	matrix permutation_matrix = this -> permutation_matrix();
+	result = elimination_matrix * permutation_matrix;
+	result = inverse_of_diagonal * result;
+	return result;
+}
+
+matrix matrix::
 transpose() {
 	matrix mat(col, row);
 	for(int i = 0; i < row; i++)
@@ -413,10 +500,3 @@ find_determinant(){
 		this -> determinant = result;
 	}
 }
-
-
-		
-		
-
-
-
