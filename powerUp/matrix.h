@@ -92,7 +92,7 @@ class matrix{
 		friend matrix operator* (matrix l, matrix r);
 		
 		void fill();
-		void show();
+		void show(bool no_paranthesis = false);
 		void matrix_simplification();
 
 		matrix change_two_rows(int row1, int row2);
@@ -106,6 +106,7 @@ class matrix{
 		bool LDUfactorization();
 
 		matrix inverse_matrix();
+		matrix RREF();
 
 		void find_determinant();
 		fraction get_determinant(){return determinant;}

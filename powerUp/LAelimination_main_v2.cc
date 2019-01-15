@@ -9,6 +9,9 @@ int main(){
 	cout << endl;
 	mat.show();
 
+	cout << endl;
+	mat.show(1);
+
 	matrix eliminated = mat.eliminate();
 
 	cout << endl;

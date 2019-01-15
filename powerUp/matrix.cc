@@ -262,7 +262,7 @@ make_all_entry_zero() {
 }
 
 void matrix::
-show(){
+show(bool no_paranthesis){
 	if(row*col==0) cout << "[]" << endl;
 	else{
         int colNum[row] = {0,};
@@ -276,12 +276,14 @@ show(){
         }
 
         for(int i = 0 ; i < row ; ++i){
-            cout << '[' << ' '; 
+			if(!no_paranthesis) cout << '[' << ' '; 
+			else cout << ' ';
             for(int j = 0 ; j < col ; ++j){
                 blank(colMax[j] - arr[i][j].getLength());
                 cout << arr[i][j];
             }
-            cout << ']' << endl;
+			if(!no_paranthesis) cout << ']' << endl;
+			else cout << endl;
         }
     }
 }
@@ -537,4 +539,35 @@ find_determinant(){
 			result = result * temp.get_arr()[i][i];
 		this -> determinant = result;
 	}
+}
+
+matrix matrix::
+RREF(){
+	matrix temp = *this;
+	temp = temp.eliminate();
+	int pivot[temp.get_row()] = {0,};
+
+	for(int i = 0 ; i <  temp.get_row() ; ++i)
+		for(int j = 0 ; j < temp.get_col() ; ++j)
+			if(!temp.get_arr()[i][j].is_zero()){
+				pivot[i] = j;
+				break;
+			}
+	for(int i = 0 ; i < temp.get_row() ; ++i){
+		for(int j = i ; j > 0 ; --j){
+			temp = temp.remove_entry(i,j-1,pivot[i]) * temp;
+		}
+	}
+	for(int i = 0 ; i < temp.get_row() ; ++i){
+		fraction div = temp.get_arr()[i][ pivot[i] ];
+		for(int j = pivot[i] ; j < temp.get_col() ; ++j){
+			fraction temp_fraction = temp.get_arr()[i][j] / div;
+			temp.set_arr(i,j,temp_fraction);
+		}
+	}
+
+	cout << endl << "RREF" << endl;
+	temp.matrix_simplification();
+	temp.show();
+	return temp;
 }
