@@ -428,6 +428,43 @@ elimination_matrix() {
 	return elimination_matrix;
 }
 
+bool matrix::
+LDUfactorization() {
+	if(row != col) {
+		cout << "You can't do LDU factorization." << endl;
+		return false;
+	}
+	cout << "P" << endl;
+	permutation_matrix().show();
+	cout << endl;
+
+	cout << "A" << endl;
+	show();
+	cout << endl;
+
+	cout << "L" << endl;
+	elimination_matrix().inverse_matrix().show();
+	cout << endl;
+
+	matrix upper_triangle = eliminate();
+	matrix diagonal = matrix(row, row);
+	for(int i = 0; i < row; i++) {
+		diagonal.arr[i][i] = upper_triangle.arr[i][i];
+		for(int j = i; j < row; j++)
+			upper_triangle.set_arr(i, j, upper_triangle.arr[i][j] / upper_triangle.arr[i][i]);
+	}
+	
+	cout << "D" << endl;
+	diagonal.show();
+	cout << endl;
+
+	cout << "U" << endl;
+	upper_triangle.show();
+	cout << endl;
+
+	return true;
+}
+
 matrix matrix::
 inverse_matrix() {
 	matrix eliminated;

@@ -103,6 +103,8 @@ class matrix{
 		matrix permutation_matrix();
 		matrix elimination_matrix();
 
+		bool LDUfactorization();
+
 		matrix inverse_matrix();
 
 		void find_determinant();
