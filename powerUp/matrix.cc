@@ -428,6 +428,7 @@ elimination_matrix() {
 	return elimination_matrix;
 }
 
+//P와 D가 identity일 때 안 출력되게 업글하기
 bool matrix::
 LDUfactorization() {
 	if(row != col) {
