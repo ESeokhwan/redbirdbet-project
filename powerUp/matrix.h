@@ -107,7 +107,7 @@ class matrix{
 
 		matrix inverse_matrix();
 		matrix RREF();
-
+		matrix all_solution();
 		void find_determinant();
 		fraction get_determinant(){return determinant;}
 };
