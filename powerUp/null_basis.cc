@@ -20,7 +20,7 @@ int main(){
 	cout << "RREF" << endl;
 	rref.show();
 
-	matrix temp = mat.all_solution();
+	matrix temp = mat.null_space();
 
 	cout << "N(matrix)" << endl;
 	temp.show();

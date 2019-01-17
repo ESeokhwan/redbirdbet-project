@@ -669,7 +669,7 @@ RREF(){
 }
 
 matrix matrix::
-all_solution(){
+null_space(){
 	matrix temp = this -> RREF();
 
 	int pivot[temp.get_row()] = {0,};
@@ -721,6 +721,56 @@ all_solution(){
 
 	null_basis = permutation_column_matrix * null_basis;
 
-	null_basis.show();
 	return null_basis;
 }
+
+matrix matrix::
+augumented(matrix& b){
+	matrix temp(this->get_row(), this->get_col() + 1);
+	temp.make_all_entry_zero();
+
+	for(int i = 0 ; i  < temp.get_row() ; ++i){
+		for(int j = 0 ; j < temp.get_col() ; ++j){
+			if(j >=  this->get_col()) temp.set_arr(i,j, b.get_arr()[i][j - this->get_col()]);
+			else temp.set_arr(i,j, this->get_arr()[i][j]);
+		}
+	}
+
+	return temp;
+}
+
+matrix matrix::
+all_solution(matrix b){
+	matrix temp = this->augumented(b);
+	matrix null_space = this->null_space();
+	temp = temp.RREF();
+
+	int pivot[temp.get_row()] = {0,};
+	int num_pivot = 0;
+
+	for(int i = 0 ; i < temp.get_row() ; ++i)
+		for(int j = 0 ; i < j < temp.get_col() ; ++j){
+			if(!temp.get_arr()[i][j].is_zero()){
+				pivot[i] = j;
+				break;
+			}
+			else
+				pivot[i] = -1;
+		}
+	for(int i = 0 ; i < temp.get_row() ; ++i){
+		if(pivot[i] == temp.get_col() -1){
+			cout << "no particular solution" << endl;
+			matrix particular(0,0);
+			return particular;
+		}
+		else if(pivot[i] != -1) num_pivot++;
+	}
+
+	matrix particular(null_space.get_row(), 1);
+	particular.make_all_entry_zero();
+
+	for(int i = 0 ; i < num_pivot ; ++i)
+		particular.set_arr(pivot[i], 0, temp.get_arr()[i][temp.get_col() - 1]);
+	return particular;
+}
+
