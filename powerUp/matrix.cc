@@ -29,54 +29,103 @@ simplify(){
 	setLength();
 }
 
-bool fraction::
-operator==(int num) {
-	if(fract.second == 0)
+bool operator==(const int& numL, const fraction& fracR) {
+	if(fracR.fract.second == 0)
 		return false;
-	if((fract.first)%(fract.second) == 0)
-		if(fract.first/fract.second == num)
+	if((fracR.fract.first)%(fracR.fract.second) == 0)
+		if(fracR.fract.first/fracR.fract.second == numL)
 			return true;
 	return false;
 }
 
-bool fraction::
-operator==(double num) {
-	if(fract.second == 0)
+bool operator!=(const int& numL, const fraction& fracR) {
+	if(numL == fracR)
 		return false;
-	if((double)fract.first/(double)fract.second == num)
-			return true;
-	return false;
+	return true;
 }
 
-bool fraction::
-operator==(float num) {
-	if(fract.second == 0)
-		return false;
-	if((float)fract.first/(float)fract.second == num)
-			return true;
-	return false;
+bool operator==(const fraction& fracL, const int& numR) {
+	return numR == fracL;
 }
 
-bool fraction::
-operator==(const fraction& rhs) {
-	simplify();
-	fraction temp(rhs);
-	temp.simplify();
-	if(fract.first == temp.fract.first &&
-			fract.second == temp.fract.second)
+bool operator!=(const fraction& fracL, const int& numR) {
+	return numR != fracL;
+}
+
+bool operator==(const double& numL, const fraction& fracR) {
+	if(fracR.fract.second == 0)
+		return false;
+	if((double)fracR.fract.first/(double)fracR.fract.second == numL)
 		return true;
 	return false;
 }
 
-bool fraction::
-operator==(pair<int, int> rhs) {
-	fraction temp(rhs.first, rhs.second);
-	simplify();
-	temp.simplify();
-	if(fract.first == temp.fract.first &&
-			fract.second == temp.fract.second)
+bool operator!=(const double& numL, const fraction& fracR) {
+	if(numL == fracR)
+		return false;
+	return true;
+}
+
+bool operator==(const fraction& fracL, const double& numR) {
+	return numR == fracL;
+}
+
+bool operator==(const float& numL, const fraction& fracR) {
+	if(fracR.fract.second == 0)
+		return false;
+	if((float)fracR.fract.first/(float)fracR.fract.second == numL)
 		return true;
 	return false;
+}
+
+bool operator!=(const float& numL, const fraction& fracR) {
+	if(numL == fracR)
+		return false;
+	return true;
+}
+
+bool operator==(const fraction& fracL, const float& numR) {
+	return numR == fracL;
+}
+
+bool operator!=(const fraction& fracL, const float& numR) {
+	return numR != fracL;
+}
+
+bool operator==(const pair<int, int>& pairL, const fraction& fracR) {
+	fraction temp(pairL.first, pairL.second);
+	return temp == fracR;
+}
+
+bool operator!=(const pair<int, int>& pairL, const fraction& fracR) {
+	if(pairL == fracR)
+		return false;
+	return true;
+}
+
+bool operator==(const fraction& fracL, const pair<int, int>& pairR) {
+	return pairR == fracL;
+}
+
+bool operator!=(const fraction& fracL, const pair<int, int>& pairR) {
+	return pairR != fracL;
+}
+
+bool operator==(const fraction& fracL, const fraction& fracR) {
+	fraction temp1(fracL);
+	fraction temp2(fracR);
+	temp1.simplify();
+	temp2.simplify();
+	if(temp1.fract.first == temp2.fract.first &&
+			temp1.fract.second == temp2.fract.second)
+		return true;
+	return false;
+}
+
+bool operator!=(const fraction& fracL, const fraction& fracR) {
+	if(fracL == fracR)
+		return false;
+	return true;
 }
 
 fraction operator+(fraction& l, fraction& r){
@@ -94,7 +143,7 @@ fraction operator-(fraction& l, fraction& r){
     p.simplify();
     return p;
 }
-fraction operator*(fraction& l, fraction& r){
+fraction operator*(const fraction& l, const fraction& r){
 	int num1 = l.fract.first * r.fract.first,
 		num2 = l.fract.second * r.fract.second;
 	fraction p( make_pair(num1,num2) );
@@ -222,6 +271,50 @@ matrix operator* (matrix l, matrix r){
 		}
 		return temp;
 	}
+}
+
+matrix operator* (const fraction& fracL, const matrix& matR) {
+	matrix result(matR.row, matR.col);
+	for(int i = 0; i < matR.row; i++) 
+		for(int j = 0; j < matR.col; j++) 
+			result.arr[i][j] = fracL * matR.arr[i][j];
+	return result;
+}
+
+matrix operator* (const matrix& matL, const fraction& fracR) {
+	return fracR * matL;
+}
+
+matrix operator* (const int& intL, const matrix& matR) {
+	return fraction(intL) * matR;
+}
+
+matrix operator* (const matrix& matL, const int& intR) {
+	return intR * matL;
+}
+
+bool operator== (const matrix& matL, const matrix& matR) {
+	if(matL.row != matR.row || matL.col != matR.col)
+		return false;
+	for(int i = 0; i < matL.row; i++) 
+		for(int j = 0; j < matL.col; j++) 
+			if(matL.arr[i][j] != matR.arr[i][j]) 
+				return false;
+	return true;
+}
+
+bool operator!= (const matrix& matL, const matrix& matR) {
+	if(matL == matR)
+		return false;
+	return true;
+}
+
+fraction dotproduct(const matrix& matL, const matrix& matR) {
+	if(matL.row != matR.row || matL.col != matR.col)
+		throw exception();
+	matrix temp;
+	temp = matL.transpose();
+	return (temp * matR).arr[0][0];
 }
 
 void matrix::
@@ -506,7 +599,7 @@ inverse_matrix() {
 }
 
 matrix matrix::
-transpose() {
+transpose() const {
 	matrix mat(col, row);
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
@@ -641,10 +734,3 @@ all_solution(){
 	null_basis.show();
 	return null_basis;
 }
-
-
-
-
-
-
-

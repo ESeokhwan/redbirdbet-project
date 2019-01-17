@@ -16,6 +16,10 @@ class fraction{//How can we treat the error devided by zero.
 			fract = p;
 			setLength();
 		}
+		fraction(int num) {
+			fract = make_pair(num, 1);
+			setLength();
+		}
 		fraction(int num1, int num2){
 			fract = make_pair(num1,num2);
 			setLength();
@@ -24,15 +28,35 @@ class fraction{//How can we treat the error devided by zero.
 
 		void simplify();
 
-		bool operator==(int num);
-		bool operator==(double num);
-		bool operator==(float num);
-		bool operator==(const fraction& fraction);
-		bool operator==(pair<int, int> fraction);
+		friend bool operator==(const int& numL, const fraction& fracR);
+		friend bool operator!=(const int& numL, const fraction& fracR);
+
+		friend bool operator==(const fraction& fracL, const int& numR);
+		friend bool operator!=(const fraction& fracL, const int& numR);
+
+		friend bool operator==(const double& numL, const fraction& fracR);
+		friend bool operator!=(const double& numL, const fraction& fracR);
+
+		friend bool operator==(const fraction& fracL, const double& numR);
+		friend bool operator!=(const fraction& fracL, const double& numR);
+
+		friend bool operator==(const float& numL, const fraction& fracR);
+		friend bool operator!=(const float& numL, const fraction& fracR);
+
+		friend bool operator==(const fraction& fracL, const float& numR);
+		friend bool operator!=(const fraction& fracL, const float& numR);
+
+		friend bool operator==(const pair<int, int>& pairL, const fraction& fracR);
+		friend bool operator!=(const pair<int, int>& pairL, const fraction& fracR);
+		friend bool operator==(const fraction& fracL, const pair<int, int>& pairR);
+		friend bool operator!=(const fraction& fracL, const pair<int, int>& pairR);
+
+		friend bool operator==(const fraction& fractL, const fraction& fractR);
+		friend bool operator!=(const fraction& fractL, const fraction& fractR);
 
 		friend fraction operator+(fraction&, fraction&);
 		friend fraction operator-(fraction&, fraction&);
-		friend fraction operator*(fraction&, fraction&);
+		friend fraction operator*(const fraction&, const fraction&);
 		friend fraction operator/(fraction&, fraction&);
 		friend fraction operator-(fraction&);//
 		friend ostream& operator<<(ostream& out, fraction& rhs);
@@ -81,7 +105,7 @@ class matrix{
 		
 		void increase_permutation_count(){ permutation_count++; }
 		
-		matrix &operator= (const matrix &rhs) {
+		matrix &operator= (const matrix& rhs) {
 			row = rhs.row;
 			col = rhs.col;
 			arr = rhs.arr;
@@ -90,6 +114,13 @@ class matrix{
 		friend matrix operator+ (matrix& l, matrix& r);
 		friend matrix operator- (matrix& l, matrix& r);
 		friend matrix operator* (matrix l, matrix r);
+		friend matrix operator* (const fraction& fracL, const matrix& matR);
+		friend matrix operator* (const matrix& matL, const fraction& fracR);
+		friend matrix operator* (const int& intL, const matrix& matR);
+		friend matrix operator* (const matrix& matL, const int& intR);
+		friend bool operator== (const matrix& matL, const matrix& matR);
+		friend bool operator!= (const matrix& matL, const matrix& matR);
+		friend fraction dotproduct(const matrix& matL, const matrix& matR);
 		
 		void fill();
 		void show(bool no_paranthesis = false);
@@ -99,7 +130,7 @@ class matrix{
 		matrix move_a_row_to_last_row(int row);
 		matrix remove_entry(int substitution_row, int row, int col);
 		matrix eliminate();
-		matrix transpose();
+		matrix transpose() const;
 		matrix permutation_matrix();
 		matrix elimination_matrix();
 
