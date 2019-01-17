@@ -3,6 +3,33 @@ using namespace std;
 
 int matrix::permutation_count = 0;
 
+fraction::
+fraction() : fract(make_pair(1,1)), length(1) { }
+
+fraction::
+fraction(pair<int, int> p) {
+	fract = p;
+	setLength();
+}
+
+fraction::
+fraction(int num) {
+	fract = make_pair(num, 1);
+	setLength();
+}
+
+fraction::
+fraction(int num1, int num2) {
+	fract = make_pair(num, num2);
+	setLength();
+}
+
+fraction::
+fraction(const fraction& rhs){
+	fract = rhs.fract; length = rhs.length;
+}
+
+
 //simplification of fraction
 void fraction::
 simplify(){
@@ -27,6 +54,16 @@ simplify(){
 			fract.second /= i;
 		}
 	setLength();
+}
+
+int fraction::
+getLength() {
+	return length;
+}
+
+bool fraction::
+is_zero() {
+	return fract.firs == 0;
 }
 
 bool operator==(const int& numL, const fraction& fracR) {
@@ -128,14 +165,14 @@ bool operator!=(const fraction& fracL, const fraction& fracR) {
 	return true;
 }
 
-fraction operator+(fraction& l, fraction& r){
+fraction operator+(const fraction& l, const fraction& r){
 	int num1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
 		num2 = l.fract.second*r.fract.second;
 	fraction p( make_pair(num1,num2) );
 	p.simplify();
 	return p;
 }
-fraction operator-(fraction& l, fraction& r){
+fraction operator-(const fraction& l, const fraction& r){
     int num1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
 		num2 = l.fract.second*r.fract.second;
 
@@ -150,21 +187,21 @@ fraction operator*(const fraction& l, const fraction& r){
 	p.simplify();
 	return p;
 }
-fraction operator/(fraction& l, fraction& r){
+fraction operator/(const fraction& l, const fraction& r){
 	fraction reverse_r( make_pair(r.fract.second , r.fract.first));
 	fraction result = l * reverse_r;
 	return result;
 }
-fraction operator-(fraction& rhs){
+fraction operator-(const fraction& rhs){
 	fraction result(-rhs.fract.first,rhs.fract.second); 
 	return result;
 }
-ostream& operator<<(ostream& out, fraction& rhs){
+ostream& operator<<(ostream& out, const fraction& rhs){
 	if(rhs.fract.second == 1) return out << rhs.fract.first << ' ';
 	else return out << rhs.fract.first << '/' << rhs.fract.second << ' ';
 }
 
-istream& operator>>(istream& in, fraction& rhs){
+istream& operator>>(istream& in, const fraction& rhs){
  	size_t idx;
 	int num1,num2;
 	string str;
@@ -315,6 +352,47 @@ fraction dotproduct(const matrix& matL, const matrix& matR) {
 	matrix temp;
 	temp = matL.transpose();
 	return (temp * matR).arr[0][0];
+}
+
+matrix::
+matrix() : row(0), col(0) { }
+
+matrix::
+matrix(int r, int c) : row(r), col(c) {
+	make_identity_matrix();
+}
+
+matrix::
+matrix(const matrix& mat) {
+	row = mat.row;
+	col = mat.col;
+	arr = mat.arr;
+}
+
+matrix::
+~matrix() {
+//	delete permutation_matrix_ptr;
+//	delete elimination_matrix_ptr;
+}
+
+int matrix::
+get_row() {
+	return row;
+}
+
+int matrix::
+get_col() {
+	return col;
+}
+
+vector < vector < fraction > > matrix::
+get_arr() {
+	return arr;
+}
+
+int matrix::
+get_permutation_count() {
+	return permutation_count;
 }
 
 void matrix::

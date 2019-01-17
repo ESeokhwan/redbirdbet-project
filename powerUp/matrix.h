@@ -11,22 +11,17 @@ class fraction{//How can we treat the error devided by zero.
 		pair<int,int> fract;
 		int length;
 	public:
-		fraction() : fract(make_pair(1,1)) , length(1) {}
-		fraction(pair<int,int> p){
-			fract = p;
-			setLength();
-		}
-		fraction(int num) {
-			fract = make_pair(num, 1);
-			setLength();
-		}
-		fraction(int num1, int num2){
-			fract = make_pair(num1,num2);
-			setLength();
-		}
-		fraction(const fraction& rhs){fract = rhs.fract; length = rhs.length;}
+		fraction();
+		fraction(pair<int, int> p);
+		fraction(int num);
+		fraction(int num1, int num2);
+		fraction(const fraction& rhs);
 
 		void simplify();
+
+		void setLength();
+		int getLength();
+		bool is_zero();
 
 		friend bool operator==(const int& numL, const fraction& fracR);
 		friend bool operator!=(const int& numL, const fraction& fracR);
@@ -54,18 +49,17 @@ class fraction{//How can we treat the error devided by zero.
 		friend bool operator==(const fraction& fractL, const fraction& fractR);
 		friend bool operator!=(const fraction& fractL, const fraction& fractR);
 
-		friend fraction operator+(fraction&, fraction&);
-		friend fraction operator-(fraction&, fraction&);
+		friend fraction operator+(const fraction&, const fraction&);
+		friend fraction operator-(const fraction&, const fraction&);
 		friend fraction operator*(const fraction&, const fraction&);
-		friend fraction operator/(fraction&, fraction&);
-		friend fraction operator-(fraction&);//
-		friend ostream& operator<<(ostream& out, fraction& rhs);
-		friend istream& operator>>(istream& in, fraction& rhs);
-		void setLength();
-		int getLength() {return length;}
-		bool is_zero(){return fract.first == 0;}
+		friend fraction operator/(const fraction&, const fraction&);
+		friend fraction operator-(const fraction&);
+		friend ostream& operator<<(ostream& out, const fraction& rhs);
+		friend istream& operator>>(istream& in, const fraction& rhs);
 };
+
 void blank(int num);
+
 fraction make_entry(int num1, int num2);
 
 class matrix{
@@ -74,6 +68,7 @@ class matrix{
 		static int permutation_count;
 		vector< vector<fraction> > arr;
 		fraction determinant;
+
 //		matrix* permutation_matrix_ptr;
 //		matrix* elimination_matrix_ptr;
 
@@ -82,29 +77,20 @@ class matrix{
 		void make_identity_matrix();
 		void make_all_entry_zero();
 
-		matrix() : row(0), col(0) {}
-		matrix(int r, int c) : row(r), col(c) {
-			make_identity_matrix();
-		}
-		matrix(const matrix& mat) {
-			row = mat.row;
-			col = mat.col;
-			arr = mat.arr;
-		}
-		~matrix() {
-//			delete permutation_matrix_ptr;
-//			delete elimination_matrix_ptr;
-		}
+		matrix();
+		matrix(int r, int c);
+		matrix(const matrix& mat);
+		~matrix();
 
-		int get_row() { return row; }
-		int get_col() { return col; }
-		vector< vector<fraction> > get_arr() { return arr; }
-		int get_permutation_count() { return permutation_count; }
+		int get_row();
+		int get_col();
+		vector< vector<fraction> > get_arr();
+		int get_permutation_count();
 
 		void set_arr(int r, int c, fraction);
 		
-		void increase_permutation_count(){ permutation_count++; }
-		
+		void increase_permutation_count();
+
 		matrix &operator= (const matrix& rhs) {
 			row = rhs.row;
 			col = rhs.col;
