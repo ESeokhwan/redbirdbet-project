@@ -580,63 +580,53 @@ all_solution(){
 	matrix temp = this -> RREF();
 
 	int pivot[temp.get_row()] = {0,};
+	int num_pivot = 0;
 
 	for(int i = 0 ; i <  temp.get_row() ; ++i)
-		for(int j = 0 ; j < temp.get_col() ; ++j)
+		for(int j = 0 ; j < temp.get_col() ; ++j){
 			if(!temp.get_arr()[i][j].is_zero()){
 				pivot[i] = j;
 				break;
 			}
+			else
+				pivot[i] = -1;
+		}
+
+	for(int i = 0 ; i < temp.get_row() ; ++i)
+		if(pivot[i] != -1) num_pivot++;
 
 	int permutate_column[temp.get_col()] = {0,};
-	for(int i = 0 ; i < temp.get_col() ; ++i) permutate_column[i] = -1;
+	for(int i = 0 ; i < temp.get_col() ; ++i) permutate_column[i] = i;
 
-	for(int i = 0 ; i < temp.get_row() ; ++i){
-		if(i!=pivot[i] && permutate_column[i] == -1){
+	for(int i = 0 ; i < num_pivot ; ++i){
+		if(i != pivot[i] && pivot[i] != -1){
 			permutate_column[i] = pivot[i];
 			permutate_column[ pivot[i] ] = i;
 		}
-		else permutate_column[i] = i;
 	}
-	cout << "per : ";
-	for(int i = 0 ; i < temp.get_col() ; ++i) cout << permutate_column[i] << ' ';
-	cout << endl;
-	cout << "pivot : ";
-	for(int i = 0 ; i < temp.get_row() ; ++i) cout << pivot[i] << ' ';
-	cout << endl;
 
-	int num_pivot = 0;
-	for(int i = 0 ; i < temp.get_col() ; ++i)
-		if(pivot[i] < temp.get_col()) num_pivot++;
 	matrix permutation_column_matrix(temp.get_col(), temp.get_col());
 	permutation_column_matrix.initialize();
+	permutation_column_matrix.make_all_entry_zero();
 	for(int i = 0 ; i < temp.get_col() ; ++i){
 		permutation_column_matrix.set_arr(i,permutate_column[i], make_entry(1,1));
 	}
-	cout << "test2" << endl;
-	permutation_column_matrix.show();
 
 	temp = temp * permutation_column_matrix;
 
-	cout << "test3" << endl;
-	temp.show();
 
-	matrix null_basis(num_pivot, temp.get_col() - num_pivot);
-	for(int i = 0 ; i < null_basis.get_row() ; ++i){
-		for(int j = 0 ; j < temp.get_col() - num_pivot ; ++j){
-			null_basis.set_arr(i,j, -temp.get_arr()[i][j + num_pivot]);
+	matrix null_basis(temp.get_col() , temp.get_col() - num_pivot);
+	null_basis.make_all_entry_zero();
+	for(int i = 0 ; i < num_pivot ; ++i){
+		for(int j = 0 ; j < null_basis.get_col() ; ++j){
+			null_basis.set_arr(i,j, - temp.get_arr()[i][j + num_pivot]);
 		}
 	}
-	for(int i = num_pivot ; i < null_basis.get_col() ; ++i)
-		null_basis.set_arr(i,i-num_pivot,make_entry(1,1));
-	
-	cout << "test4" << endl;
-	null_basis.show();
+	for(int i = num_pivot ; i < null_basis.get_row() ; ++i){
+		null_basis.set_arr(i,i - num_pivot ,make_entry(1,1));
+	}
 
 	null_basis = permutation_column_matrix * null_basis;
-
-	cout << "test5" << endl;
-	null_basis.show();
 
 	null_basis.show();
 	return null_basis;
