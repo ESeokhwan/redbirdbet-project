@@ -495,6 +495,7 @@ permutation_matrix() {
 				for(int k = i+1; k < mat.get_row();k++) {
 					temp = mat.remove_entry(i, k, j);
 					mat = temp * mat;
+					mat = mat.remove_entry(i,k,j) * mat;
 				}
 				break;
 			}
@@ -530,9 +531,11 @@ LDUfactorization() {
 		cout << "You can't do LDU factorization." << endl;
 		return false;
 	}
-	cout << "P" << endl;
-	permutation_matrix().show();
-	cout << endl;
+	if(permutation_matrix() != matrix(row,row)) {
+		cout << "P" << endl;
+		permutation_matrix().show();
+		cout << endl;
+	}
 
 	cout << "A" << endl;
 	show();
@@ -549,10 +552,12 @@ LDUfactorization() {
 		for(int j = i; j < row; j++)
 			upper_triangle.set_arr(i, j, upper_triangle.arr[i][j] / upper_triangle.arr[i][i]);
 	}
-	
-	cout << "D" << endl;
-	diagonal.show();
-	cout << endl;
+
+	if(diagonal != matrix(row, row)) {
+		cout << "D" << endl;
+		diagonal.show();
+		cout << endl;
+	}
 
 	cout << "U" << endl;
 	upper_triangle.show();
@@ -723,4 +728,16 @@ all_solution(){
 
 	null_basis.show();
 	return null_basis;
+}
+
+matrix matrix::
+projection_matrix() const {
+	return *(this) * (transpose() * *(this)).inverse_matrix() * transpose();
+}
+
+matrix matrix::
+project(const matrix& mat) {
+	if(col != 1 || row != mat.row)
+		throw exception();
+	return mat.projection_matrix() * *(this);
 }

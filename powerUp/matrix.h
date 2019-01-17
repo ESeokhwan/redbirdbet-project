@@ -141,4 +141,8 @@ class matrix{
 		matrix all_solution();
 		void find_determinant();
 		fraction get_determinant(){return determinant;}
+
+
+		matrix projection_matrix() const;
+		matrix project(const matrix& mat);
 };

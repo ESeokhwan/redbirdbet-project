@@ -5,6 +5,7 @@ int main() {
 	cin >> r >> c;
 	matrix mat(r,c);
 	mat.fill();
+	cout << endl;
 
 	mat.LDUfactorization();
 
