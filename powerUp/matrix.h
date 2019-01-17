@@ -55,7 +55,7 @@ class fraction{//How can we treat the error devided by zero.
 		friend fraction operator/(const fraction&, const fraction&);
 		friend fraction operator-(const fraction&);
 		friend ostream& operator<<(ostream& out, const fraction& rhs);
-		friend istream& operator>>(istream& in, const fraction& rhs);
+		friend istream& operator>>(istream& in, fraction& rhs);
 };
 
 void blank(int num);
@@ -90,12 +90,8 @@ class matrix{
 		void set_arr(int r, int c, fraction);
 		
 		void increase_permutation_count();
-
-		matrix &operator= (const matrix& rhs) {
-			row = rhs.row;
-			col = rhs.col;
-			arr = rhs.arr;
-		}
+		
+		matrix &operator= (const matrix& rhs);
 
 		friend matrix operator+ (matrix& l, matrix& r);
 		friend matrix operator- (matrix& l, matrix& r);
@@ -128,8 +124,7 @@ class matrix{
 		matrix all_solution(matrix b);
 		matrix augumented(matrix& b);
 		void find_determinant();
-		fraction get_determinant(){return determinant;}
-
+		fraction get_determinant();
 
 		matrix projection_matrix() const;
 		matrix project(const matrix& mat);

@@ -20,7 +20,7 @@ fraction(int num) {
 
 fraction::
 fraction(int num1, int num2) {
-	fract = make_pair(num, num2);
+	fract = make_pair(num1, num2);
 	setLength();
 }
 
@@ -63,7 +63,7 @@ getLength() {
 
 bool fraction::
 is_zero() {
-	return fract.firs == 0;
+	return fract.first == 0;
 }
 
 bool operator==(const int& numL, const fraction& fracR) {
@@ -201,7 +201,7 @@ ostream& operator<<(ostream& out, const fraction& rhs){
 	else return out << rhs.fract.first << '/' << rhs.fract.second << ' ';
 }
 
-istream& operator>>(istream& in, const fraction& rhs){
+istream& operator>>(istream& in, fraction& rhs){
  	size_t idx;
 	int num1,num2;
 	string str;
@@ -393,6 +393,18 @@ get_arr() {
 int matrix::
 get_permutation_count() {
 	return permutation_count;
+}
+
+void matrix::
+increase_permutation_count(){
+	permutation_count++;
+}
+
+matrix& matrix::
+operator=(const matrix& rhs){
+	row = rhs.row;
+	col = rhs.col;
+	arr = rhs.arr;
 }
 
 void matrix::
@@ -702,6 +714,10 @@ transpose() const {
 //	return *Felimination_matrix_ptr;
 //}
 
+fraction matrix::
+get_determinant(){
+	return determinant;
+}
 
 void matrix::
 find_determinant(){
@@ -855,8 +871,9 @@ all_solution(matrix b){
 	for(int i = 0 ; i < temp.get_row() ; ++i){
 		if(pivot[i] == temp.get_col() -1){
 			cout << "no particular solution" << endl;
-			matrix particular(0,0);
-			return particular;
+			cout << "It's the closest solution" << endl;
+			matrix p = b.project(*this);
+			return this->all_solution(p);
 		}
 		else if(pivot[i] != -1) num_pivot++;
 	}

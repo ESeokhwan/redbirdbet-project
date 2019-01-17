@@ -24,6 +24,7 @@ int main() {
 
 	cout << "projection matrix" << endl;
 	mat.projection_matrix().show();
+	cout << endl;
 
 	cout << "projection" << endl;
 	b.project(mat).show();
