@@ -318,6 +318,18 @@ fraction dotproduct(const matrix& matL, const matrix& matR) {
 }
 
 void matrix::
+increase_permutation_count(){
+	permutation_count++;
+}
+
+matrix& matrix::
+operator=(const matrix& rhs){
+	row = rhs.row;
+	col = rhs.col;
+	arr = rhs.arr;
+}
+
+void matrix::
 set_arr (int r, int c, fraction num) {
 	if(arr.size() != 0 && arr[0].size() != 0 && r < row && c < col && r >= 0 && c >= 0) arr[r][c] = num;
 }
@@ -624,6 +636,10 @@ transpose() const {
 //	return *Felimination_matrix_ptr;
 //}
 
+fraction matrix::
+get_determinant(){
+	return determinant;
+}
 
 void matrix::
 find_determinant(){
@@ -777,8 +793,9 @@ all_solution(matrix b){
 	for(int i = 0 ; i < temp.get_row() ; ++i){
 		if(pivot[i] == temp.get_col() -1){
 			cout << "no particular solution" << endl;
-			matrix particular(0,0);
-			return particular;
+			cout << "It's the closest solution" << endl;
+			matrix p = b.project(*this);
+			return this->all_solution(p);
 		}
 		else if(pivot[i] != -1) num_pivot++;
 	}

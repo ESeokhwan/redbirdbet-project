@@ -96,20 +96,15 @@ class matrix{
 //			delete elimination_matrix_ptr;
 		}
 
-		int get_row() { return row; }
-		int get_col() { return col; }
-		vector< vector<fraction> > get_arr() { return arr; }
-		int get_permutation_count() { return permutation_count; }
-
+		int get_row();
+		int get_col();
+		vector< vector<fraction> > get_arr();
+		int get_permutation_count();
 		void set_arr(int r, int c, fraction);
 		
-		void increase_permutation_count(){ permutation_count++; }
+		void increase_permutation_count();
 		
-		matrix &operator= (const matrix& rhs) {
-			row = rhs.row;
-			col = rhs.col;
-			arr = rhs.arr;
-		}
+		matrix &operator= (const matrix& rhs);
 
 		friend matrix operator+ (matrix& l, matrix& r);
 		friend matrix operator- (matrix& l, matrix& r);
@@ -142,8 +137,7 @@ class matrix{
 		matrix all_solution(matrix b);
 		matrix augumented(matrix& b);
 		void find_determinant();
-		fraction get_determinant(){return determinant;}
-
+		fraction get_determinant();
 
 		matrix projection_matrix() const;
 		matrix project(const matrix& mat);
