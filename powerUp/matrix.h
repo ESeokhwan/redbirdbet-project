@@ -122,6 +122,7 @@ class matrix{
 		matrix inverse_matrix();
 		matrix RREF();
 		matrix null_space();
+		matrix column_space();
 		matrix all_solution(matrix b);
 		matrix augumented(matrix& b);
 		void find_determinant();

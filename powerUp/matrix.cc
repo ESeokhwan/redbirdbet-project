@@ -736,7 +736,7 @@ find_determinant(){
 matrix matrix::
 RREF(){
 	matrix temp = *this;
-	temp = temp.eliminate();
+	temp = this -> eliminate();
 	int pivot[temp.get_row()] = {0,};
 
 	for(int i = 0 ; i <  temp.get_row() ; ++i)
@@ -751,6 +751,7 @@ RREF(){
 			temp = temp.remove_entry(i,j-1,pivot[i]) * temp;
 		}
 	}
+
 	for(int i = 0 ; i < temp.get_row() ; ++i){
 		fraction div = temp.get_arr()[i][ pivot[i] ];
 
@@ -822,6 +823,43 @@ null_space(){
 
 	return null_basis;
 }
+
+matrix matrix::
+column_space(){
+	matrix temp = *this;
+	temp = temp.transpose();
+	matrix permu = temp.permutation_matrix();
+	bool independent[temp.get_row()];
+	int num_independent = 0;
+	for(int i = 0 ; i < temp.get_row() ; ++i) independent[i] = false;
+	temp = permu * temp.eliminate();
+
+	for(int i = 0 ; i < temp.get_row() ; ++i){
+		for(int j = 0 ; j < temp.get_col() ; ++j)
+			if(!temp.get_arr()[i][j].is_zero() ){
+				independent[i] = true;
+			}
+	}
+
+	for(int i = 0 ; i < temp.get_row() ; ++i) if(independent[i]) num_independent++;
+	int idx = 0;
+	temp = this->transpose();
+	matrix column_space(num_independent, temp.get_col());
+	for(int i = 0 ; i < temp.get_row() ; ++i){
+		if(independent[i]){
+			for(int j = 0 ; j < temp.get_col() ; ++j)
+				column_space.set_arr(idx, j, temp.get_arr()[i][j]);	
+		}
+		idx++;
+	}
+	
+	column_space = column_space.transpose();
+
+	return column_space;
+}
+
+
+
 
 matrix matrix::
 projection_matrix() const {
