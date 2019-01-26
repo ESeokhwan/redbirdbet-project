@@ -76,6 +76,7 @@ class matrix{
 		void initialize();
 		void make_identity_matrix();
 		void make_all_entry_zero();
+		void normalize();
 
 		matrix();
 		matrix(int r, int c);
@@ -93,9 +94,9 @@ class matrix{
 		
 		matrix &operator= (const matrix& rhs);
 
-		friend matrix operator+ (matrix& l, matrix& r);
-		friend matrix operator- (matrix& l, matrix& r);
-		friend matrix operator* (matrix l, matrix r);
+		friend matrix operator+ (const matrix& l, const matrix& r);
+		friend matrix operator- (const matrix& l, const matrix& r);
+		friend matrix operator* (const matrix& l, const matrix& r);
 		friend matrix operator* (const fraction& fracL, const matrix& matR);
 		friend matrix operator* (const matrix& matL, const fraction& fracR);
 		friend matrix operator* (const int& intL, const matrix& matR);
@@ -128,4 +129,6 @@ class matrix{
 
 		matrix projection_matrix() const;
 		matrix project(const matrix& mat);
+
+		matrix gram_schmidt();
 };

@@ -261,7 +261,7 @@ setLength(){
     length = len;
 }
 
-matrix operator+ (matrix& l, matrix& r){
+matrix operator+ (const matrix& l, const matrix& r){
 	if( l.row != r.row || r.col != l.col ){
 		matrix temp(0,0);
 		return temp;
@@ -275,7 +275,7 @@ matrix operator+ (matrix& l, matrix& r){
 	}
 }
 
-matrix operator- (matrix& l, matrix& r){
+matrix operator- (const matrix& l, const matrix& r){
 	if( l.row != r.row || r.col != l.col ){
 		matrix temp(0,0);
 		return temp;
@@ -289,7 +289,7 @@ matrix operator- (matrix& l, matrix& r){
 	}
 }
 
-matrix operator* (matrix l, matrix r){
+matrix operator* (const matrix& l, const matrix& r){
 	if(l.col != r.row){
 		matrix temp(0,0);
 		return temp;
@@ -347,7 +347,7 @@ bool operator!= (const matrix& matL, const matrix& matR) {
 }
 
 fraction dotproduct(const matrix& matL, const matrix& matR) {
-	if(matL.row != matR.row || matL.col != matR.col)
+	if(matL.row != matR.row || matL.col != 1 || matR.col != 1)
 		throw exception();
 	matrix temp;
 	temp = matL.transpose();
@@ -885,3 +885,36 @@ all_solution(matrix b){
 		particular.set_arr(pivot[i], 0, temp.get_arr()[i][temp.get_col() - 1]);
 	return particular;
 }
+
+matrix matrix::
+gram_schmidt() {
+	matrix* col_arr = new matrix[col];
+	for(int i = 0; i < col; i++) {
+		col_arr[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			col_arr[i].arr[j][0] = arr[j][i];
+		}
+	}
+	for(int i = 0; i < col; i++) {
+//		col_arr[i].normalize();
+		if(i < col - 1) {
+			col_arr[i+1] = col_arr[i+1] - dotproduct(col_arr[i], col_arr[i+1])*(fraction()/dotproduct(col_arr[i],col_arr[i]))*col_arr[i];
+		}
+	}
+	matrix result(row, col);
+	for(int i = 0; i < row; i++)
+		for(int j = 0; j < col; j++)
+			result.arr[i][j] = col_arr[j].arr[i][0];
+	delete[] col_arr;
+	return result;
+}
+
+//root를 생각해야함!! -> fraction에 대대적인 변화가 필요
+//void matrix::
+//normalize() {
+//	if(col != 1)
+//		throw exception();
+//	for(int i = 0; i < row; i++)
+//}
+		
+
