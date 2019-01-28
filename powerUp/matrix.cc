@@ -321,6 +321,21 @@ terms operator-(const terms& termsL, const terms& termsR){
 	return temp;
 }
 
+terms operator*(const int& numL, const terms& termsR) {
+	terms result(_terms);
+	for(int i = 0; i < _terms.arr.size(); i++)
+		result.arr[i] = numL * result.arr[i];
+	result.simplify();
+	return result;
+}
+
+terms operator*(const terms& termsL, const int& numR) {
+	terms result;
+	result = numR * termsL;
+	result.simplify();
+	return result;
+}
+
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
 
