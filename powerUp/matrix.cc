@@ -321,6 +321,32 @@ terms operator-(const terms& termsL, const terms& termsR){
 	return temp;
 }
 
+terms operator*(const term& termL, const terms& termsR){
+	terms temp(termsR);
+	for(int i = 0 ; i < temp.num_of_terms ; ++i) temp.arr[i] = temp.arr[i] * termL;
+	temp.simplify();
+	return temp;
+}
+
+terms operator*(const terms& termsL, const term& termR){
+	terms temp(termsL);
+	for(int i = 0 ; i < temp.num_of_terms ; ++i) temp.arr[i] = temp.arr[i] * termR;
+	temp.simplify();
+	return temp;
+}
+
+terms operator*(const terms& termsL, const terms& termsR){
+	terms temp;
+	for(int i = 0 ; i < termsL.num_of_terms ; ++i){
+		for(int j = 0 ; j < termsR.num_of_terms ; ++j){
+			term temp_term = termsL.arr[i] * termsR.arr[j];
+			temp.push_back(temp_term);
+		}
+	}
+	temp.simplify();
+	return temp;
+}
+
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
 
