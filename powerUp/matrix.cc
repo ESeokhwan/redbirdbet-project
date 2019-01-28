@@ -3,6 +3,217 @@ using namespace std;
 
 int matrix::permutation_count = 0;
 
+int gcd(int num1, int num2)
+{
+	int tmp;
+	while (num2 != 0)
+	{
+		tmp = num1 % num2;
+		num1 = num2;
+		num2 = tmp;
+	}
+	return num1;
+}
+
+int lcm(int num1, int num2)
+{
+    return num1 * num2 / gcd(num1, num2);
+}
+
+term::
+term() : base(1), root(1), coefficient(1) { }
+
+term::
+term(int _coefficient) : term() {
+	coefficient = _coefficient;
+}
+
+term::
+term(int _base, int _root) : term(1) {
+	base = _base;
+	root = _root;
+}
+
+term::
+term(int _base, int _root, int _coefficient) : term(_base, _root) {
+	coefficient = _coefficient;
+}
+
+term::
+term(const term& _term) {
+	base = _term.base;
+	root = _term.root;
+	coefficient = _term.coefficient;
+}
+
+void term::
+simplify() {
+	map<int, int> factors;
+	int tmp = base;
+	for(int i = 2; i <= sqrt(base); i++) {
+		if(tmp % i == 0) {
+			factors.insert(make_pair(i, 1));
+		}
+		while(tmp % i == 0) {
+			tmp /= i;
+			factors[i]++;
+		}
+	}
+	for(map<int, int>::iterator it = factors.begin(); it != factors.end(); it++) {
+		while(it -> second >= root) {
+			coefficient *= (it -> first);
+			base /= int(pow(double(it -> first), double(root)));
+			it -> second -= root;
+		}
+	}
+}
+
+term operator+(const term& termR) {
+	return termR;
+}
+
+term operator-(const term& termR) {
+	term result(termR);
+	result.coefficient *= -1;
+	return result;
+}
+
+term operator*(const int& numL, const term& termR) {
+	term result(termR);
+	result.coefficient = termR.coefficient * numL;
+
+	return result;
+}
+
+term operator*(const term& termL, const int& numR) {
+	return numR * termL;
+}
+
+term operator*(const term& termL, const term& termR) {
+	term result;
+	result.coefficient = termL.coefficient * termR.coefficient;
+
+	result.root = lcm(termL.root, termR.root);
+
+	result.base = int(
+	pow(double(termL.base), double(result.root/termL.root)) *
+	pow(double(termL.base), double(result.root/termR.root)));
+
+	result.simplify();
+
+	return result;
+}
+
+terms::
+terms() : num_of_terms(0) { }
+
+terms::
+terms(const term& _term) : terms() {
+	push_back(_term);
+}
+
+terms::
+terms(const terms& _terms) : terms() {
+	for(int i = 0; i < _terms.arr.size(); i++)
+		push_back(_terms.arr[i]);
+}
+
+void terms::
+push_back(const term& _term) {
+	arr.push_back(_term);
+	num_of_terms++;
+}
+
+void terms::
+sort() {
+	term tmp;
+	for(int i = 0; i < arr.size() - 1; i++) {
+		if(arr[i].root > arr[i+1].root) {
+			tmp = arr[i];
+			arr[i] = arr[i+1];
+			arr[i+1] = tmp;
+		}
+		else if(arr[i].root == arr[i+1].root) {
+			if(arr[i].base > arr[i+1].base) {
+				tmp = arr[i];
+				arr[i] = arr[i+1];
+				arr[i+1] = tmp;
+			}
+		}
+	}
+}
+			
+void terms::
+simplify() {
+	for(int i = 0; i < arr.size(); i++)
+		arr[i].simplify();
+
+	sort();
+
+	for(vector<term>::iterator it = arr.begin(); it != arr.end(); it++) {
+		if(it -> root == 1) {
+			while((it + 1) -> root == 1) {
+				it -> coefficient = it -> coefficient +
+									 it -> coefficient;
+
+				arr.erase(it + 1);
+				num_of_terms--;
+
+				if(it + 1 == arr.end())
+					break;
+			}
+		}
+		else {
+			while(it -> root == (it + 1) -> root &&
+			it -> base == (it + 1) -> base) {
+				it -> coefficient = it -> coefficient +
+									 (it + 1) -> coefficient;
+				
+				arr.erase(it + 1);
+				num_of_terms--;
+
+				if(it + 1 == arr.end())
+					break;
+			}
+		}
+	}
+}
+
+terms operator+(const term& termL, const term& termR) {
+	terms result;
+	result.arr.push_back(termL);
+	result.arr.push_back(termR);
+
+	return result;
+}
+
+terms operator+(const int& numL, const term& termR) {
+	term tmp(numL);
+	return tmp + termR;
+}
+
+terms operator+(const term& termL, const int& numL) {
+	return numL + termL;
+}
+
+terms operator-(const term& termL, const term& termR) {
+	return termL + -termR;
+}
+
+terms operator-(const int& numL, const term& termR) {
+	return numL + -termR;
+}
+
+terms operator-(const term& termL, const int& numR) {
+	return termL + -numR;
+}
+
+//from here
+
+//todo
+
+//to here
+
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
 
