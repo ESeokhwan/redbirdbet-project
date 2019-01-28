@@ -81,12 +81,17 @@ term operator-(const term& termR) {
 term operator*(const int& numL, const term& termR) {
 	term result(termR);
 	result.coefficient = termR.coefficient * numL;
+	result.simplify();
 
 	return result;
 }
 
 term operator*(const term& termL, const int& numR) {
-	return numR * termL;
+	term result;
+	result = numR * termL;
+	result.simplify();
+
+	return result;
 }
 
 term operator*(const term& termL, const term& termR) {
@@ -185,29 +190,135 @@ simplify() {
 	}
 }
 
+terms operator+(const terms& _terms) {
+	return _terms;
+}
+
+terms operator-(const terms& _terms) {
+	terms result(_terms);
+	for(int i = 0; i < _terms.arr.size(); i++)
+		result.arr[i] = -1 * result.arr[i];
+	return result;
+}
+
 terms operator+(const term& termL, const term& termR) {
 	terms result;
 	result.arr.push_back(termL);
 	result.arr.push_back(termR);
+
+	result.simplify();
 
 	return result;
 }
 
 terms operator+(const int& numL, const term& termR) {
 	term tmp(numL);
-	return tmp + termR;
+	terms result;
+
+	result = tmp + termR;
+	result.simplify();
+
+	return result;
 }
 
-terms operator+(const term& termL, const int& numL) {
-	return numL + termL;
+terms operator+(const term& termL, const int& numR) {
+	terms result;
+	result = numR + termL;
+	result.simplify();
+
+	return result;
+}
+
+terms operator+(const terms& termsL, const int& numR){
+	terms temp(termsL);
+	temp.push_back(numR);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const int& numL, const terms& termsR){
+	terms temp(termsR);
+	temp.push_back(numL);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const terms& termsL, const term& termR){
+	terms temp(termsL);
+	temp.push_back(termR);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const term& termL, const terms& termsR){
+	terms temp(termsR);
+	temp.push_back(termL);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const terms& termsL, const terms& termsR){
+	terms temp(termsL);
+	for(int i = 0 ; i < termsR.num_of_terms ; ++i)
+		temp.push_back(termsR.arr[i]);
+	temp.simplify();
+	return temp;
 }
 
 terms operator-(const term& termL, const term& termR) {
-	return termL + -termR;
+	terms temp;
+	temp = termL + -termR;
+	temp.simplify();
+
+	return temp;
 }
 
 terms operator-(const int& numL, const term& termR) {
-	return numL + -termR;
+	terms temp;
+	temp = numL + -termR;
+	temp.simplify();
+
+	return temp;
+}
+
+terms operator-(const terms& termsL, const int& numR){
+	terms temp;
+	temp = termsL + -numR;
+	temp.simplify();
+
+	return temp;
+}
+
+terms operator-(const int& numL, const terms& termsR){
+	terms temp;
+	temp = numL + -termsR;
+	temp.simplify();
+
+	return temp;
+}
+
+terms operator-(const terms& termsL, const term& termR){
+	terms temp;
+	temp = termsL + -termR;
+	temp.simplify();
+
+	return temp;
+}
+
+terms operator-(const term& termL, const terms& termsR){
+	terms temp;
+	temp = termL + -termsR;
+	temp.simplify();
+
+	return temp;
+}
+
+terms operator-(const terms& termsL, const terms& termsR){
+	terms temp(termsL);
+	for(int i = 0 ; i < termsR.num_of_terms ; ++i)
+		temp.push_back(-termsR.arr[i]);
+	temp.simplify();
+	return temp;
 }
 
 fraction::

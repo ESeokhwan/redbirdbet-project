@@ -51,28 +51,28 @@ class terms {
 	terms(const terms& _terms);
 
 	void push_back(const term& _term);
+	void push_back(const int& _term);
+
+	friend terms operator+(const terms& _terms);
+	friend terms operator-(const terms& _terms);
 
 	friend terms operator+(const term& termL, const term& termR);
 	friend terms operator+(const int& numL, const term& termR);
-	friend terms operator+(const term& termL, const int& numL);
-//from here
-	friend terms operator+(const terms& termsL, const int& numL);
+	friend terms operator+(const term& termL, const int& numR);
+	friend terms operator+(const terms& termsL, const int& numR);
 	friend terms operator+(const int& numL, const terms& termsR);
 	friend terms operator+(const terms& termsL, const term& termR);
 	friend terms operator+(const term& termL, const terms& termsR);
 	friend terms operator+(const terms& termsL, const terms& termsR);
-//to here
 
 	friend terms operator-(const term& termL, const term& termR);
 	friend terms operator-(const int& numL, const term& termR);
 	friend terms operator-(const term& termL, const int& numR);
-//from here
 	friend terms operator-(const terms& termsL, const int& numR);
 	friend terms operator-(const int& numL, const terms& termsR);
 	friend terms operator-(const terms& termsL, const term& termR);
 	friend terms operator-(const term& termL, const terms& termsR);
 	friend terms operator-(const terms& termsL, const terms& termsR);
-//to here
 
 //from here
 	friend terms operator*(const int& numL, const terms& termsR);
