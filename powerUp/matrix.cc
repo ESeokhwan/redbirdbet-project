@@ -125,6 +125,12 @@ push_back(const term& _term) {
 }
 
 void terms::
+push_back(const int& num) {
+	arr.push_back(num);
+	num_of_terms++;
+}
+
+void terms::
 sort() {
 	term tmp;
 	for(int i = 0; i < arr.size() - 1; i++) {
@@ -203,16 +209,6 @@ terms operator-(const term& termL, const term& termR) {
 terms operator-(const int& numL, const term& termR) {
 	return numL + -termR;
 }
-
-terms operator-(const term& termL, const int& numR) {
-	return termL + -numR;
-}
-
-//from here
-
-//todo
-
-//to here
 
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
