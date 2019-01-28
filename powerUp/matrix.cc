@@ -321,6 +321,7 @@ terms operator-(const terms& termsL, const terms& termsR){
 	return temp;
 }
 
+<<<<<<< HEAD
 terms operator*(const term& termL, const terms& termsR){
 	terms temp(termsR);
 	for(int i = 0 ; i < temp.num_of_terms ; ++i) temp.arr[i] = temp.arr[i] * termL;
@@ -345,6 +346,21 @@ terms operator*(const terms& termsL, const terms& termsR){
 	}
 	temp.simplify();
 	return temp;
+=======
+terms operator*(const int& numL, const terms& termsR) {
+	terms result(_terms);
+	for(int i = 0; i < _terms.arr.size(); i++)
+		result.arr[i] = numL * result.arr[i];
+	result.simplify();
+	return result;
+}
+
+terms operator*(const terms& termsL, const int& numR) {
+	terms result;
+	result = numR * termsL;
+	result.simplify();
+	return result;
+>>>>>>> 367867560fc705f4007e178614b492a2d908f477
 }
 
 fraction::
