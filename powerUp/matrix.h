@@ -51,7 +51,7 @@ class terms {
 	terms(const terms& _terms);
 
 	void push_back(const term& _term);
-
+	void push_back(const int& _term);
 	friend terms operator+(const term& termL, const term& termR);
 	friend terms operator+(const int& numL, const term& termR);
 	friend terms operator+(const term& termL, const int& numL);

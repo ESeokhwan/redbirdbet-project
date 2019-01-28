@@ -125,6 +125,12 @@ push_back(const term& _term) {
 }
 
 void terms::
+push_back(const int& _term) {
+	arr.push_back(_term);
+	num_of_terms++;
+}
+
+void terms::
 sort() {
 	term tmp;
 	for(int i = 0; i < arr.size() - 1; i++) {
@@ -194,6 +200,42 @@ terms operator+(const int& numL, const term& termR) {
 
 terms operator+(const term& termL, const int& numL) {
 	return numL + termL;
+}
+
+terms operator+(const terms& termsL, const int& numL){
+	terms temp(termsL);
+	temp.push_back(numL);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const int& numL, const terms& termsR){
+	terms temp(termsR);
+	temp.push_back(numL);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const terms& termsL, const term& termR){
+	terms temp(termsL);
+	temp.push_back(termR);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const term& termL, const terms& termsR){
+	terms temp(termsR);
+	temp.push_back(termL);
+	temp.simplify();
+	return temp;
+}
+
+terms operator+(const terms& termsL, const terms& termsR){
+	terms temp(termsL);
+	for(int i = 0 ; i < termsR.num_of_terms ; ++i)
+		temp.push_back(termsR.arr[i]);
+	temp.simplify();
+	return temp;
 }
 
 terms operator-(const term& termL, const term& termR) {
