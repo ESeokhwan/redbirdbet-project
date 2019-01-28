@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 using namespace std;
 
 int gcd(int num1, int num2);
