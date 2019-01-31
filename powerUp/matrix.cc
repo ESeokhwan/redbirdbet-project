@@ -109,6 +109,7 @@ term operator*(const term& termL, const term& termR) {
 	return result;
 }
 
+
 terms::
 terms() : num_of_terms(0) { }
 
@@ -133,6 +134,13 @@ void terms::
 push_back(const int& num) {
 	arr.push_back(num);
 	num_of_terms++;
+}
+
+bool terms::
+isPositive(){
+	double sum = 0;
+	for(int i = 0 ; i < num_of_terms ; ++i) sum += arr[i].coefficient * pow( arr[i].base, arr[i].root);
+	return sum > 0;
 }
 
 void terms::
@@ -362,6 +370,75 @@ terms operator*(const terms& termsL, const int& numR) {
 	return result;
 }
 
+"friend ostream& operator<<(ostream& out, const terms& rhs);
+istream& operator>>(istream& in, fraction& rhs){
+	string str;
+	vector<bool> sign;
+	vector<int> index;
+	int term_num = 0;
+	bool isFirstTermNeg, isInteger;
+	size_t idx;
+	cin >> str;
+	idx = str.find("/");
+	isInteger = (idx == -1);
+	terms result[2];
+
+	if(!isInteger)
+		str[idx] = ' ';
+	else
+		str = str + " 1";
+
+	string temp;
+	istringstream iss(str);
+	for(int i = 0 ; i < 2 ; ++i){
+		isFirstTermNeg = (temp[0] == '-');
+		if(!isFirstTermNeg)
+			sign.push_back(true);
+		for(int k ; k < temp.size() ; ++k)
+			if( temp[k] == '-' || temp[k] == '+'){
+				sign.push_back(temp[k]=='+');
+				index.push_back(k);
+			}
+		term_num = sign.size();
+			for(int k = 0 ; k < index.size() ; ++k)
+			temp[index[i]] = ' ';
+		
+		istringstream iss2(temp);
+		for(int k = 0 ; k < term_num ; ++k){
+			string temp_string;
+			iss2 >> temp_string;
+			int idxR = temp_string.find('r'), idxV = temp_string.find('v');
+			int base, root, coef;
+			bool isR = (idxR != -1);
+			bool isV = (idxV != -1);
+			if(!isR && !isV){
+				istringstream iss3(temp_string);
+				iss3 >> coef;
+				base = 1;
+				root = 1;
+				result[i].push_back(term(base,root,coef));
+			}
+			else if(!isR && isV){
+				temp_string[idxV] = ' ';
+				istringstream iss3(temp_string);
+				iss3 >> coef >> base;
+				root = 2;
+				result[i].push_back(term(base,root,coef));
+			}
+			else if(isR && isV){
+				temp_string[idxV] = ' ';
+				temp_string[idxR] = ' ';
+				istringstream iss3(temp_string);
+				iss3 >> coef >> root >> base;
+				result[i].push_back(term(base,root,coef));
+			}
+		}
+	}
+
+	rhs = make_entry(result[0], result[1]);
+	return in;
+}
+
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
 
@@ -378,6 +455,12 @@ fraction(int num) {
 }
 
 fraction::
+fraction(terms terms1, terms terms2){
+	fract = make_pair(terms1, terms2);
+	
+}
+
+fraction::
 fraction(int num1, int num2) {
 	fract = make_pair(num1, num2);
 	setLength();
@@ -390,6 +473,7 @@ fraction(const fraction& rhs){
 
 
 //simplification of fraction
+/*
 void fraction::
 simplify(){
 	int count = 0;
@@ -414,7 +498,7 @@ simplify(){
 		}
 	setLength();
 }
-
+*/
 int fraction::
 getLength() {
 	return length;
@@ -426,18 +510,23 @@ is_zero() {
 }
 
 bool operator==(const int& numL, const fraction& fracR) {
-	if(fracR.fract.second == 0)
+/*	if(fracR.fract.second == 0)
 		return false;
 	if((fracR.fract.first)%(fracR.fract.second) == 0)
 		if(fracR.fract.first/fracR.fract.second == numL)
-			return true;
-	return false;
+			return true;*/
+	terms temp(numL), one(1);
+	fraction temp_fraction(temp,one);
+	return temp_fraction==fracR;
 }
 
 bool operator!=(const int& numL, const fraction& fracR) {
-	if(numL == fracR)
+	terms temp(numL), one(1);
+	fraction temp_fraction(temp,one);
+	return temp_fraction!=fracR;
+/*	if(numL == fracR)
 		return false;
-	return true;
+	return true;*/
 }
 
 bool operator==(const fraction& fracL, const int& numR) {
@@ -559,7 +648,7 @@ ostream& operator<<(ostream& out, const fraction& rhs){
 	if(rhs.fract.second == 1) return out << rhs.fract.first << ' ';
 	else return out << rhs.fract.first << '/' << rhs.fract.second << ' ';
 }
-
+/*
 istream& operator>>(istream& in, fraction& rhs){
  	size_t idx;
 	int num1,num2;
@@ -582,13 +671,13 @@ istream& operator>>(istream& in, fraction& rhs){
 
  	rhs.simplify();
 }
-		
+*/		
 void blank(int num){
     for(int i = 0 ; i < num ; ++i) cout << ' ';
 }
 //instead of make_pair
-fraction make_entry(int num1, int num2){
-	fraction result(num1,num2); 
+fraction make_entry(terms terms1, terms terms2){
+	fraction result(terms1,terms2); 
 	return result;
 }
 //to make a better print of pair(such as 3/10).
