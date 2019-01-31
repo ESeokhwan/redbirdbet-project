@@ -33,6 +33,7 @@ class term {//base가 음수일 때 고려해야함!!
 
 	friend term operator*(const int& numL, const term& termR);
 	friend term operator*(const term& termL, const int& numR);
+
 	friend term operator*(const term& termL, const term& termR);
 
 	friend class terms;
@@ -55,8 +56,6 @@ class terms {
 	void push_back(const int& _term);
 
 	void test_show();
-	bool isPositive();
-
 
 	friend terms operator+(const terms& _terms);
 	friend terms operator-(const terms& _terms);
@@ -79,19 +78,19 @@ class terms {
 	friend terms operator-(const term& termL, const terms& termsR);
 	friend terms operator-(const terms& termsL, const terms& termsR);
 
+//from here
 	friend terms operator*(const int& numL, const terms& termsR);
 	friend terms operator*(const terms& termsL, const int& numR);
 	friend terms operator*(const term& termL, const terms& termsR);
 	friend terms operator*(const terms& termsL, const term& termR);
 	friend terms operator*(const terms& termsL, const terms& termsR);
-
-//	friend ostream& operator<<(ostream& out, const terms& rhs);
-//	friend istream& operator>>(istream& in, terms& rhs);	
+//to here
+	
 };
 
 class fraction{//How can we treat the error devided by zero.
  protected:
-	pair<terms,terms> fract;
+	pair<int,int> fract;
 	int length;
 	bool isRoot1;
 	bool isRoot2;
@@ -99,7 +98,6 @@ class fraction{//How can we treat the error devided by zero.
  public:
 	fraction();
 	fraction(pair<int, int> p);
-	fraction(terms,terms);
 	fraction(int num);
 	fraction(int num1, int num2);
 	fraction(const fraction& rhs);
