@@ -1,92 +1,10 @@
 #include <iostream>
 #include <vector>
-#include <map>
 #include <utility> // pair
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include <cmath>
 using namespace std;
-
-int gcd(int num1, int num2);
-int lcm(int num1, int num2);
-
-class term {//base가 음수일 때 고려해야함!!
- protected :
-	int base;
-	int root;//몇 제곱근에서 몇
-	int coefficient;
-
-	void simplify();
-
- public :
-	term();
-	term(int _coefficient);
-	term(int _root, int _base);
-	term(int _coefficient, int _root, int _base);
-	term(const term& _term);
-
-	void test_show();
-	
-	friend term operator+(const term& termR);
-	friend term operator-(const term& termR);
-
-	friend term operator*(const int& numL, const term& termR);
-	friend term operator*(const term& termL, const int& numR);
-
-	friend term operator*(const term& termL, const term& termR);
-
-	friend class terms;
-};
-
-class terms {
- protected :
-	vector<term> arr;
-	int num_of_terms;
-
-	void simplify();
-
- public :
-	void sort();
-	terms();
-	terms(const term& _term);
-	terms(const terms& _terms);
-
-	void push_back(const term& _term);
-	void push_back(const int& _term);
-
-	void test_show();
-
-	friend terms operator+(const terms& _terms);
-	friend terms operator-(const terms& _terms);
-
-	friend terms operator+(const term& termL, const term& termR);
-	friend terms operator+(const int& numL, const term& termR);
-	friend terms operator+(const term& termL, const int& numR);
-	friend terms operator+(const terms& termsL, const int& numR);
-	friend terms operator+(const int& numL, const terms& termsR);
-	friend terms operator+(const terms& termsL, const term& termR);
-	friend terms operator+(const term& termL, const terms& termsR);
-	friend terms operator+(const terms& termsL, const terms& termsR);
-
-	friend terms operator-(const term& termL, const term& termR);
-	friend terms operator-(const int& numL, const term& termR);
-	friend terms operator-(const term& termL, const int& numR);
-	friend terms operator-(const terms& termsL, const int& numR);
-	friend terms operator-(const int& numL, const terms& termsR);
-	friend terms operator-(const terms& termsL, const term& termR);
-	friend terms operator-(const term& termL, const terms& termsR);
-	friend terms operator-(const terms& termsL, const terms& termsR);
-
-//from here
-	friend terms operator*(const int& numL, const terms& termsR);
-	friend terms operator*(const terms& termsL, const int& numR);
-	friend terms operator*(const term& termL, const terms& termsR);
-	friend terms operator*(const terms& termsL, const term& termR);
-	friend terms operator*(const terms& termsL, const terms& termsR);
-//to here
-	
-};
 
 class fraction{//How can we treat the error devided by zero.
  protected:
