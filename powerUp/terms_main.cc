@@ -14,7 +14,6 @@ int main() {
 		terms result;
 		result = result + term1;
 		cout << "b" << endl;
-		result.test_show();
 		result = result + term2;
 		cout << "c" << endl;
 		result.test_show();
@@ -34,6 +33,16 @@ int main() {
 		cout << "h" << endl;
 
 		result.test_show();
+
+		term 1term(3, 3, 2);
+		term 2term(1, 2, 3);
+
+		terms result1;
+		result1 = 1term + 2term;
+
+		result1.test_show();
+
+		(result1 * result).test_show();
 	}
 	catch(char const* e) {
 		cout << e << endl;

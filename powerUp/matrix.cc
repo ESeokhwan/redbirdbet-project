@@ -525,12 +525,6 @@ fraction(int num) {
 }
 
 fraction::
-fraction(terms terms1, terms terms2){
-	fract = make_pair(terms1, terms2);
-	
-}
-
-fraction::
 fraction(int num1, int num2) {
 	fract = make_pair(num1, num2);
 	setLength();
@@ -543,7 +537,6 @@ fraction(const fraction& rhs){
 
 
 //simplification of fraction
-/*
 void fraction::
 simplify(){
 	int count = 0;
@@ -568,7 +561,7 @@ simplify(){
 		}
 	setLength();
 }
-*/
+
 int fraction::
 getLength() {
 	return length;
@@ -580,23 +573,18 @@ is_zero() {
 }
 
 bool operator==(const int& numL, const fraction& fracR) {
-/*	if(fracR.fract.second == 0)
+	if(fracR.fract.second == 0)
 		return false;
 	if((fracR.fract.first)%(fracR.fract.second) == 0)
 		if(fracR.fract.first/fracR.fract.second == numL)
-			return true;*/
-	terms temp(numL), one(1);
-	fraction temp_fraction(temp,one);
-	return temp_fraction==fracR;
+			return true;
+	return false;
 }
 
 bool operator!=(const int& numL, const fraction& fracR) {
-	terms temp(numL), one(1);
-	fraction temp_fraction(temp,one);
-	return temp_fraction!=fracR;
-/*	if(numL == fracR)
+	if(numL == fracR)
 		return false;
-	return true;*/
+	return true;
 }
 
 bool operator==(const fraction& fracL, const int& numR) {
@@ -718,7 +706,7 @@ ostream& operator<<(ostream& out, const fraction& rhs){
 	if(rhs.fract.second == 1) return out << rhs.fract.first << ' ';
 	else return out << rhs.fract.first << '/' << rhs.fract.second << ' ';
 }
-/*
+
 istream& operator>>(istream& in, fraction& rhs){
  	size_t idx;
 	int num1,num2;
@@ -741,7 +729,7 @@ istream& operator>>(istream& in, fraction& rhs){
 
  	rhs.simplify();
 }
-*/		
+	
 void blank(int num){
     for(int i = 0 ; i < num ; ++i) cout << ' ';
 }
