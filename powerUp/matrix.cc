@@ -440,7 +440,7 @@ terms operator*(const terms& termsL, const int& numR) {
 	return result;
 }
 
-"friend ostream& operator<<(ostream& out, const terms& rhs);
+//"friend ostream& operator<<(ostream& out, const terms& rhs);
 istream& operator>>(istream& in, fraction& rhs){
 	string str;
 	vector<bool> sign;
@@ -486,6 +486,7 @@ istream& operator>>(istream& in, fraction& rhs){
 				iss3 >> coef;
 				base = 1;
 				root = 1;
+				if(!sign[k]) coef = -coef;
 				result[i].push_back(term(base,root,coef));
 			}
 			else if(!isR && isV){
@@ -493,6 +494,7 @@ istream& operator>>(istream& in, fraction& rhs){
 				istringstream iss3(temp_string);
 				iss3 >> coef >> base;
 				root = 2;
+				if(!sign[k]) coef = -coef;
 				result[i].push_back(term(base,root,coef));
 			}
 			else if(isR && isV){
@@ -500,12 +502,13 @@ istream& operator>>(istream& in, fraction& rhs){
 				temp_string[idxR] = ' ';
 				istringstream iss3(temp_string);
 				iss3 >> coef >> root >> base;
+				if(!sign[k]) coef = -coef;
 				result[i].push_back(term(base,root,coef));
 			}
 		}
 	}
 
-	rhs = make_entry(result[0], result[1]);
+	rhs.fract = make_pair(result[0], result[1]);
 	return in;
 }
 
