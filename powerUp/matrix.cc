@@ -440,29 +440,6 @@ terms operator*(const terms& termsL, const int& numR) {
 	return result;
 }
 
-istream& operator>>(istream& in, fraction& rhs){
-	size_t idx;
-	int num1,num2;
-	string str;
-	cin >> str;
-	idx = str.find("/");
-	bool is_integer = (idx==-1);
-
-	if(!is_integer) str = str.substr(0,idx) + " " + str.substr(idx+1);
-	istringstream iss(str);
-
-	if(is_integer){
-		iss >> num1;
-		rhs.fract = make_pair(num1,1);
-	}
-	else{
-		iss >> num1 >> num2;
-		rhs.fract = make_pair(num1,num2);
-	}
-
-	rhs.simplify();
-}
-
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
 
@@ -688,8 +665,8 @@ void blank(int num){
 	for(int i = 0 ; i < num ; ++i) cout << ' ';
 }
 //instead of make_pair
-fraction make_entry(terms terms1, terms terms2){
-	fraction result(terms1,terms2); 
+fraction make_entry(int num1, int num2){
+	fraction result(num1, num2); 
 	return result;
 }
 //to make a better print of pair(such as 3/10).
@@ -722,7 +699,7 @@ setLength(){
 }
 
 //for fraction2
-istream& operator>>(istream& in, fraction& rhs){
+istream& operator>>(istream& in, fraction2& rhs){
 	string str;
 	vector<bool> sign;
 	vector<int> index;
@@ -753,7 +730,7 @@ istream& operator>>(istream& in, fraction& rhs){
 			}
 		term_num = sign.size();
 		for(int k = 0 ; k < index.size() ; ++k)
-			temp[indexi[k]] = ' ';
+			temp[index[k]] = ' ';
 
 		istringstream iss2(temp);
 		for(int k = 0 ; k < term_num ; ++k){

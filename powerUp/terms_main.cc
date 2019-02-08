@@ -33,12 +33,16 @@ int main() {
 		cout << "h" << endl;
 
 		result.test_show();
+		cout << endl;
 
-		term 1term(3, 3, 2);
-		term 2term(1, 2, 3);
+		term _term1(3, 3, 2);
+		term _term2(1, 2, 3);
 
 		terms result1;
-		result1 = 1term + 2term;
+		result1 = result1 + _term1;
+		cout << "i" << endl;
+		result1 = result1 + _term2;
+		cout << "j" << endl;
 
 		result1.test_show();
 

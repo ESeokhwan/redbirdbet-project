@@ -147,7 +147,7 @@ fraction make_entry(int num1, int num2);
 
 class fraction2{//How can we treat the error devided by zero.
  protected:
-   pair<int,int> fract;
+   pair<terms, terms> fract;
    int length;
    bool isRoot1;
    bool isRoot2;
