@@ -25,7 +25,7 @@ int lcm(int num1, int num2)
 	}
 
 
-    return num1 * num2 / gcd(num1, num2);
+	return num1 * num2 / gcd(num1, num2);
 }
 
 term::
@@ -105,10 +105,10 @@ simplify() {
 
 void term::
 test_show() {
-		cout << "coefficient : " << coefficient << endl;
-		cout << "root : " << root << endl;
-		cout << "base : " << base << endl;
-		cout << endl;
+	cout << "coefficient : " << coefficient << endl;
+	cout << "root : " << root << endl;
+	cout << "base : " << base << endl;
+	cout << endl;
 }
 
 term operator+(const term& termR) {
@@ -144,8 +144,8 @@ term operator*(const term& termL, const term& termR) {
 	result.root = lcm(termL.root, termR.root);
 
 	result.base = int(
-	pow(double(termL.base), double(result.root/termL.root)) *
-	pow(double(termL.base), double(result.root/termR.root)));
+			pow(double(termL.base), double(result.root/termL.root)) *
+			pow(double(termL.base), double(result.root/termR.root)));
 
 	result.simplify();
 
@@ -223,7 +223,7 @@ sort() {
 		}
 	}
 }
-			
+
 void terms::
 simplify() {
 	for(int i = 0; i < num_of_terms; i++) {
@@ -236,7 +236,7 @@ simplify() {
 		if(arr[i].root == 1) {
 			while(arr[i+1].root == 1) {
 				arr[i].coefficient = arr[i].coefficient +
-									 arr[i+1].coefficient;
+					arr[i+1].coefficient;
 
 				vector<term>::iterator it = arr.begin();
 
@@ -249,10 +249,10 @@ simplify() {
 		}
 		else {
 			while(arr[i].root == arr[i+1].root &&
-			arr[i].base == arr[i+1].base) {
+					arr[i].base == arr[i+1].base) {
 				arr[i].coefficient = arr[i].coefficient +
-									 arr[i+1].coefficient;
-				
+					arr[i+1].coefficient;
+
 				vector<term>:: iterator it = arr.begin();
 
 				arr.erase(it + i + 1);
@@ -440,76 +440,27 @@ terms operator*(const terms& termsL, const int& numR) {
 	return result;
 }
 
-//"friend ostream& operator<<(ostream& out, const terms& rhs);
 istream& operator>>(istream& in, fraction& rhs){
-	string str;
-	vector<bool> sign;
-	vector<int> index;
-	int term_num = 0;
-	bool isFirstTermNeg, isInteger;
 	size_t idx;
+	int num1,num2;
+	string str;
 	cin >> str;
 	idx = str.find("/");
-	isInteger = (idx == -1);
-	terms result[2];
+	bool is_integer = (idx==-1);
 
-	if(!isInteger)
-		str[idx] = ' ';
-	else
-		str = str + " 1";
-
-	string temp;
+	if(!is_integer) str = str.substr(0,idx) + " " + str.substr(idx+1);
 	istringstream iss(str);
-	for(int i = 0 ; i < 2 ; ++i){
-		isFirstTermNeg = (temp[0] == '-');
-		if(!isFirstTermNeg)
-			sign.push_back(true);
-		for(int k ; k < temp.size() ; ++k)
-			if( temp[k] == '-' || temp[k] == '+'){
-				sign.push_back(temp[k]=='+');
-				index.push_back(k);
-			}
-		term_num = sign.size();
-			for(int k = 0 ; k < index.size() ; ++k)
-			temp[index[i]] = ' ';
-		
-		istringstream iss2(temp);
-		for(int k = 0 ; k < term_num ; ++k){
-			string temp_string;
-			iss2 >> temp_string;
-			int idxR = temp_string.find('r'), idxV = temp_string.find('v');
-			int base, root, coef;
-			bool isR = (idxR != -1);
-			bool isV = (idxV != -1);
-			if(!isR && !isV){
-				istringstream iss3(temp_string);
-				iss3 >> coef;
-				base = 1;
-				root = 1;
-				if(!sign[k]) coef = -coef;
-				result[i].push_back(term(base,root,coef));
-			}
-			else if(!isR && isV){
-				temp_string[idxV] = ' ';
-				istringstream iss3(temp_string);
-				iss3 >> coef >> base;
-				root = 2;
-				if(!sign[k]) coef = -coef;
-				result[i].push_back(term(base,root,coef));
-			}
-			else if(isR && isV){
-				temp_string[idxV] = ' ';
-				temp_string[idxR] = ' ';
-				istringstream iss3(temp_string);
-				iss3 >> coef >> root >> base;
-				if(!sign[k]) coef = -coef;
-				result[i].push_back(term(base,root,coef));
-			}
-		}
+
+	if(is_integer){
+		iss >> num1;
+		rhs.fract = make_pair(num1,1);
+	}
+	else{
+		iss >> num1 >> num2;
+		rhs.fract = make_pair(num1,num2);
 	}
 
-	rhs.fract = make_pair(result[0], result[1]);
-	return in;
+	rhs.simplify();
 }
 
 fraction::
@@ -682,12 +633,12 @@ fraction operator+(const fraction& l, const fraction& r){
 	return p;
 }
 fraction operator-(const fraction& l, const fraction& r){
-    int num1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
+	int num1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
 		num2 = l.fract.second*r.fract.second;
 
-    fraction p( make_pair(num1,num2) );
-    p.simplify();
-    return p;
+	fraction p( make_pair(num1,num2) );
+	p.simplify();
+	return p;
 }
 fraction operator*(const fraction& l, const fraction& r){
 	int num1 = l.fract.first * r.fract.first,
@@ -711,7 +662,7 @@ ostream& operator<<(ostream& out, const fraction& rhs){
 }
 
 istream& operator>>(istream& in, fraction& rhs){
- 	size_t idx;
+	size_t idx;
 	int num1,num2;
 	string str;
 	cin >> str;
@@ -722,19 +673,19 @@ istream& operator>>(istream& in, fraction& rhs){
 	istringstream iss(str);
 
 	if(is_integer){
- 		iss >> num1;
+		iss >> num1;
 		rhs.fract = make_pair(num1,1);
 	}
 	else{
-	   	iss >> num1 >> num2;
+		iss >> num1 >> num2;
 		rhs.fract = make_pair(num1,num2);
 	}
 
- 	rhs.simplify();
+	rhs.simplify();
 }
-	
+
 void blank(int num){
-    for(int i = 0 ; i < num ; ++i) cout << ' ';
+	for(int i = 0 ; i < num ; ++i) cout << ' ';
 }
 //instead of make_pair
 fraction make_entry(terms terms1, terms terms2){
@@ -744,31 +695,107 @@ fraction make_entry(terms terms1, terms terms2){
 //to make a better print of pair(such as 3/10).
 void fraction::
 setLength(){
-    int len;
-    int num1 = fract.first , num2 = fract.second;
-    bool neg = num1 < 0;
-    if(num2 == 1) len = 0;
-    else{
-        len = 1;
-        while(num2!=0){
-            len++;
-            num2 /= 10;
-        }
-    }
+	int len;
+	int num1 = fract.first , num2 = fract.second;
+	bool neg = num1 < 0;
+	if(num2 == 1) len = 0;
+	else{
+		len = 1;
+		while(num2!=0){
+			len++;
+			num2 /= 10;
+		}
+	}
 
-    if(neg){
-        len++;
-        num1 = -num1;
-    }
+	if(neg){
+		len++;
+		num1 = -num1;
+	}
 
 	if(num1 == 0) len++;
 
-    while(num1!=0){
-        len++;
-        num1 /= 10;
-    }
-    length = len;
+	while(num1!=0){
+		len++;
+		num1 /= 10;
+	}
+	length = len;
 }
+
+//for fraction2
+istream& operator>>(istream& in, fraction& rhs){
+	string str;
+	vector<bool> sign;
+	vector<int> index;
+	int term_num = 0;
+	bool isFirstTermNeg, isInteger;
+	size_t idx;
+	cin >> str;
+	idx = str.find("/");
+	isInteger = (idx == -1);
+	terms result[2];
+
+	if(!isInteger)
+		str[idx] = ' ';
+	else
+		str = str + " 1";
+
+	string temp;
+	istringstream iss(str);
+	for(int i = 0 ; i < 2 ; ++i){
+		iss >> temp;
+		isFirstTermNeg = (temp[0] == '-');
+		if(!isFirstTermNeg)
+			sign.push_back(true);
+		for(int k ; k < temp.size() ; ++k)
+			if( temp[k] == '-' || temp[k] == '+'){
+				sign.push_back(temp[k]=='+');
+				index.push_back(k);
+			}
+		term_num = sign.size();
+		for(int k = 0 ; k < index.size() ; ++k)
+			temp[indexi[k]] = ' ';
+
+		istringstream iss2(temp);
+		for(int k = 0 ; k < term_num ; ++k){
+			string temp_string;
+			iss2 >> temp_string;
+			int idxR = temp_string.find('r'), idxV = temp_string.find('v');
+			int base, root, coef;
+			bool isR = (idxR != -1);
+			bool isV = (idxV != -1);
+			if(!isR && !isV){
+				istringstream iss3(temp_string);
+				iss3 >> coef;
+				base = 1;
+				root = 1;
+				if(!sign[k]) coef = -coef;
+				result[i].push_back(term(base,root,coef));
+			}
+			else if(!isR && isV){
+				temp_string[idxV] = ' ';
+				istringstream iss3(temp_string);
+				iss3 >> coef >> base;
+				root = 2;
+				if(!sign[k]) coef = -coef;
+				result[i].push_back(term(base,root,coef));
+			}
+			else if(isR && isV){
+				temp_string[idxV] = ' ';
+				temp_string[idxR] = ' ';
+				istringstream iss3(temp_string);
+				iss3 >> coef >> root >> base;
+				if(!sign[k]) coef = -coef;
+				result[i].push_back(term(base,root,coef));
+			}
+		}
+		sign.clear();
+		index.clear();
+	}
+
+	rhs.fract = make_pair(result[0], result[1]);
+	return in;
+}
+//for fraction2
 
 matrix operator+ (const matrix& l, const matrix& r){
 	if( l.row != r.row || r.col != l.col ){
@@ -880,8 +907,8 @@ matrix(const matrix& mat) {
 
 matrix::
 ~matrix() {
-//	delete permutation_matrix_ptr;
-//	delete elimination_matrix_ptr;
+	//	delete permutation_matrix_ptr;
+	//	delete elimination_matrix_ptr;
 }
 
 int matrix::
@@ -957,27 +984,27 @@ void matrix::
 show(bool no_paranthesis){
 	if(row*col==0) cout << "[]" << endl;
 	else{
-        int colNum[row] = {0,};
-        vector<int> colMax; 
-        for(int i = 0 ; i < col ; ++i){
-            for(int j = 0 ; j < row ; ++j)
-                colNum[j] = arr[j][i].getLength();
-            int max = -1; 
-            for(int k = 0 ; k < row ; ++k) max = max > colNum[k] ? max : colNum[k];
-            colMax.push_back(max);
-        }
+		int colNum[row] = {0,};
+		vector<int> colMax; 
+		for(int i = 0 ; i < col ; ++i){
+			for(int j = 0 ; j < row ; ++j)
+				colNum[j] = arr[j][i].getLength();
+			int max = -1; 
+			for(int k = 0 ; k < row ; ++k) max = max > colNum[k] ? max : colNum[k];
+			colMax.push_back(max);
+		}
 
-        for(int i = 0 ; i < row ; ++i){
+		for(int i = 0 ; i < row ; ++i){
 			if(!no_paranthesis) cout << '[' << ' '; 
 			else cout << ' ';
-            for(int j = 0 ; j < col ; ++j){
-                blank(colMax[j] - arr[i][j].getLength());
-                cout << arr[i][j];
-            }
+			for(int j = 0 ; j < col ; ++j){
+				blank(colMax[j] - arr[i][j].getLength());
+				cout << arr[i][j];
+			}
 			if(!no_paranthesis) cout << ']' << endl;
 			else cout << endl;
-        }
-    }
+		}
+	}
 }
 
 
@@ -1007,15 +1034,15 @@ change_two_rows(int row1, int row2) {
 matrix matrix::
 move_a_row_to_last_row(int row) {
 	matrix result(this -> get_row(), this -> get_row());
-	
+
 	result.set_arr(this -> get_row() - 1, this -> get_row() - 1, make_pair(0,1));
 	result.set_arr(this -> get_row() - 1, row, make_entry(1,1));
 	for(int i = row; i < this -> get_row() - 1; i++) {
 		result.set_arr(i, i, make_entry(0,1));
 		result.set_arr(i, i+1, make_entry(1,1));
 	}
-//	cout << "permutation" << endl;
-//result.show();
+	//	cout << "permutation" << endl;
+	//result.show();
 	for(int i = row ; i < this -> get_row(); ++i) this -> increase_permutation_count();
 	return result;
 }
@@ -1024,7 +1051,7 @@ matrix matrix::
 remove_entry(int substitution_row, int row, int col) {
 	vector< vector<fraction> > arr = this -> get_arr();
 	fraction entry1 = arr[row][col], entry2 = -arr[substitution_row][col];
-    fraction multiflyer = entry1 / entry2;
+	fraction multiflyer = entry1 / entry2;
 
 	multiflyer.simplify();
 	matrix result(this -> get_row(), this -> get_row());
@@ -1042,33 +1069,33 @@ eliminate() {
 	bool has_zero_pivot;
 	int num_of_pivots = min(mat.get_row(), mat.get_col());
 	for(int i = 0; i < num_of_pivots; i++) {
-//		cout << "i : " << i << endl;
+		//		cout << "i : " << i << endl;
 		for(int j = i; j < mat.get_col(); j++) {
 			has_zero_pivot = false;
-//			cout << "j : " << j << endl;
+			//			cout << "j : " << j << endl;
 			for(int k = i; k < mat.get_row(); k++) {
-//				cout << "k : " << k << endl;
+				//				cout << "k : " << k << endl;
 				if(!mat.get_arr()[i][j].is_zero()) break;
 				temp = mat.move_a_row_to_last_row(i);
 				mat = temp * mat;
-//				mat.show();
+				//				mat.show();
 				if(k == mat.get_row() - 1) has_zero_pivot = true;
-//				cout << has_zero_pivot << "k end" << endl;
+				//				cout << has_zero_pivot << "k end" << endl;
 			}
 			if(!has_zero_pivot) {
 				for(int k = i+1; k < mat.get_row();k++) {
-//					cout << "k2 : " << k << endl;
-//					mat.show();
+					//					cout << "k2 : " << k << endl;
+					//					mat.show();
 					temp = mat.remove_entry(i, k, j);
 					mat = temp * mat;
-//					mat.show();
-//					cout << "k2 end"  << endl;
+					//					mat.show();
+					//					cout << "k2 end"  << endl;
 				}
 				break;
 			}
-//			cout << "j end" << endl;
+			//			cout << "j end" << endl;
 		}
-//		cout << "i end" << endl;
+		//		cout << "i end" << endl;
 	}
 	return mat;
 }
@@ -1361,7 +1388,7 @@ column_space(){
 		}
 		idx++;
 	}
-	
+
 	column_space = column_space.transpose();
 
 	return column_space;
@@ -1443,7 +1470,7 @@ gram_schmidt() {
 		}
 	}
 	for(int i = 0; i < col; i++) {
-//		col_arr[i].normalize();
+		//		col_arr[i].normalize();
 		if(i < col - 1) {
 			col_arr[i+1] = col_arr[i+1] - dotproduct(col_arr[i], col_arr[i+1])*(fraction()/dotproduct(col_arr[i],col_arr[i]))*col_arr[i];
 		}
@@ -1463,5 +1490,5 @@ gram_schmidt() {
 //		throw exception();
 //	for(int i = 0; i < row; i++)
 //}
-		
+
 
