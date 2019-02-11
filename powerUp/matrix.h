@@ -19,6 +19,7 @@ class term {//base가 음수일 때 고려해야함!!
 
 	void simplify();
 
+
  public :
 	term();
 	term(int _coefficient);
@@ -27,13 +28,23 @@ class term {//base가 음수일 때 고려해야함!!
 	term(const term& _term);
 
 	void test_show();
+
+	term& operator=(const term& r);
+	term& operator=(const int& r);
 	
 	friend term operator+(const term& termR);
 	friend term operator-(const term& termR);
 
-	friend term operator*(const int& numL, const term& termR);
-	friend term operator*(const term& termL, const int& numR);
-	friend term operator*(const term& termL, const term& termR);
+	friend const term operator*(const int& numL, const term& termR);
+	friend const term operator*(const term& termL, const int& numR);
+	friend const term operator*(const term& termL, const term& termR);
+
+	friend bool operator==(const term& l, const term& r);
+	friend bool operator!=(const term& l, const term& r);
+	friend bool operator==(const int& l, const term& r);
+	friend bool operator!=(const int& l, const term& r);
+	friend bool operator==(const term& l, const int& r);
+	friend bool operator!=(const term& l, const int& r);
 
 	friend class terms;
 };
@@ -42,7 +53,6 @@ class terms {
  protected :
 	vector<term> arr;
 	int num_of_terms;
-
 	void simplify();
 
  public :
@@ -61,29 +71,32 @@ class terms {
 	friend terms operator+(const terms& _terms);
 	friend terms operator-(const terms& _terms);
 
-	friend terms operator+(const term& termL, const term& termR);
-	friend terms operator+(const int& numL, const term& termR);
-	friend terms operator+(const term& termL, const int& numR);
-	friend terms operator+(const terms& termsL, const int& numR);
-	friend terms operator+(const int& numL, const terms& termsR);
-	friend terms operator+(const terms& termsL, const term& termR);
-	friend terms operator+(const term& termL, const terms& termsR);
-	friend terms operator+(const terms& termsL, const terms& termsR);
+//	friend terms& operator=(const terms& l, const terms& r);
 
-	friend terms operator-(const term& termL, const term& termR);
-	friend terms operator-(const int& numL, const term& termR);
-	friend terms operator-(const term& termL, const int& numR);
-	friend terms operator-(const terms& termsL, const int& numR);
-	friend terms operator-(const int& numL, const terms& termsR);
-	friend terms operator-(const terms& termsL, const term& termR);
-	friend terms operator-(const term& termL, const terms& termsR);
-	friend terms operator-(const terms& termsL, const terms& termsR);
+	//term 과 term을 더하는 오퍼레이터가 없다고 하네....
+	friend const terms operator+(const term& termL, const term& termR);
+	friend const terms operator+(const int& numL, const term& termR);
+	friend const terms operator+(const term& termL, const int& numR);
+	friend const terms operator+(const terms& termsL, const int& numR);
+	friend const terms operator+(const int& numL, const terms& termsR);
+	friend const terms operator+(const terms& termsL, const term& termR);
+	friend const terms operator+(const term& termL, const terms& termsR);
+	friend const terms operator+(const terms& termsL, const terms& termsR);
 
-	friend terms operator*(const int& numL, const terms& termsR);
-	friend terms operator*(const terms& termsL, const int& numR);
-	friend terms operator*(const term& termL, const terms& termsR);
-	friend terms operator*(const terms& termsL, const term& termR);
-	friend terms operator*(const terms& termsL, const terms& termsR);
+	friend const terms operator-(const term& termL, const term& termR);
+	friend const terms operator-(const int& numL, const term& termR);
+	friend const terms operator-(const term& termL, const int& numR);
+	friend const terms operator-(const terms& termsL, const int& numR);
+	friend const terms operator-(const int& numL, const terms& termsR);
+	friend const terms operator-(const terms& termsL, const term& termR);
+	friend const terms operator-(const term& termL, const terms& termsR);
+	friend const terms operator-(const terms& termsL, const terms& termsR);
+
+	friend const terms operator*(const int& numL, const terms& termsR);
+	friend const terms operator*(const terms& termsL, const int& numR);
+	friend const terms operator*(const term& termL, const terms& termsR);
+	friend const terms operator*(const terms& termsL, const term& termR);
+	friend const terms operator*(const terms& termsL, const terms& termsR);
 
 //	friend ostream& operator<<(ostream& out, const terms& rhs);
 //	friend istream& operator>>(istream& in, terms& rhs);	
@@ -149,12 +162,10 @@ class fraction2{//How can we treat the error devided by zero.
  protected:
    pair<terms, terms> fract;
    int length;
-   bool isRoot1;
-   bool isRoot2;
 
  public:
    fraction2();
-   fraction2(pair<int, int> p);
+   fraction2(pair<terms, terms> p);
    fraction2(int num);
    fraction2(int num1, int num2);
    fraction2(const fraction2& rhs);
@@ -164,6 +175,7 @@ class fraction2{//How can we treat the error devided by zero.
    int getLength();
    bool is_zero();
 
+   /*
    friend bool operator==(const int& numL, const fraction2& fracR);
    friend bool operator!=(const int& numL, const fraction2& fracR);
    friend bool operator==(const fraction2& fracL, const int& numR);
@@ -184,9 +196,10 @@ class fraction2{//How can we treat the error devided by zero.
    friend bool operator!=(const pair<int, int>& pairL, const fraction2& fracR);
    friend bool operator==(const fraction2& fracL, const pair<int, int>& pairR);
    friend bool operator!=(const fraction2& fracL, const pair<int, int>& pairR);
+   */
 
-   friend bool operator==(const fraction2& fractL, const fraction2& fractR);
-   friend bool operator!=(const fraction2& fractL, const fraction2& fractR);
+   friend bool operator==(const fraction2& L, const fraction2& R);
+   friend bool operator!=(const fraction2& L, const fraction2& R);
 
    friend fraction2 operator+(const fraction2&, const fraction2&);
    friend fraction2 operator-(const fraction2&, const fraction2&);
@@ -227,7 +240,7 @@ class matrix{
 		
 	void increase_permutation_count();
 		
-	matrix &operator= (const matrix& rhs);
+	matrix& operator= (const matrix& rhs);
 
 	friend matrix operator+ (const matrix& l, const matrix& r);
 	friend matrix operator- (const matrix& l, const matrix& r);

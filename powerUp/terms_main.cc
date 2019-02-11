@@ -44,9 +44,27 @@ int main() {
 		result1 = result1 + _term2;
 		cout << "j" << endl;
 
+//		cout << "k" << endl;
+//		result1 = (_term1 + _term2);
+//		cout << "l" << endl;
+
 		result1.test_show();
 
-		(result1 * result).test_show();
+		cout << "AAA" << endl;
+		
+		terms result2;
+		result2 = result1 * result;
+		result2.test_show();
+
+		cout << "BBB" << endl;
+
+		term __term1(3,3,2);
+		term __term2(6,3,450);
+
+		term result3;
+		result3 = __term1*__term2;
+		result3.test_show();
+
 	}
 	catch(char const* e) {
 		cout << e << endl;

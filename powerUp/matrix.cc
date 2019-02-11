@@ -65,7 +65,7 @@ simplify() {
 	if(root <= 0)
 		throw "error occurs in 'term::simplify()'.\nterm::root must be positive.";
 	map<int, int> factors;
-	if(base == 0) {
+	if(base == 0 || coefficient == 0) {
 		root = 1;
 		base = 1;
 		coefficient = 0;
@@ -111,9 +111,26 @@ test_show() {
 	cout << endl;
 }
 
+term& term::
+operator=(const term& r) {
+	coefficient = r.coefficient;
+	root = r.root;
+	base = r.base;
+
+	return *(this);
+}
+
+term& term::
+operator=(const int& r) {
+	term tmp(r);
+	return *(this) = tmp;
+}
+
+
 term operator+(const term& termR) {
 	return termR;
 }
+
 
 term operator-(const term& termR) {
 	term result(termR);
@@ -121,7 +138,7 @@ term operator-(const term& termR) {
 	return result;
 }
 
-term operator*(const int& numL, const term& termR) {
+const term operator*(const int& numL, const term& termR) {
 	term result(termR);
 	result.coefficient = termR.coefficient * numL;
 	result.simplify();
@@ -129,7 +146,7 @@ term operator*(const int& numL, const term& termR) {
 	return result;
 }
 
-term operator*(const term& termL, const int& numR) {
+const term operator*(const term& termL, const int& numR) {
 	term result;
 	result = numR * termL;
 	result.simplify();
@@ -137,7 +154,7 @@ term operator*(const term& termL, const int& numR) {
 	return result;
 }
 
-term operator*(const term& termL, const term& termR) {
+const term operator*(const term& termL, const term& termR) {
 	term result;
 	result.coefficient = termL.coefficient * termR.coefficient;
 
@@ -145,13 +162,44 @@ term operator*(const term& termL, const term& termR) {
 
 	result.base = int(
 			pow(double(termL.base), double(result.root/termL.root)) *
-			pow(double(termL.base), double(result.root/termR.root)));
+			pow(double(termR.base), double(result.root/termR.root)));
 
 	result.simplify();
 
 	return result;
 }
 
+bool operator==(const term& l, const term& r) {
+	term tmp1, tmp2;
+	tmp1 = l;
+	tmp2 = r;
+	tmp1.simplify();
+	tmp2.simplify();
+	if(tmp1.coefficient == tmp2.coefficient && tmp1.root == tmp2.root && tmp1.base == tmp2.base)
+		return true;
+	return false;
+}
+
+bool operator!=(const term& l, const term& r) {
+	return !(l == r);
+}
+
+bool operator==(const int& l, const term& r) {
+	term tmp(l);
+	return (tmp == r);
+}
+
+bool operator!=(const int& l, const term& r) {
+	return !(l == r);
+}
+
+bool operator==(const term& l, const int& r) {
+	return (r == l);
+}
+
+bool operator!=(const term& l, const int& r) {
+	return !(l == r);
+}
 
 terms::
 terms() : num_of_terms(0) {
@@ -263,11 +311,23 @@ simplify() {
 			}
 		}
 	}
+	if(num_of_terms == 0) 
+		arr.push_back(term());
+	if(num_of_terms != 1) {
+		for(int i = 0; i < num_of_terms ; i++) {
+			if(arr[i] == 0) {
+				vector<term>:: iterator it = arr.begin();
+				arr.erase(it + i);
+				--num_of_terms;
+			}
+		}
+	}
 }
 
 terms operator+(const terms& _terms) {
 	return _terms;
 }
+
 
 terms operator-(const terms& _terms) {
 	terms result(_terms);
@@ -276,7 +336,7 @@ terms operator-(const terms& _terms) {
 	return result;
 }
 
-terms operator+(const term& termL, const term& termR) {
+const terms operator+(const term& termL, const term& termR) {
 	terms result;
 	result.arr.push_back(termL);
 	result.arr.push_back(termR);
@@ -286,7 +346,7 @@ terms operator+(const term& termL, const term& termR) {
 	return result;
 }
 
-terms operator+(const int& numL, const term& termR) {
+const terms operator+(const int& numL, const term& termR) {
 	term tmp(numL);
 	terms result;
 
@@ -296,7 +356,7 @@ terms operator+(const int& numL, const term& termR) {
 	return result;
 }
 
-terms operator+(const term& termL, const int& numR) {
+const terms operator+(const term& termL, const int& numR) {
 	terms result;
 	result = numR + termL;
 	result.simplify();
@@ -304,21 +364,21 @@ terms operator+(const term& termL, const int& numR) {
 	return result;
 }
 
-terms operator+(const terms& termsL, const int& numR){
+const terms operator+(const terms& termsL, const int& numR){
 	terms temp(termsL);
 	temp.push_back(numR);
 	temp.simplify();
 	return temp;
 }
 
-terms operator+(const int& numL, const terms& termsR){
+const terms operator+(const int& numL, const terms& termsR){
 	terms temp(termsR);
 	temp.push_back(numL);
 	temp.simplify();
 	return temp;
 }
 
-terms operator+(const terms& termsL, const term& termR){
+const terms operator+(const terms& termsL, const term& termR){
 	terms temp(termsL);
 	temp.push_back(termR);
 
@@ -326,7 +386,7 @@ terms operator+(const terms& termsL, const term& termR){
 	return temp;
 }
 
-terms operator+(const term& termL, const terms& termsR){
+const terms operator+(const term& termL, const terms& termsR){
 	terms temp(termsR);
 	temp.push_back(termL);
 
@@ -334,7 +394,7 @@ terms operator+(const term& termL, const terms& termsR){
 	return temp;
 }
 
-terms operator+(const terms& termsL, const terms& termsR){
+const terms operator+(const terms& termsL, const terms& termsR){
 	terms temp(termsL);
 	for(int i = 0 ; i < termsR.num_of_terms ; ++i)
 		temp.push_back(termsR.arr[i]);
@@ -343,7 +403,7 @@ terms operator+(const terms& termsL, const terms& termsR){
 	return temp;
 }
 
-terms operator-(const term& termL, const term& termR) {
+const terms operator-(const term& termL, const term& termR) {
 	terms temp;
 	temp = termL + -termR;
 	temp.simplify();
@@ -351,7 +411,7 @@ terms operator-(const term& termL, const term& termR) {
 	return temp;
 }
 
-terms operator-(const int& numL, const term& termR) {
+const terms operator-(const int& numL, const term& termR) {
 	terms temp;
 	temp = numL + -termR;
 	temp.simplify();
@@ -359,7 +419,7 @@ terms operator-(const int& numL, const term& termR) {
 	return temp;
 }
 
-terms operator-(const terms& termsL, const int& numR){
+const terms operator-(const terms& termsL, const int& numR){
 	terms temp;
 	temp = termsL + -numR;
 	temp.simplify();
@@ -367,7 +427,7 @@ terms operator-(const terms& termsL, const int& numR){
 	return temp;
 }
 
-terms operator-(const int& numL, const terms& termsR){
+const terms operator-(const int& numL, const terms& termsR){
 	terms temp;
 	temp = numL + -termsR;
 	temp.simplify();
@@ -375,7 +435,7 @@ terms operator-(const int& numL, const terms& termsR){
 	return temp;
 }
 
-terms operator-(const terms& termsL, const term& termR){
+const terms operator-(const terms& termsL, const term& termR){
 	terms temp;
 	temp = termsL + -termR;
 	temp.simplify();
@@ -383,7 +443,7 @@ terms operator-(const terms& termsL, const term& termR){
 	return temp;
 }
 
-terms operator-(const term& termL, const terms& termsR){
+const terms operator-(const term& termL, const terms& termsR){
 	terms temp;
 	temp = termL + -termsR;
 	temp.simplify();
@@ -391,7 +451,7 @@ terms operator-(const term& termL, const terms& termsR){
 	return temp;
 }
 
-terms operator-(const terms& termsL, const terms& termsR){
+const terms operator-(const terms& termsL, const terms& termsR){
 	terms temp(termsL);
 	for(int i = 0 ; i < termsR.num_of_terms ; ++i)
 		temp.push_back(-termsR.arr[i]);
@@ -399,21 +459,21 @@ terms operator-(const terms& termsL, const terms& termsR){
 	return temp;
 }
 
-terms operator*(const term& termL, const terms& termsR){
+const terms operator*(const term& termL, const terms& termsR){
 	terms temp(termsR);
 	for(int i = 0 ; i < temp.num_of_terms ; ++i) temp.arr[i] = temp.arr[i] * termL;
 	temp.simplify();
 	return temp;
 }
 
-terms operator*(const terms& termsL, const term& termR){
+const terms operator*(const terms& termsL, const term& termR){
 	terms temp(termsL);
 	for(int i = 0 ; i < temp.num_of_terms ; ++i) temp.arr[i] = temp.arr[i] * termR;
 	temp.simplify();
 	return temp;
 }
 
-terms operator*(const terms& termsL, const terms& termsR){
+const terms operator*(const terms& termsL, const terms& termsR){
 	terms temp;
 	for(int i = 0 ; i < termsL.num_of_terms ; ++i){
 		for(int j = 0 ; j < termsR.num_of_terms ; ++j){
@@ -425,7 +485,7 @@ terms operator*(const terms& termsL, const terms& termsR){
 	return temp;
 }
 
-terms operator*(const int& numL, const terms& termsR) {
+const terms operator*(const int& numL, const terms& termsR) {
 	terms result(termsR);
 	for(int i = 0; i < termsR.arr.size(); i++)
 		result.arr[i] = numL * result.arr[i];
@@ -433,7 +493,7 @@ terms operator*(const int& numL, const terms& termsR) {
 	return result;
 }
 
-terms operator*(const terms& termsL, const int& numR) {
+const terms operator*(const terms& termsL, const int& numR) {
 	terms result;
 	result = numR * termsL;
 	result.simplify();
