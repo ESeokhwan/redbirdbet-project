@@ -249,6 +249,13 @@ test_show() {
 	for(int i = 0; i < num_of_terms; i++) 
 		arr[i].test_show();
 }
+
+void terms::
+clear() {
+	num_of_terms = 0;
+	arr.clear();
+}
+
 void terms::
 sort() {
 	bool change = true;
@@ -278,12 +285,6 @@ sort() {
 			}
 		}
 	}
-}
-
-void terms::
-clear() {
-	num_of_terms = 0;
-	arr.clear();
 }
 
 void terms::
@@ -536,6 +537,60 @@ const terms operator*(const terms& termsL, const int& numR) {
 	result = numR * termsL;
 	result.simplify();
 	return result;
+}
+
+bool operator==(const terms& l, const terms& r) {
+	terms tmp1(l), tmp2(r);
+	tmp1.simplify();
+	tmp2.simplify();
+	if(tmp1.num_of_terms == tmp2.num_of_terms) {
+		for(int i = 0; i < tmp1.num_of_terms; i++) {
+			if(tmp1.arr[i] != tmp2.arr[i])
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool operator!=(const terms& l, const terms& r) {
+	return !(l == r);
+}
+
+bool operator==(const terms& l, const term& r) {
+	terms tmp(r);
+	return (l == tmp);
+}
+
+bool operator!=(const terms& l, const term& r) {
+	return !(l == r);
+}
+
+bool operator==(const term& l, const terms& r) {
+	terms tmp(l);
+	return (tmp == r);
+}
+
+bool operator!=(const term& l, const terms& r) {
+	return !(l == r);
+}
+
+bool operator==(const terms& l, const int& r) {
+	terms tmp(r);
+	return (l == tmp);
+}
+
+bool operator!=(const terms& l, const int& r) {
+	return !(l == r);
+}
+
+bool operator==(const int& l, const terms& r) {
+	terms tmp(l);
+	return (tmp == r);
+}
+
+bool operator!=(const int& l, const terms& r) {
+	return !(l == r);
 }
 
 fraction::

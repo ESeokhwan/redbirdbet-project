@@ -56,10 +56,10 @@ class terms {
 	vector<term> arr;
 	int num_of_terms;
 	void clear();
+	void sort();
 	void simplify();
 
  public :
-	void sort();
 	terms();
 	terms(const term& _term);
 	terms(const terms& _terms);
@@ -103,6 +103,18 @@ class terms {
 	friend const terms operator*(const term& termL, const terms& termsR);
 	friend const terms operator*(const terms& termsL, const term& termR);
 	friend const terms operator*(const terms& termsL, const terms& termsR);
+
+	//테스트는 안 해봄. 근데 아마 잘 될거임(==나 !=들)
+	friend bool operator==(const terms& l, const terms& r);
+	friend bool operator!=(const terms& l, const terms& r);
+	friend bool operator==(const terms& l, const term& r);
+	friend bool operator!=(const terms& l, const term& r);
+	friend bool operator==(const term& l, const terms& r);
+	friend bool operator!=(const term& l, const terms& r);
+	friend bool operator==(const terms& l, const int& r);
+	friend bool operator!=(const terms& l, const int& r);
+	friend bool operator==(const int& l, const terms& r);
+	friend bool operator!=(const int& l, const terms& r);
 
 	friend class fraction2;
 	friend class term;
