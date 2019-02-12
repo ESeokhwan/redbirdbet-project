@@ -35,6 +35,7 @@ class term {//base가 음수일 때 고려해야함!!
 	friend term operator+(const term& termR);
 	friend term operator-(const term& termR);
 
+
 	friend const term operator*(const int& numL, const term& termR);
 	friend const term operator*(const term& termL, const int& numR);
 	friend const term operator*(const term& termL, const term& termR);
@@ -47,12 +48,14 @@ class term {//base가 음수일 때 고려해야함!!
 	friend bool operator!=(const term& l, const int& r);
 
 	friend class terms;
+	friend class fraction2;
 };
 
 class terms {
  protected :
 	vector<term> arr;
 	int num_of_terms;
+	void clear();
 	void simplify();
 
  public :
@@ -60,6 +63,7 @@ class terms {
 	terms();
 	terms(const term& _term);
 	terms(const terms& _terms);
+	terms(const int& _term);
 
 	void push_back(const term& _term);
 	void push_back(const int& _term);
@@ -67,11 +71,13 @@ class terms {
 	void test_show();
 	bool isPositive();
 
+	terms& operator=(const terms& r);
+	terms& operator=(const term& r);
+	terms& operator=(const int& r);
+
 
 	friend terms operator+(const terms& _terms);
 	friend terms operator-(const terms& _terms);
-
-//	friend terms& operator=(const terms& l, const terms& r);
 
 	//term 과 term을 더하는 오퍼레이터가 없다고 하네....
 	friend const terms operator+(const term& termL, const term& termR);
@@ -98,20 +104,22 @@ class terms {
 	friend const terms operator*(const terms& termsL, const term& termR);
 	friend const terms operator*(const terms& termsL, const terms& termsR);
 
+	friend class fraction2;
+	friend class term;
 //	friend ostream& operator<<(ostream& out, const terms& rhs);
 //	friend istream& operator>>(istream& in, terms& rhs);	
 };
 
 class fraction{//How can we treat the error devided by zero.
- protected:
+protected:
 	pair<int,int> fract;
 	int length;
 	bool isRoot1;
 	bool isRoot2;
 
- public:
+public:
 	fraction();
-	fraction(pair<int, int> p);
+	fraction(pair<int, int>);
 	fraction(int num);
 	fraction(int num1, int num2);
 	fraction(const fraction& rhs);
@@ -157,19 +165,38 @@ class fraction{//How can we treat the error devided by zero.
 void blank(int num);
 
 fraction make_entry(int num1, int num2);
-
 class fraction2{//How can we treat the error devided by zero.
  protected:
    pair<terms, terms> fract;
    int length;
+   bool is_denominator_one;
 
- public:
+ public :
    fraction2();
    fraction2(pair<terms, terms> p);
    fraction2(int num);
    fraction2(int num1, int num2);
    fraction2(const fraction2& rhs);
+   fraction2(const pair<terms, terms>& p);
 
+//   fraction2(const int&);
+//   fraction2(const int&, const int&);
+//   fraction2(const int&, const term&);
+//   fraction2(const int&, const terms&);
+//   fraction2(const term&);
+//   fraction2(const term&, const int&);
+//   fraction2(const term&, const term&);
+//   fraction2(const term&, const terms&);
+//   fraction2(const terms&);
+//   fraction2(const terms&, const int&);
+//   fraction2(const terms&, const term&);
+   fraction2(const terms&, const terms&);
+   template<class T>
+	   fraction2(const T&);
+   template<class T1, class T2>
+	   fraction2(const T1&, const T2&);
+	
+   pair<terms, terms> getFract();
    void simplify();
    void setLength();
    int getLength();

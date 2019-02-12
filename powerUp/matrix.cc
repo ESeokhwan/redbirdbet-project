@@ -138,6 +138,7 @@ term operator-(const term& termR) {
 	return result;
 }
 
+
 const term operator*(const int& numL, const term& termR) {
 	term result(termR);
 	result.coefficient = termR.coefficient * numL;
@@ -150,7 +151,6 @@ const term operator*(const term& termL, const int& numR) {
 	term result;
 	result = numR * termL;
 	result.simplify();
-
 	return result;
 }
 
@@ -212,6 +212,12 @@ terms(const term& _term) : terms() {
 }
 
 terms::
+terms(const int& num) : terms() {
+	term _term = num;
+	this -> push_back(_term);
+}
+
+terms::
 terms(const terms& _terms) : terms() {
 	for(int i = 0; i < _terms.num_of_terms; i++)
 		this -> push_back(_terms.arr[i]);
@@ -221,6 +227,7 @@ void terms::
 push_back(const term& _term) {
 	arr.push_back(_term);
 	num_of_terms++;
+	simplify();
 }
 
 void terms::
@@ -238,6 +245,7 @@ isPositive(){
 
 void terms::
 test_show() {
+	simplify();
 	for(int i = 0; i < num_of_terms; i++) 
 		arr[i].test_show();
 }
@@ -270,6 +278,12 @@ sort() {
 			}
 		}
 	}
+}
+
+void terms::
+clear() {
+	num_of_terms = 0;
+	arr.clear();
 }
 
 void terms::
@@ -324,6 +338,26 @@ simplify() {
 	}
 }
 
+terms& terms::
+operator=(const terms& r) {
+	clear();
+	for(int i = 0; i < r.num_of_terms; i++)
+		push_back(r.arr[i]);
+	return *(this);
+}
+
+terms& terms::
+operator=(const term& r) {
+	terms tmp(r);
+	return *(this) = tmp;
+}
+
+terms& terms::
+operator=(const int& r) {
+	terms tmp(r);
+	return *(this) = tmp;
+}
+
 terms operator+(const terms& _terms) {
 	return _terms;
 }
@@ -331,8 +365,11 @@ terms operator+(const terms& _terms) {
 
 terms operator-(const terms& _terms) {
 	terms result(_terms);
-	for(int i = 0; i < _terms.arr.size(); i++)
+	cout << _terms.num_of_terms<< endl;
+	for(int i = 0; i < _terms.num_of_terms; i++) {
+		result.arr[i].test_show();
 		result.arr[i] = -1 * result.arr[i];
+	}
 	return result;
 }
 
@@ -393,6 +430,7 @@ const terms operator+(const term& termL, const terms& termsR){
 	temp.simplify();
 	return temp;
 }
+
 
 const terms operator+(const terms& termsL, const terms& termsR){
 	terms temp(termsL);
@@ -759,6 +797,91 @@ setLength(){
 }
 
 //for fraction2
+fraction2::
+fraction2() {
+	terms t1 = 1, t2 = 0;
+	fraction2(t1,t2);
+}
+
+fraction2::
+fraction2(const fraction2& rhs) : fract(rhs.fract), length(rhs.length), is_denominator_one(rhs.is_denominator_one) {}
+
+fraction2::
+fraction2(const pair<terms,terms>& p) : fract(p) {
+	term temp = p.first.arr[0];
+	is_denominator_one = (p.second.num_of_terms == 1) && (temp.coefficient * temp.base * temp.root == 1);
+}
+
+fraction2::
+fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1,t2)) {
+		term temp = fract.first.arr[0];
+		is_denominator_one = (fract.second.num_of_terms == 1) && (temp.coefficient * temp.base * temp.root == 1);
+		setLength();
+}
+
+template<class T>
+fraction2::
+fraction2(const T& t1) {
+	terms terms1 = t1, terms2 = 1;
+	fraction2(terms1, terms2);
+}
+
+template<class T1, class T2>
+fraction2::
+fraction2(const T1& t1, const T2& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+pair<terms, terms> fraction2::
+getFract() {
+	return fract;
+}
+
+//to do
+void fraction2::
+simplify(){
+}
+
+void fraction2::
+setLength(){
+	int stack = 0, loop = 1;
+	terms _terms[2] = { fract.first, fract.second };
+
+	if(!is_denominator_one) {
+		stack = 1;
+		loop++;
+	}
+	
+	for(int i = 0 ; i < loop ; ++i){
+		for(int j = 0 ; j < _terms[i].num_of_terms ; ++j){
+			string str;
+			term temp = _terms[i].arr[j];
+			if(temp.root == 1)
+				str = to_string(temp.coefficient);
+			else if(temp.root >= 2 && temp.root <= 4 && temp.coefficient == 1)
+				str = to_string(temp.coefficient) + "v" + to_string(temp.base);
+			else 
+				str = to_string(temp.coefficient) + "r" + to_string(temp.root) + "v" + to_string(temp.base);
+			stack += str.size();
+			cout << i <<',' << j << str << endl;
+		}
+	}
+		
+	length = stack;
+}
+
+int fraction2::
+getLength(){
+	return length;
+}
+
+bool fraction2::
+is_zero(){
+	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
+}
+
+
 istream& operator>>(istream& in, fraction2& rhs){
 	string str;
 	vector<bool> sign;
@@ -780,17 +903,23 @@ istream& operator>>(istream& in, fraction2& rhs){
 	istringstream iss(str);
 	for(int i = 0 ; i < 2 ; ++i){
 		iss >> temp;
+		//cout << temp << "=============" << endl; //
 		isFirstTermNeg = (temp[0] == '-');
 		if(!isFirstTermNeg)
 			sign.push_back(true);
-		for(int k ; k < temp.size() ; ++k)
+		for(int k = 0 ; k < temp.size() ; ++k)
 			if( temp[k] == '-' || temp[k] == '+'){
+		//		cout << "sing plus" << temp[k] << endl;//
 				sign.push_back(temp[k]=='+');
 				index.push_back(k);
 			}
 		term_num = sign.size();
-		for(int k = 0 ; k < index.size() ; ++k)
+		//cout << "indexsize : " << index.size() << endl;//
+		//cout << "term_num : " << term_num << endl; //
+		for(int k = 0 ; k < index.size() ; ++k){
 			temp[index[k]] = ' ';
+		//	cout << index[k] << "-----------" << endl;//
+		}
 
 		istringstream iss2(temp);
 		for(int k = 0 ; k < term_num ; ++k){
@@ -802,34 +931,42 @@ istream& operator>>(istream& in, fraction2& rhs){
 			bool isV = (idxV != -1);
 			if(!isR && !isV){
 				istringstream iss3(temp_string);
+				cout <<'|' << k <<':'<< temp_string << '|' << endl; //
 				iss3 >> coef;
 				base = 1;
 				root = 1;
 				if(!sign[k]) coef = -coef;
-				result[i].push_back(term(base,root,coef));
+				result[i].push_back(term(coef,root,base));
 			}
 			else if(!isR && isV){
 				temp_string[idxV] = ' ';
 				istringstream iss3(temp_string);
-				iss3 >> coef >> base;
+				cout <<'|'<< k <<':'<< temp_string <<'|'<< endl; //
+				if(idxV==0){
+					iss3 >> base;
+					coef = 1;
+				}
+				else
+					iss3 >> coef >> base;
 				root = 2;
 				if(!sign[k]) coef = -coef;
-				result[i].push_back(term(base,root,coef));
+				result[i].push_back(term(coef,root,base));
 			}
 			else if(isR && isV){
 				temp_string[idxV] = ' ';
 				temp_string[idxR] = ' ';
 				istringstream iss3(temp_string);
+				cout <<'|'<< k <<':'<< temp_string << '|'<< endl; //
 				iss3 >> coef >> root >> base;
 				if(!sign[k]) coef = -coef;
-				result[i].push_back(term(base,root,coef));
+				result[i].push_back(term(coef,root,base));
 			}
 		}
 		sign.clear();
 		index.clear();
 	}
-
 	rhs.fract = make_pair(result[0], result[1]);
+	rhs.setLength();
 	return in;
 }
 //for fraction2
