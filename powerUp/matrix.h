@@ -180,8 +180,6 @@ fraction make_entry(int num1, int num2);
 class fraction2{//How can we treat the error devided by zero.
  protected:
    pair<terms, terms> fract;
-   int length;
-   bool is_denominator_one;
 
  public :
    fraction2();
@@ -210,8 +208,8 @@ class fraction2{//How can we treat the error devided by zero.
 	
    pair<terms, terms> getFract();
    void simplify();
-   void setLength();
-   int getLength();
+   pair<int,string> fts();
+   bool is_denominator_one();
    bool is_zero();
 
    /*
