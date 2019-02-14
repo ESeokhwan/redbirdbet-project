@@ -856,6 +856,7 @@ fraction2::
 fraction2() {
 	terms t1 = 1, t2 = 0;
 	fraction2(t1,t2);
+	setLength();
 }
 
 fraction2::
@@ -870,11 +871,10 @@ fraction2(const pair<terms,terms>& p) : fract(p) {
 fraction2::
 fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1,t2)) {
 		term temp = fract.first.arr[0];
-		is_denominator_one = (fract.second.num_of_terms == 1) && (temp.coefficient * temp.base * temp.root == 1);
+		
 		setLength();
 }
 
-template<class T>
 fraction2::
 fraction2(const T& t1) {
 	terms terms1 = t1, terms2 = 1;

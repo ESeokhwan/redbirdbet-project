@@ -181,7 +181,7 @@ class fraction2{//How can we treat the error devided by zero.
  protected:
    pair<terms, terms> fract;
    int length;
-   bool is_denominator_one;
+   bool is_denominator_one();
 
  public :
    fraction2();
@@ -202,6 +202,7 @@ class fraction2{//How can we treat the error devided by zero.
 //   fraction2(const terms&);
 //   fraction2(const terms&, const int&);
 //   fraction2(const terms&, const term&);
+
    fraction2(const terms&, const terms&);
    template<class T>
 	   fraction2(const T&);
