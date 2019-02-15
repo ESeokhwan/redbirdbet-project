@@ -179,72 +179,61 @@ void blank(int num);
 fraction make_entry(int num1, int num2);
 class fraction2{//How can we treat the error devided by zero.
  protected:
-   pair<terms, terms> fract;
+	pair<terms, terms> fract;
 
  public :
-   fraction2();
-   fraction2(pair<terms, terms> p);
-   fraction2(int num);
-   fraction2(int num1, int num2);
-   fraction2(const fraction2& rhs);
-   fraction2(const pair<terms, terms>& p);
+	fraction2();
+	fraction2(const fraction2& rhs);
+	fraction2(const pair<terms, terms>& p);
+	fraction2(const terms& t1, const terms& t2);fraction2(const terms& t1, const term& t2);
+	fraction2(const terms& t1, const int& t2);
+	fraction2(const term& t1, const terms& t2);
+	fraction2(const term& t1, const term& t2);
+	fraction2(const term& t1, const int& t2);
+	fraction2(const int& t1, const terms& t2);
+	fraction2(const int& t1, const term& t2);
+	fraction2(const int& t1, const int& t2);
+	fraction2(const terms& t);
+	fraction2(const term& t);
+	fraction2(const int& t);
 
-//   fraction2(const int&);
-//   fraction2(const int&, const int&);
-//   fraction2(const int&, const term&);
-//   fraction2(const int&, const terms&);
-//   fraction2(const term&);
-//   fraction2(const term&, const int&);
-//   fraction2(const term&, const term&);
-//   fraction2(const term&, const terms&);
-//   fraction2(const terms&);
-//   fraction2(const terms&, const int&);
-//   fraction2(const terms&, const term&);
-   fraction2(const terms&, const terms&);
-   template<class T>
-	   fraction2(const T&);
-   template<class T1, class T2>
-	   fraction2(const T1&, const T2&);
+	pair<terms, terms> getFract();
+	void simplify();
+	pair<int,string> fts();
+	bool is_denominator_one();
+	bool is_zero();
+
+	friend bool operator==(const int& l, const fraction2& r);
+	friend bool operator!=(const int& l, const fraction2& r);
+	friend bool operator==(const fraction2& l, const int& r);
+	friend bool operator!=(const fraction2& l, const int& r);
+
+	friend bool operator==(const double& l, const fraction2& r);
+	friend bool operator!=(const double& l, const fraction2& r);
+	friend bool operator==(const fraction2& l, const double& r);
+	friend bool operator!=(const fraction2& l, const double& r);
+
+	friend bool operator==(const float& l, const fraction2& r);
+	friend bool operator!=(const float& l, const fraction2& r);
+
+	friend bool operator==(const fraction2& l, const float& r);
+	friend bool operator!=(const fraction2& l, const float& r);
 	
-   pair<terms, terms> getFract();
-   void simplify();
-   pair<int,string> fts();
-   bool is_denominator_one();
-   bool is_zero();
+	friend bool operator==(const pair<int, int>& l, const fraction2& r);
+	friend bool operator!=(const pair<int, int>& l, const fraction2& r);
+	friend bool operator==(const fraction2& l, const pair<int, int>& r);
+	friend bool operator!=(const fraction2& l, const pair<int, int>& r);
+  
+	friend bool operator==(const fraction2& l, const fraction2& r);
+	friend bool operator!=(const fraction2& l, const fraction2& r);
 
-   /*
-   friend bool operator==(const int& numL, const fraction2& fracR);
-   friend bool operator!=(const int& numL, const fraction2& fracR);
-   friend bool operator==(const fraction2& fracL, const int& numR);
-   friend bool operator!=(const fraction2& fracL, const int& numR);
-
-   friend bool operator==(const double& numL, const fraction2& fracR);
-   friend bool operator!=(const double& numL, const fraction2& fracR);
-   friend bool operator==(const fraction2& fracL, const double& numR);
-   friend bool operator!=(const fraction2& fracL, const double& numR);
-
-   friend bool operator==(const float& numL, const fraction2& fracR);
-   friend bool operator!=(const float& numL, const fraction2& fracR);
-
-   friend bool operator==(const fraction2& fracL, const float& numR);
-   friend bool operator!=(const fraction2& fracL, const float& numR);
-
-   friend bool operator==(const pair<int, int>& pairL, const fraction2& fracR);
-   friend bool operator!=(const pair<int, int>& pairL, const fraction2& fracR);
-   friend bool operator==(const fraction2& fracL, const pair<int, int>& pairR);
-   friend bool operator!=(const fraction2& fracL, const pair<int, int>& pairR);
-   */
-
-   friend bool operator==(const fraction2& L, const fraction2& R);
-   friend bool operator!=(const fraction2& L, const fraction2& R);
-
-   friend fraction2 operator+(const fraction2&, const fraction2&);
-   friend fraction2 operator-(const fraction2&, const fraction2&);
-   friend fraction2 operator*(const fraction2&, const fraction2&);
-   friend fraction2 operator/(const fraction2&, const fraction2&);
-   friend fraction2 operator-(const fraction2&);
-   friend ostream& operator<<(ostream& out, const fraction2& rhs);
-   friend istream& operator>>(istream& in, fraction2& rhs);
+	friend fraction2 operator+(const fraction2& l, const fraction2& r);
+	friend fraction2 operator-(const fraction2& l, const fraction2& r);
+	friend fraction2 operator*(const fraction2& l, const fraction2& r);
+	friend fraction2 operator/(const fraction2& l, const fraction2& r);
+	friend fraction2 operator-(const fraction2& rhs);
+	friend ostream& operator<<(ostream& out, const fraction2& rhs);
+	friend istream& operator>>(istream& in, fraction2& rhs);
 };
 
 class matrix{

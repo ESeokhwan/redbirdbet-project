@@ -851,7 +851,6 @@ setLength(){
 	length = len;
 }
 
-//for fraction2
 fraction2::
 fraction2() {
 	terms t1 = 1, t2 = 0;
@@ -867,16 +866,74 @@ fraction2(const pair<terms,terms>& p) : fract(p) {}
 fraction2::
 fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1,t2)) {}
 
-template<class T>
 fraction2::
-fraction2(const T& t1) {
-	terms terms1 = t1, terms2 = 1;
+fraction2(const int& t) {
+	terms terms1 = t, terms2 = 1;
 	fraction2(terms1, terms2);
 }
 
-template<class T1, class T2>
 fraction2::
-fraction2(const T1& t1, const T2& t2){
+fraction2(const term& t) {
+	terms terms1 = t, terms2 = 1;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const terms& t) {
+	terms terms1 = t, terms2 = 1;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const int& t1, const int& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const int& t1, const term& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const int& t1, const terms& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const term& t1, const int& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const term& t1, const term& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const term& t1, const terms& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const terms& t1, const int& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const terms& t1, const term& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction2(terms1, terms2);
+}
+
+fraction2::
+fraction2(const terms& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
 	fraction2(terms1, terms2);
 }
@@ -966,14 +1023,114 @@ fts(){
 
 bool fraction2::
 is_denominator_one(){
+	simplify();
 	return (fract.second.num_of_terms == 1) && (fract.second.arr[0].coefficient == 1 && fract.second.arr[0].base == 1);
 }
 
 bool fraction2::
 is_zero(){
+	simplify();
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
 }
 
+bool operator==(const int& numL, const fraction2& fracR) {
+	fraction2 tmpl(l);
+	fraction2 tmpr(r);
+	tmpl.simplify();
+	tmpr.simplify();
+	return (tmpl == tmpr);
+}
+
+bool operator!=(const int& l, const fraction2& r) {
+	return !(l == r);
+}
+
+bool operator==(const fraction2& l, const int& r) {
+	return (r == l);
+}
+
+bool operator!=(const fraction2& l, const int& r) {
+	return !(r == l);
+}
+
+bool operator==(const double& l, const fraction2& r) {
+	fraction2 tmpl(l);
+	fraction2 tmpr(r);
+	tmpl.simplify();
+	tmpr.simplify();
+	if(tmpr.is_zero()) {
+		if(l == 0) 
+			return true;
+		else
+			return false;
+	}
+	else if(tmpr.fract.first.num_of_terms == 1 && tmpr.fract.second.num_of_terms == 1) {
+		if(tmpr.fract.first.arr[0].base == 1 && tmpr.fract.second.arr[0].base == 1) {
+			if(double(tmpr.fract.first.arr[0].coefficient)/double(tmpr.fract.second.arr[0].coefficient) == l)
+				return true;
+			return false;
+		}
+		return false;
+	}
+	return false;
+	if(r.fract.first.num_of_terms == 1)
+	return (tmpl == tmpr);
+}
+
+bool operator!=(const double& l, const fraction2& r) {
+	return !(l == r);
+}
+
+bool operator==(const fraction2& l, const double& r) {
+	return (r == l);
+}
+
+bool operator!=(const fraction2& l, const double& r) {
+	return !(r == l);
+}
+
+bool operator==(const float& l, const fraction2& r) {
+	return (double(l) == r);
+}
+
+bool operator!=(const float& l, const fraction2& r) {
+	return !(l == r);
+}
+
+bool operator==(const fraction2& l, const float& r) {
+	return (r == l);
+}
+
+bool operator!=(const fraction2& l, const float& r) {
+	return !(r == l);
+}
+	
+bool operator==(const pair<int, int>& l, const fraction2& r) {
+	if(l.first == r.fract.first && l.second == r.fract.second)
+		return true;
+	return false;
+}
+
+bool operator!=(const pair<int, int>& l, const fraction2& r) {
+	return !(l == r);
+}
+
+bool operator==(const fraction2& l, const pair<int, int>& r) {
+	return (r == l);
+}
+
+bool operator!=(const fraction2& l, const pair<int, int>& r) {
+	return !(r == l);
+}
+  
+bool operator==(const fraction2& l, const fraction2& r);
+bool operator!=(const fraction2& l, const fraction2& r);
+
+fraction2 operator+(const fraction2& l, const fraction2& r);
+fraction2 operator-(const fraction2& l, const fraction2& r);
+fraction2 operator*(const fraction2& l, const fraction2& r);
+fraction2 operator/(const fraction2& l, const fraction2& r);
+fraction2 operator-(const fraction2& rhs);
 
 istream& operator>>(istream& in, fraction2& rhs){
 	string str;
