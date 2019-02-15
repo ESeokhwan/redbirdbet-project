@@ -366,9 +366,9 @@ terms operator+(const terms& _terms) {
 
 terms operator-(const terms& _terms) {
 	terms result(_terms);
-	cout << _terms.num_of_terms<< endl;
+//	cout << _terms.num_of_terms<< endl;
 	for(int i = 0; i < _terms.num_of_terms; i++) {
-		result.arr[i].test_show();
+//		result.arr[i].test_show();
 		result.arr[i] = -1 * result.arr[i];
 	}
 	return result;
@@ -592,7 +592,7 @@ bool operator==(const int& l, const terms& r) {
 bool operator!=(const int& l, const terms& r) {
 	return !(l == r);
 }
-
+/*
 fraction::
 fraction() : fract(make_pair(1,1)), length(1) { }
 
@@ -850,95 +850,102 @@ setLength(){
 	}
 	length = len;
 }
+*/
 
-fraction2::
-fraction2() {
+fraction make_entry(int num1, int num2){
+    fraction result(num1, num2); 
+    return result;
+}
+
+void blank(int num){
+	for(int i = 0 ; i < num ; ++i) cout << ' ';
+}
+
+fraction::
+fraction() {
 	terms t1 = 1, t2 = 0;
-	fraction2(t1,t2);
+	fraction(t1,t2);
 }
 
-fraction2::
-fraction2(const fraction2& rhs) : fract(rhs.fract) {}
+fraction::
+fraction(const fraction& rhs) : fract(rhs.fract) {}
 
-fraction2::
-fraction2(const pair<terms,terms>& p) : fract(p) {}
+fraction::
+fraction(const pair<terms,terms>& p) : fract(p) {}
 
-fraction2::
-fraction2(const int& t) {
+fraction::
+fraction(const int& t) {
 	terms terms1 = t, terms2 = 1;
-	fraction2(terms1, terms2);
+	fraction(terms1, terms2);
 }
 
-fraction2::
-fraction2(const term& t) {
-	terms terms1 = t, terms2 = 1;
-	fract.first = terms1, fract.second = terms2;
-}
-
-fraction2::
-fraction2(const terms& t) {
+fraction::
+fraction(const term& t) {
 	terms terms1 = t, terms2 = 1;
 	fract.first = terms1, fract.second = terms2;
 }
 
-fraction2::
-fraction2(const int& t1, const int& t2){
-	terms terms1 = t1, terms2 = t2;
+fraction::
+fraction(const terms& t) {
+	terms terms1 = t, terms2 = 1;
 	fract.first = terms1, fract.second = terms2;
-
 }
 
-fraction2::
-fraction2(const int& t1, const term& t2){
-	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
-}
-
-fraction2::
-fraction2(const int& t1, const terms& t2){
-	terms terms1 = t1, terms2 = t2;
-	fract.first = terms1, fract.second = terms2;
-
-}
-
-fraction2::
-fraction2(const term& t1, const int& t2){
+fraction::
+fraction(const int& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
 }
 
-fraction2::
-fraction2(const term& t1, const term& t2){
+fraction::
+fraction(const int& t1, const term& t2){
+	terms terms1 = t1, terms2 = t2;
+	fraction(terms1, terms2);
+}
+
+fraction::
+fraction(const int& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
 }
 
-fraction2::
-fraction2(const term& t1, const terms& t2){
+fraction::
+fraction(const term& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
 }
 
-fraction2::
-fraction2(const terms& t1, const int& t2){
+fraction::
+fraction(const term& t1, const term& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
 }
 
-fraction2::
-fraction2(const terms& t1, const term& t2){
+fraction::
+fraction(const term& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
-
 }
 
-fraction2::
-fraction2(const terms& t1, const terms& t2) {
+fraction::
+fraction(const terms& t1, const int& t2){
+	terms terms1 = t1, terms2 = t2;
+	fract.first = terms1, fract.second = terms2;
+}
+
+fraction::
+fraction(const terms& t1, const term& t2){
+	terms terms1 = t1, terms2 = t2;
+	fract.first = terms1, fract.second = terms2;
+}
+
+fraction::
+fraction(const terms& t1, const terms& t2) {
 	fract.first = t1, fract.second = t2;
 }
 
-fraction2::
-fraction2(const double& r) {
+fraction::
+fraction(const double& r) {
 	double denominator = 1.0;
 	while(double(int(r * denominator)) != r * denominator)
 		denominator *= 10.0;
@@ -947,8 +954,8 @@ fraction2(const double& r) {
 	simplify();
 }
 
-fraction2::
-fraction2(const float& r) {
+fraction::
+fraction(const float& r) {
 	float denominator = 1.0;
 	while(float(int(r * denominator)) != r * denominator)
 		denominator *= 10.0;
@@ -957,13 +964,13 @@ fraction2(const float& r) {
 	simplify();
 }
 
-pair<terms, terms> fraction2::
+pair<terms, terms> fraction::
 getFract() {
 	return fract;
 }
 
 //to do
-void fraction2::
+void fraction::
 simplify(){
 	vector<int> v;
 	terms temp[2] = {fract.first, fract.second};
@@ -995,12 +1002,17 @@ simplify(){
 	fract = make_pair(temp[0], temp[1]);
 }
 //fraction을 조작하여 string과 int pair를 return하는 함수
-pair<int,string> fraction2::
+pair<int,string> fraction::
 fts(){
 	int stack = 0, loop = 1;
 	bool is_neg = true, multi_term = false;
 	string str = "";
 	terms _terms[2] = { fract.first, fract.second };
+
+	if(is_zero()){
+		str = "0";
+		return make_pair(1, str);
+	}
 
 	if(!is_denominator_one()) 
 		loop++;
@@ -1040,54 +1052,54 @@ fts(){
 	return make_pair(str.length() - 2*stack, str);
 }
 
-bool fraction2::
+bool fraction::
 is_denominator_one(){
 	simplify();
 	return (fract.second.num_of_terms == 1) && (fract.second.arr[0].coefficient == 1 && fract.second.arr[0].base == 1);
 }
 
-bool fraction2::
+bool fraction::
 is_zero(){
 	simplify();
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
 }
 
-fraction2& fraction2::
-operator=(const fraction2& r) {
+fraction& fraction::
+operator=(const fraction& r) {
 	fract.first = r.fract.first;
 	fract.second = r.fract.second;
 	return *(this);
 }
 
-fraction2& fraction2::
+fraction& fraction::
 operator=(const pair<terms, terms>& r) {
 	fract.first = r.first;
 	fract.second = r.second;
 	return *(this);
 }
 
-fraction2& fraction2::
+fraction& fraction::
 operator=(const terms& r) {
 	fract.first = r;
 	fract.second = 1;
 	return *(this);
 }
 
-fraction2& fraction2::
+fraction& fraction::
 operator=(const term& r) {
 	fract.first = r;
 	fract.second = 1;
 	return *(this);
 }
 
-fraction2& fraction2::
+fraction& fraction::
 operator=(const int& r) {
 	fract.first = r;
 	fract.second = 1;
 	return *(this);
 }
 
-fraction2& fraction2::
+fraction& fraction::
 operator=(const double& r) {
 	double denominator = 1.0;
 	while(double(int(r * denominator)) != r * denominator)
@@ -1096,7 +1108,7 @@ operator=(const double& r) {
 	fract.second = int(denominator);
 }
 
-fraction2& fraction2::
+fraction& fraction::
 operator=(const float& r) {
 	float denominator = 1.0;
 	while(float(int(r * denominator)) != r * denominator)
@@ -1105,78 +1117,78 @@ operator=(const float& r) {
 	fract.second = int(denominator);
 }
 
-bool operator==(const int& l, const fraction2& r) {
-	fraction2 tmp(l);
+bool operator==(const int& l, const fraction& r) {
+	fraction tmp(l);
 	return (tmp == r);
 }
 
-bool operator!=(const int& l, const fraction2& r) {
+bool operator!=(const int& l, const fraction& r) {
 	return !(l == r);
 }
 
-bool operator==(const fraction2& l, const int& r) {
+bool operator==(const fraction& l, const int& r) {
 	return (r == l);
 }
 
-bool operator!=(const fraction2& l, const int& r) {
+bool operator!=(const fraction& l, const int& r) {
 	return !(r == l);
 }
 
 
-bool operator==(const double& l, const fraction2& r) {
-	fraction2 tmp(l);
+bool operator==(const double& l, const fraction& r) {
+	fraction tmp(l);
 	return (tmp == r);
 }
 
-bool operator!=(const double& l, const fraction2& r) {
+bool operator!=(const double& l, const fraction& r) {
 	return !(l == r);
 }
 
-bool operator==(const fraction2& l, const double& r) {
+bool operator==(const fraction& l, const double& r) {
 	return (r == l);
 }
 
-bool operator!=(const fraction2& l, const double& r) {
+bool operator!=(const fraction& l, const double& r) {
 	return !(r == l);
 }
 
-bool operator==(const float& l, const fraction2& r) {
-	fraction2 tmp(l);
+bool operator==(const float& l, const fraction& r) {
+	fraction tmp(l);
 	return (tmp == r);
 }
 
-bool operator!=(const float& l, const fraction2& r) {
+bool operator!=(const float& l, const fraction& r) {
 	return !(l == r);
 }
 
-bool operator==(const fraction2& l, const float& r) {
+bool operator==(const fraction& l, const float& r) {
 	return (r == l);
 }
 
-bool operator!=(const fraction2& l, const float& r) {
+bool operator!=(const fraction& l, const float& r) {
 	return !(r == l);
 }
 
-bool operator==(const pair<int, int>& l, const fraction2& r) {
-	fraction2 tmp(l);
+bool operator==(const pair<int, int>& l, const fraction& r) {
+	fraction tmp(l);
 	return (tmp == r);
 }
 
-bool operator!=(const pair<int, int>& l, const fraction2& r) {
+bool operator!=(const pair<int, int>& l, const fraction& r) {
 	return !(l == r);
 }
 
-bool operator==(const fraction2& l, const pair<int, int>& r) {
+bool operator==(const fraction& l, const pair<int, int>& r) {
 	return (r == l);
 }
 
-bool operator!=(const fraction2& l, const pair<int, int>& r) {
+bool operator!=(const fraction& l, const pair<int, int>& r) {
 	return !(r == l);
 }
   
-bool operator==(const fraction2& l, const fraction2& r) {
-	fraction2 tmpl(l);
-	fraction2 tmpr(r);
+bool operator==(const fraction& l, const fraction& r) {
+	fraction tmpl(l);
+	fraction tmpr(r);
 
 	tmpl.simplify();
 	tmpr.simplify();
@@ -1186,47 +1198,47 @@ bool operator==(const fraction2& l, const fraction2& r) {
 	return false;
 }
 
-bool operator!=(const fraction2& l, const fraction2& r) {
+bool operator!=(const fraction& l, const fraction& r) {
 	return !(l == r);
 }
 
-fraction2 operator+(const fraction2& l, const fraction2& r){
+fraction operator+(const fraction& l, const fraction& r){
 	terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
 		t2 = l.fract.second*r.fract.second;
-	fraction2 p( make_pair(t1, t2) );
+	fraction p( make_pair(t1, t2) );
 	p.simplify();
 	return p;
 }
 
-fraction2 operator-(const fraction2& l, const fraction2& r){
+fraction operator-(const fraction& l, const fraction& r){
 	terms t1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
 		t2 = l.fract.second*r.fract.second;
 
-	fraction2 p( make_pair(t1, t2) );
+	fraction p( make_pair(t1, t2) );
 	p.simplify();
 	return p;
 }
 
-fraction2 operator*(const fraction2& l, const fraction2& r){
+fraction operator*(const fraction& l, const fraction& r){
 	terms t1 = l.fract.first * r.fract.first,
 		t2 = l.fract.second * r.fract.second;
-	fraction2 p( make_pair(t1, t2) );
+	fraction p( make_pair(t1, t2) );
 	p.simplify();
 	return p;
 }
 
-fraction2 operator/(const fraction2& l, const fraction2& r){
-	fraction2 reverse_r( make_pair(r.fract.second , r.fract.first));
-	fraction2 result = l * reverse_r;
+fraction operator/(const fraction& l, const fraction& r){
+	fraction reverse_r( make_pair(r.fract.second , r.fract.first));
+	fraction result = l * reverse_r;
 	return result;
 }
 
-fraction2 operator-(const fraction2& rhs){
-	fraction2 result(-rhs.fract.first, rhs.fract.second); 
+fraction operator-(const fraction& rhs){
+	fraction result(-rhs.fract.first, rhs.fract.second); 
 	return result;
 }
 
-istream& operator>>(istream& in, fraction2& rhs){
+istream& operator>>(istream& in, fraction& rhs){
 	string str;
 	vector<bool> sign;
 	vector<int> index;
@@ -1310,7 +1322,7 @@ istream& operator>>(istream& in, fraction2& rhs){
 	return in;
 }
 
-void fraction2_output(fraction2* arr, int row, int col){
+void fraction2_output(fraction* arr, int row, int col){
 	int i = 0, j = 0;
 	vector<string> str;
 	vector<int> length;
@@ -1494,7 +1506,7 @@ fill(){
 
 void matrix::
 initialize() {
-	fraction f(make_pair(0,1));
+	fraction f(make_entry(0,1));
 	vector<fraction> temp;
 	for(int i = 0 ; i < col ; ++i) temp.push_back(f);
 	for(int i = 0 ; i < row ; ++i) arr.push_back(temp);
@@ -1504,14 +1516,14 @@ initialize() {
 void matrix::
 make_identity_matrix() {
 	initialize();
-	fraction f(make_pair(1,1));
+	fraction f(make_entry(1,1));
 	for(int i = 0; i < min(row,col); i++)
 		arr[i][i] = f;
 }
 
 void matrix::
 make_all_entry_zero() {
-	fraction zero_entry(make_pair(0,1));
+	fraction zero_entry(make_entry(0,1));
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
 			arr[i][j] = zero_entry;
@@ -1549,7 +1561,36 @@ void matrix::
 show(bool no_paranthesis){
 	if(row*col == 0) cout << "[]" << endl;
 	else{
+		int length[row][col] = {0,};
+		int i = 0, j = 0, num = 0;
+		vector<int> colMax, numv;
+		string str[row][col];
+		pair<int,string> ptemp;
 
+		for(i = 0 ; i < row ; ++i)
+			for(j = 0 ; j < col ; ++j){
+				ptemp = arr[i][j].fts();
+				length[i][j] = ptemp.first;
+				str[i][j] = ptemp.second;
+			}
+
+		for(i = 0 ; i < col ; ++i){
+			for(j = 0 ; j < row ; ++j)
+				numv.push_back( length[j][i] );
+			colMax.push_back(*max_element(numv.begin(), numv.end()));
+			numv.clear();
+		}
+
+		for(i = 0 ; i < row ; ++i){
+			if(!no_paranthesis) cout << '[' << ' ';
+			else cout << ' ';
+			for(int j = 0 ; j < col ; ++j){
+				blank(colMax[j] - length[i][j]);
+				cout << str[i][j] << ' ';
+			}
+			if(!no_paranthesis) cout << ']' << endl;
+			else cout << endl;
+		}
 	}
 }
 
@@ -1580,7 +1621,7 @@ matrix matrix::
 move_a_row_to_last_row(int row) {
 	matrix result(this -> get_row(), this -> get_row());
 
-	result.set_arr(this -> get_row() - 1, this -> get_row() - 1, make_pair(0,1));
+	result.set_arr(this -> get_row() - 1, this -> get_row() - 1, make_entry(0,1));
 	result.set_arr(this -> get_row() - 1, row, make_entry(1,1));
 	for(int i = row; i < this -> get_row() - 1; i++) {
 		result.set_arr(i, i, make_entry(0,1));

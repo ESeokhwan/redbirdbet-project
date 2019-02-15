@@ -13,7 +13,7 @@ int lcm(int num1, int num2);
 
 class term {//base가 음수일 때 고려해야함!!
  friend class terms;
- friend class fraction2;
+ friend class fraction;
 
  protected :
 	int base;
@@ -51,7 +51,7 @@ class term {//base가 음수일 때 고려해야함!!
 };
 
 class terms {
- friend class fraction2;
+ friend class fraction;
 
  protected :
 	vector<term> arr;
@@ -121,6 +121,7 @@ class terms {
 // friend istream& operator>>(istream& in, terms& rhs);	
 };
 
+/*
 class fraction{//How can we treat the error devided by zero.
 protected:
 	pair<int,int> fract;
@@ -172,31 +173,31 @@ public:
  friend ostream& operator<<(ostream& out, const fraction& rhs);
  friend istream& operator>>(istream& in, fraction& rhs);
 };
-
+*/
 void blank(int num);
 
-fraction make_entry(int num1, int num2);
-class fraction2{//How can we treat the error devided by zero.
+class fraction{//How can we treat the error devided by zero.
  protected:
 	pair<terms, terms> fract;
 
  public :
-	fraction2();
-	fraction2(const fraction2& rhs);
-	fraction2(const pair<terms, terms>& p);
-	fraction2(const terms& t1, const terms& t2);fraction2(const terms& t1, const term& t2);
-	fraction2(const terms& t1, const int& t2);
-	fraction2(const term& t1, const terms& t2);
-	fraction2(const term& t1, const term& t2);
-	fraction2(const term& t1, const int& t2);
-	fraction2(const int& t1, const terms& t2);
-	fraction2(const int& t1, const term& t2);
-	fraction2(const int& t1, const int& t2);
-	fraction2(const terms& t);
-	fraction2(const term& t);
-	fraction2(const int& t);
-	fraction2(const double& r);
-	fraction2(const float& r);
+	fraction();
+	fraction(const fraction& rhs);
+	fraction(const pair<terms, terms>& p);
+	fraction(const terms& t1, const terms& t2);
+	fraction(const terms& t1, const term& t2);
+	fraction(const terms& t1, const int& t2);
+	fraction(const term& t1, const terms& t2);
+	fraction(const term& t1, const term& t2);
+	fraction(const term& t1, const int& t2);
+	fraction(const int& t1, const terms& t2);
+	fraction(const int& t1, const term& t2);
+	fraction(const int& t1, const int& t2);
+	fraction(const terms& t);
+	fraction(const term& t);
+	fraction(const int& t);
+	fraction(const double& r);
+	fraction(const float& r);
 
 	pair<terms, terms> getFract();
 	void simplify();
@@ -205,49 +206,50 @@ class fraction2{//How can we treat the error devided by zero.
 	bool is_zero();
 	void test_show();
 
-	fraction2& operator=(const fraction2& r);
-	fraction2& operator=(const pair<terms, terms>& r);
-	fraction2& operator=(const terms& r);
-	fraction2& operator=(const term& r);
-	fraction2& operator=(const int& r);
-	fraction2& operator=(const double& r);
-	fraction2& operator=(const float& r);
+	fraction& operator=(const fraction& r);
+	fraction& operator=(const pair<terms, terms>& r);
+	fraction& operator=(const terms& r);
+	fraction& operator=(const term& r);
+	fraction& operator=(const int& r);
+	fraction& operator=(const double& r);
+	fraction& operator=(const float& r);
 
- friend bool operator==(const int& l, const fraction2& r);
- friend bool operator!=(const int& l, const fraction2& r);
- friend bool operator==(const fraction2& l, const int& r);
- friend bool operator!=(const fraction2& l, const int& r);
+ friend bool operator==(const int& l, const fraction& r);
+ friend bool operator!=(const int& l, const fraction& r);
+ friend bool operator==(const fraction& l, const int& r);
+ friend bool operator!=(const fraction& l, const int& r);
 
  
- friend bool operator==(const double& l, const fraction2& r);
- friend bool operator!=(const double& l, const fraction2& r);
- friend bool operator==(const fraction2& l, const double& r);
- friend bool operator!=(const fraction2& l, const double& r);
+ friend bool operator==(const double& l, const fraction& r);
+ friend bool operator!=(const double& l, const fraction& r);
+ friend bool operator==(const fraction& l, const double& r);
+ friend bool operator!=(const fraction& l, const double& r);
 
- friend bool operator==(const float& l, const fraction2& r);
- friend bool operator!=(const float& l, const fraction2& r);
+ friend bool operator==(const float& l, const fraction& r);
+ friend bool operator!=(const float& l, const fraction& r);
 
- friend bool operator==(const fraction2& l, const float& r);
- friend bool operator!=(const fraction2& l, const float& r);
+ friend bool operator==(const fraction& l, const float& r);
+ friend bool operator!=(const fraction& l, const float& r);
  
 
- friend bool operator==(const pair<int, int>& l, const fraction2& r);
- friend bool operator!=(const pair<int, int>& l, const fraction2& r);
- friend bool operator==(const fraction2& l, const pair<int, int>& r);
- friend bool operator!=(const fraction2& l, const pair<int, int>& r);
+ friend bool operator==(const pair<int, int>& l, const fraction& r);
+ friend bool operator!=(const pair<int, int>& l, const fraction& r);
+ friend bool operator==(const fraction& l, const pair<int, int>& r);
+ friend bool operator!=(const fraction& l, const pair<int, int>& r);
   
- friend bool operator==(const fraction2& l, const fraction2& r);
- friend bool operator!=(const fraction2& l, const fraction2& r);
+ friend bool operator==(const fraction& l, const fraction& r);
+ friend bool operator!=(const fraction& l, const fraction& r);
 
- friend fraction2 operator+(const fraction2& l, const fraction2& r);
- friend fraction2 operator-(const fraction2& l, const fraction2& r);
- friend fraction2 operator*(const fraction2& l, const fraction2& r);
- friend fraction2 operator/(const fraction2& l, const fraction2& r);
- friend fraction2 operator-(const fraction2& rhs);
- friend ostream& operator<<(ostream& out, const fraction2& rhs);
- friend istream& operator>>(istream& in, fraction2& rhs);
+ friend fraction operator+(const fraction& l, const fraction& r);
+ friend fraction operator-(const fraction& l, const fraction& r);
+ friend fraction operator*(const fraction& l, const fraction& r);
+ friend fraction operator/(const fraction& l, const fraction& r);
+ friend fraction operator-(const fraction& rhs);
+ friend ostream& operator<<(ostream& out, const fraction& rhs);
+ friend istream& operator>>(istream& in, fraction& rhs);
 };
-void fraction2_output(fraction2*,int,int);
+fraction make_entry(int num1, int num2);
+void fraction_output(fraction*,int,int);
 class matrix{
  protected:
 	int row, col;
