@@ -3,11 +3,10 @@
 int main(){
 	fraction2 temp;
 	cin >> temp;
-	cout << temp.getLength() << endl;
-
-	cout << "1==================================" << endl;
-	temp.getFract().first.test_show();
-	cout << "2==================================" << endl;
-	temp.getFract().second.test_show();
+	pair<int, string> tmp = temp.fts();
+	cout << tmp.first << endl;
+	for(int i = 0 ; i < tmp.first 	; ++i) cout << i%10;
+	cout << endl;
+	cout << tmp.second << endl;
 	return 0;
 }
