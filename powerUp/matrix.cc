@@ -1254,6 +1254,29 @@ istream& operator>>(istream& in, fraction2& rhs){
 	rhs.fract = make_pair(result[0], result[1]);
 	return in;
 }
+
+void fraction2_output(fraction2* arr, int row, int col){
+	int i = 0, j = 0;
+	vector<string> str;
+	vector<int> length;
+	pair<int, string> p;
+
+	for(i = 0 ; i < row * col ; ++i){
+		p = arr[i].fts();
+		length.push_back(p.first);
+		str.push_back(p.second);
+	}
+
+	for(i = 0 ; i < row ; ++i){
+		for(j = 0 ; j < col ; ++j)
+			cout << str[i*row + j] << ' ';
+		cout << endl;
+	}
+
+}
+
+
+
 //for fraction2
 
 matrix operator+ (const matrix& l, const matrix& r){

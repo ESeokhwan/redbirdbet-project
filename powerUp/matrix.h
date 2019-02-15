@@ -237,7 +237,7 @@ class fraction2{//How can we treat the error devided by zero.
 	friend class term;
 	friend class terms;
 };
-
+void fraction2_output(fraction2*,int,int);
 class matrix{
  protected:
 	int row, col;
