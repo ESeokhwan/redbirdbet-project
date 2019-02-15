@@ -862,10 +862,10 @@ fraction2(const fraction2& rhs) : fract(rhs.fract) {}
 
 fraction2::
 fraction2(const pair<terms,terms>& p) : fract(p) {}
-
+/*
 fraction2::
 fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1,t2)) {}
-
+*/
 fraction2::
 fraction2(const int& t) {
 	terms terms1 = t, terms2 = 1;
@@ -1033,7 +1033,7 @@ is_zero(){
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
 }
 
-bool operator==(const int& numL, const fraction2& fracR) {
+bool operator==(const int& l, const fraction2& r) {
 	fraction2 tmpl(l);
 	fraction2 tmpr(r);
 	tmpl.simplify();
