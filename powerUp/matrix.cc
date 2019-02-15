@@ -1005,12 +1005,9 @@ is_zero(){
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
 }
 
-bool operator==(const int& numL, const fraction2& fracR) {
-	fraction2 tmpl(l);
-	fraction2 tmpr(r);
-	tmpl.simplify();
-	tmpr.simplify();
-	return (tmpl == tmpr);
+bool operator==(const int& l, const fraction2& r) {
+	fraction2 tmp(l);
+	return (tmpl == r);
 }
 
 bool operator!=(const int& l, const fraction2& r) {
@@ -1078,9 +1075,8 @@ bool operator!=(const fraction2& l, const float& r) {
 }
 	
 bool operator==(const pair<int, int>& l, const fraction2& r) {
-	if(l.first == r.fract.first && l.second == r.fract.second)
-		return true;
-	return false;
+	fraction2 tmp(l);
+	return (tmp == r);
 }
 
 bool operator!=(const pair<int, int>& l, const fraction2& r) {
@@ -1095,14 +1091,57 @@ bool operator!=(const fraction2& l, const pair<int, int>& r) {
 	return !(r == l);
 }
   
-bool operator==(const fraction2& l, const fraction2& r);
-bool operator!=(const fraction2& l, const fraction2& r);
+bool operator==(const fraction2& l, const fraction2& r) {
+	fraction2 tmpl(l);
+	fraction2 tmpr(r);
 
-fraction2 operator+(const fraction2& l, const fraction2& r);
-fraction2 operator-(const fraction2& l, const fraction2& r);
-fraction2 operator*(const fraction2& l, const fraction2& r);
-fraction2 operator/(const fraction2& l, const fraction2& r);
-fraction2 operator-(const fraction2& rhs);
+	tmpl.simplify();
+	tmpr.simplify();
+
+	if(tmpl.fract.first == tmpr.fract.first && tmpl.fract.second == tmpr.fract.second)
+		return true;
+	return false;
+}
+
+bool operator!=(const fraction2& l, const fraction2& r) {
+	return !(l == r);
+}
+
+fraction2 operator+(const fraction2& l, const fraction2& r){
+	terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
+		t2 = l.fract.second*r.fract.second;
+	fraction2 p( make_pair(t1, t2) );
+	p.simplify();
+	return p;
+}
+
+fraction2 operator-(const fraction2& l, const fraction2& r){
+	terms t1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
+		t2 = l.fract.second*r.fract.second;
+
+	fraction p( make_pair(t1, t2) );
+	p.simplify();
+	return p;
+}
+
+fraction2 operator*(const fraction2& l, const fraction2& r){
+	terms t1 = l.fract.first * r.fract.first,
+		t2 = l.fract.second * r.fract.second;
+	fraction p( make_pair(t1, t2) );
+	p.simplify();
+	return p;
+}
+
+fraction2 operator/(const fraction2& l, const fraction2& r){
+	fraction2 reverse_r( make_pair(r.fract.second , r.fract.first));
+	fraction2 result = l * reverse_r;
+	return result;
+}
+
+fraction2 operator-(const fraction2& rhs){
+	fraction2 result(-rhs.fract.first, rhs.fract.second); 
+	return result;
+}
 
 istream& operator>>(istream& in, fraction2& rhs){
 	string str;
