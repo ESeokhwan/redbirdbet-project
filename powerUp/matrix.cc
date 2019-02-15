@@ -862,10 +862,10 @@ fraction2(const fraction2& rhs) : fract(rhs.fract) {}
 
 fraction2::
 fraction2(const pair<terms,terms>& p) : fract(p) {}
-
+/*
 fraction2::
 fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1,t2)) {}
-
+*/
 fraction2::
 fraction2(const int& t) {
 	terms terms1 = t, terms2 = 1;
@@ -946,8 +946,36 @@ getFract() {
 //to do
 void fraction2::
 simplify(){
+	vector<int> v;
+	terms temp[2] = {fract.first, fract.second};
+	int common_factor = 1, min = 123456789, temp_int = 0, i = 0, j = 0;
+	bool neg = temp[1].arr[0].coefficient < 0;
+
+	for(i = 0 ; i < 2 ; ++i)
+		for(j = 0 ; j < temp[i].num_of_terms ; ++j){
+			temp_int = temp[i].arr[j].coefficient;
+			if(temp_int < 0) temp_int = -temp_int;
+			v.push_back(temp_int);
+		}
+	min = *min_element(v.begin(), v.end());
+
+	for(i = min ; i > 1 ; --i){
+		for(j = 0 ; j < v.size() ; ++j)
+			if(v[j]%i!=0) break;
+		if(j == v.size()){
+			common_factor = i;
+			break;
+		}
+	}
+
+	if(neg)
+		common_factor = -common_factor;
+	for(i = 0 ; i < 2 ; ++i)
+		for(j = 0 ; j < temp[i].num_of_terms ; ++j)
+			temp[i].arr[j].coefficient /= common_factor;
+	fract = make_pair(temp[0], temp[1]);
 }
-//
+//fraction을 조작하여 string과 int pair를 return하는 함수
 pair<int,string> fraction2::
 fts(){
 	int stack = 0, loop = 1;
@@ -1411,6 +1439,7 @@ make_all_entry_zero() {
 			arr[i][j] = zero_entry;
 }
 
+/*
 void matrix::
 show(bool no_paranthesis){
 	if(row*col==0) cout << "[]" << endl;
@@ -1437,7 +1466,14 @@ show(bool no_paranthesis){
 		}
 	}
 }
+*/
+void matrix::
+show(bool no_paranthesis){
+	if(row*col == 0) cout << "[]" << endl;
+	else{
 
+	}
+}
 
 void matrix::
 matrix_simplification(){

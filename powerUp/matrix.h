@@ -234,6 +234,8 @@ class fraction2{//How can we treat the error devided by zero.
 	friend fraction2 operator-(const fraction2& rhs);
 	friend ostream& operator<<(ostream& out, const fraction2& rhs);
 	friend istream& operator>>(istream& in, fraction2& rhs);
+	friend class term;
+	friend class terms;
 };
 
 class matrix{
