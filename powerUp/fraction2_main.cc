@@ -45,12 +45,18 @@ int main() {
 		cout << "j" << endl;
 
 		fraction2 KAKAKA(result, result1);
+		
+		fraction2_output(&KAKAKA, 1, 1);
 
 		cout << "k" << endl;
 		term term_result = _term1 * _term2;
 		fraction2 KAKAKA2(term_result);
 
+		fraction2_output(&KAKAKA2, 1, 1);
+
 		fraction2 fract_result = KAKAKA + KAKAKA2;
+
+		fraction2_output(&fract_result, 1, 1);
 		
 		cout << "l" << endl;
 	}

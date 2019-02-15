@@ -862,10 +862,7 @@ fraction2(const fraction2& rhs) : fract(rhs.fract) {}
 
 fraction2::
 fraction2(const pair<terms,terms>& p) : fract(p) {}
-/*
-fraction2::
-fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1,t2)) {}
-*/
+
 fraction2::
 fraction2(const int& t) {
 	terms terms1 = t, terms2 = 1;
@@ -875,19 +872,20 @@ fraction2(const int& t) {
 fraction2::
 fraction2(const term& t) {
 	terms terms1 = t, terms2 = 1;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
 }
 
 fraction2::
 fraction2(const terms& t) {
 	terms terms1 = t, terms2 = 1;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
 }
 
 fraction2::
 fraction2(const int& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
+
 }
 
 fraction2::
@@ -899,41 +897,65 @@ fraction2(const int& t1, const term& t2){
 fraction2::
 fraction2(const int& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
+
 }
 
 fraction2::
 fraction2(const term& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
 }
 
 fraction2::
 fraction2(const term& t1, const term& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
 }
 
 fraction2::
 fraction2(const term& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
 }
 
 fraction2::
 fraction2(const terms& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
 }
 
 fraction2::
 fraction2(const terms& t1, const term& t2){
 	terms terms1 = t1, terms2 = t2;
-	fraction2(terms1, terms2);
+	fract.first = terms1, fract.second = terms2;
+
 }
 
 fraction2::
-fraction2(const terms& t1, const terms& t2) : fract(make_pair(t1, t2)) { }
+fraction2(const terms& t1, const terms& t2) {
+	fract.first = t1, fract.second = t2;
+}
+
+fraction2::
+fraction2(const double& r) {
+	double denominator = 1.0;
+	while(double(int(r * denominator)) != r * denominator)
+		denominator *= 10.0;
+	fract.first = int(r * denominator);
+	fract.second = int(denominator);
+	simplify();
+}
+
+fraction2::
+fraction2(const float& r) {
+	float denominator = 1.0;
+	while(float(int(r * denominator)) != r * denominator)
+		denominator *= 10.0;
+	fract.first = int(r * denominator);
+	fract.second = int(denominator);
+	simplify();
+}
 
 pair<terms, terms> fraction2::
 getFract() {
@@ -1030,6 +1052,59 @@ is_zero(){
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
 }
 
+fraction2& fraction2::
+operator=(const fraction2& r) {
+	fract.first = r.fract.first;
+	fract.second = r.fract.second;
+	return *(this);
+}
+
+fraction2& fraction2::
+operator=(const pair<terms, terms>& r) {
+	fract.first = r.first;
+	fract.second = r.second;
+	return *(this);
+}
+
+fraction2& fraction2::
+operator=(const terms& r) {
+	fract.first = r;
+	fract.second = 1;
+	return *(this);
+}
+
+fraction2& fraction2::
+operator=(const term& r) {
+	fract.first = r;
+	fract.second = 1;
+	return *(this);
+}
+
+fraction2& fraction2::
+operator=(const int& r) {
+	fract.first = r;
+	fract.second = 1;
+	return *(this);
+}
+
+fraction2& fraction2::
+operator=(const double& r) {
+	double denominator = 1.0;
+	while(double(int(r * denominator)) != r * denominator)
+		denominator *= 10.0;
+	fract.first = int(r * denominator);
+	fract.second = int(denominator);
+}
+
+fraction2& fraction2::
+operator=(const float& r) {
+	float denominator = 1.0;
+	while(float(int(r * denominator)) != r * denominator)
+		denominator *= 10.0;
+	fract.first = int(r * denominator);
+	fract.second = int(denominator);
+}
+
 bool operator==(const int& l, const fraction2& r) {
 	fraction2 tmp(l);
 	return (tmp == r);
@@ -1047,29 +1122,10 @@ bool operator!=(const fraction2& l, const int& r) {
 	return !(r == l);
 }
 
-/*
+
 bool operator==(const double& l, const fraction2& r) {
-	fraction2 tmpl(l);
-	fraction2 tmpr(r);
-	tmpl.simplify();
-	tmpr.simplify();
-	if(tmpr.is_zero()) {
-		if(l == 0) 
-			return true;
-		else
-			return false;
-	}
-	else if(tmpr.fract.first.num_of_terms == 1 && tmpr.fract.second.num_of_terms == 1) {
-		if(tmpr.fract.first.arr[0].base == 1 && tmpr.fract.second.arr[0].base == 1) {
-			if(double(tmpr.fract.first.arr[0].coefficient)/double(tmpr.fract.second.arr[0].coefficient) == l)
-				return true;
-			return false;
-		}
-		return false;
-	}
-	return false;
-	if(r.fract.first.num_of_terms == 1)
-	return (tmpl == tmpr);
+	fraction2 tmp(l);
+	return (tmp == r);
 }
 
 bool operator!=(const double& l, const fraction2& r) {
@@ -1085,7 +1141,8 @@ bool operator!=(const fraction2& l, const double& r) {
 }
 
 bool operator==(const float& l, const fraction2& r) {
-	return (double(l) == r);
+	fraction2 tmp(l);
+	return (tmp == r);
 }
 
 bool operator!=(const float& l, const fraction2& r) {
@@ -1099,8 +1156,6 @@ bool operator==(const fraction2& l, const float& r) {
 bool operator!=(const fraction2& l, const float& r) {
 	return !(r == l);
 }
-
-*/
 
 bool operator==(const pair<int, int>& l, const fraction2& r) {
 	fraction2 tmp(l);

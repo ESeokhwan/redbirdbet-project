@@ -139,7 +139,7 @@ public:
 	void setLength();
 	int getLength();
 	bool is_zero();
-	
+
  friend bool operator==(const int& numL, const fraction& fracR);
  friend bool operator!=(const int& numL, const fraction& fracR);
  friend bool operator==(const fraction& fracL, const int& numR);
@@ -195,19 +195,30 @@ class fraction2{//How can we treat the error devided by zero.
 	fraction2(const terms& t);
 	fraction2(const term& t);
 	fraction2(const int& t);
+	fraction2(const double& r);
+	fraction2(const float& r);
 
 	pair<terms, terms> getFract();
 	void simplify();
 	pair<int,string> fts();
 	bool is_denominator_one();
 	bool is_zero();
+	void test_show();
+
+	fraction2& operator=(const fraction2& r);
+	fraction2& operator=(const pair<terms, terms>& r);
+	fraction2& operator=(const terms& r);
+	fraction2& operator=(const term& r);
+	fraction2& operator=(const int& r);
+	fraction2& operator=(const double& r);
+	fraction2& operator=(const float& r);
 
  friend bool operator==(const int& l, const fraction2& r);
  friend bool operator!=(const int& l, const fraction2& r);
  friend bool operator==(const fraction2& l, const int& r);
  friend bool operator!=(const fraction2& l, const int& r);
 
- /*
+ 
  friend bool operator==(const double& l, const fraction2& r);
  friend bool operator!=(const double& l, const fraction2& r);
  friend bool operator==(const fraction2& l, const double& r);
@@ -218,7 +229,7 @@ class fraction2{//How can we treat the error devided by zero.
 
  friend bool operator==(const fraction2& l, const float& r);
  friend bool operator!=(const fraction2& l, const float& r);
- */
+ 
 
  friend bool operator==(const pair<int, int>& l, const fraction2& r);
  friend bool operator!=(const pair<int, int>& l, const fraction2& r);
