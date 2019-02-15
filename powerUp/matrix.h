@@ -12,6 +12,9 @@ int gcd(int num1, int num2);
 int lcm(int num1, int num2);
 
 class term {//base가 음수일 때 고려해야함!!
+ friend class terms;
+ friend class fraction2;
+
  protected :
 	int base;
 	int root;//몇 제곱근에서 몇
@@ -32,26 +35,24 @@ class term {//base가 음수일 때 고려해야함!!
 	term& operator=(const term& r);
 	term& operator=(const int& r);
 	
-	friend term operator+(const term& termR);
-	friend term operator-(const term& termR);
+ friend term operator+(const term& termR);
+ friend term operator-(const term& termR);
 
+ friend const term operator*(const int& numL, const term& termR);
+ friend const term operator*(const term& termL, const int& numR);
+ friend const term operator*(const term& termL, const term& termR);
 
-	friend const term operator*(const int& numL, const term& termR);
-	friend const term operator*(const term& termL, const int& numR);
-	friend const term operator*(const term& termL, const term& termR);
-
-	friend bool operator==(const term& l, const term& r);
-	friend bool operator!=(const term& l, const term& r);
-	friend bool operator==(const int& l, const term& r);
-	friend bool operator!=(const int& l, const term& r);
-	friend bool operator==(const term& l, const int& r);
-	friend bool operator!=(const term& l, const int& r);
-
-	friend class terms;
-	friend class fraction2;
+ friend bool operator==(const term& l, const term& r);
+ friend bool operator!=(const term& l, const term& r);
+ friend bool operator==(const int& l, const term& r);
+ friend bool operator!=(const int& l, const term& r);
+ friend bool operator==(const term& l, const int& r);
+ friend bool operator!=(const term& l, const int& r);
 };
 
 class terms {
+ friend class fraction2;
+
  protected :
 	vector<term> arr;
 	int num_of_terms;
@@ -76,50 +77,48 @@ class terms {
 	terms& operator=(const int& r);
 
 
-	friend terms operator+(const terms& _terms);
-	friend terms operator-(const terms& _terms);
+ friend terms operator+(const terms& _terms);
+ friend terms operator-(const terms& _terms);
 
-	//term 과 term을 더하는 오퍼레이터가 없다고 하네....
-	friend const terms operator+(const term& termL, const term& termR);
-	friend const terms operator+(const int& numL, const term& termR);
-	friend const terms operator+(const term& termL, const int& numR);
-	friend const terms operator+(const terms& termsL, const int& numR);
-	friend const terms operator+(const int& numL, const terms& termsR);
-	friend const terms operator+(const terms& termsL, const term& termR);
-	friend const terms operator+(const term& termL, const terms& termsR);
-	friend const terms operator+(const terms& termsL, const terms& termsR);
+ //term 과 term을 더하는 오퍼레이터가 없다고 하네....
+ friend const terms operator+(const term& termL, const term& termR);
+ friend const terms operator+(const int& numL, const term& termR);
+ friend const terms operator+(const term& termL, const int& numR);
+ friend const terms operator+(const terms& termsL, const int& numR);
+ friend const terms operator+(const int& numL, const terms& termsR);
+ friend const terms operator+(const terms& termsL, const term& termR);
+ friend const terms operator+(const term& termL, const terms& termsR);
+ friend const terms operator+(const terms& termsL, const terms& termsR);
+ 
+ friend const terms operator-(const term& termL, const term& termR);
+ friend const terms operator-(const int& numL, const term& termR);
+ friend const terms operator-(const term& termL, const int& numR);
+ friend const terms operator-(const terms& termsL, const int& numR);
+ friend const terms operator-(const int& numL, const terms& termsR);
+ friend const terms operator-(const terms& termsL, const term& termR);
+ friend const terms operator-(const term& termL, const terms& termsR);
+ friend const terms operator-(const terms& termsL, const terms& termsR);
 
-	friend const terms operator-(const term& termL, const term& termR);
-	friend const terms operator-(const int& numL, const term& termR);
-	friend const terms operator-(const term& termL, const int& numR);
-	friend const terms operator-(const terms& termsL, const int& numR);
-	friend const terms operator-(const int& numL, const terms& termsR);
-	friend const terms operator-(const terms& termsL, const term& termR);
-	friend const terms operator-(const term& termL, const terms& termsR);
-	friend const terms operator-(const terms& termsL, const terms& termsR);
+ friend const terms operator*(const int& numL, const terms& termsR);
+ friend const terms operator*(const terms& termsL, const int& numR);
+ friend const terms operator*(const term& termL, const terms& termsR);
+ friend const terms operator*(const terms& termsL, const term& termR);
+ friend const terms operator*(const terms& termsL, const terms& termsR);
 
-	friend const terms operator*(const int& numL, const terms& termsR);
-	friend const terms operator*(const terms& termsL, const int& numR);
-	friend const terms operator*(const term& termL, const terms& termsR);
-	friend const terms operator*(const terms& termsL, const term& termR);
-	friend const terms operator*(const terms& termsL, const terms& termsR);
+ //테스트는 안 해봄. 근데 아마 잘 될거임(==나 !=들)
+ friend bool operator==(const terms& l, const terms& r);
+ friend bool operator!=(const terms& l, const terms& r);
+ friend bool operator==(const terms& l, const term& r);
+ friend bool operator!=(const terms& l, const term& r);
+ friend bool operator==(const term& l, const terms& r);
+ friend bool operator!=(const term& l, const terms& r);
+ friend bool operator==(const terms& l, const int& r);
+ friend bool operator!=(const terms& l, const int& r);
+ friend bool operator==(const int& l, const terms& r);
+ friend bool operator!=(const int& l, const terms& r);
 
-	//테스트는 안 해봄. 근데 아마 잘 될거임(==나 !=들)
-	friend bool operator==(const terms& l, const terms& r);
-	friend bool operator!=(const terms& l, const terms& r);
-	friend bool operator==(const terms& l, const term& r);
-	friend bool operator!=(const terms& l, const term& r);
-	friend bool operator==(const term& l, const terms& r);
-	friend bool operator!=(const term& l, const terms& r);
-	friend bool operator==(const terms& l, const int& r);
-	friend bool operator!=(const terms& l, const int& r);
-	friend bool operator==(const int& l, const terms& r);
-	friend bool operator!=(const int& l, const terms& r);
-
-	friend class fraction2;
-	friend class term;
-//	friend ostream& operator<<(ostream& out, const terms& rhs);
-//	friend istream& operator>>(istream& in, terms& rhs);	
+// friend ostream& operator<<(ostream& out, const terms& rhs);
+// friend istream& operator>>(istream& in, terms& rhs);	
 };
 
 class fraction{//How can we treat the error devided by zero.
@@ -141,37 +140,37 @@ public:
 	int getLength();
 	bool is_zero();
 	
-	friend bool operator==(const int& numL, const fraction& fracR);
-	friend bool operator!=(const int& numL, const fraction& fracR);
-	friend bool operator==(const fraction& fracL, const int& numR);
-	friend bool operator!=(const fraction& fracL, const int& numR);
+ friend bool operator==(const int& numL, const fraction& fracR);
+ friend bool operator!=(const int& numL, const fraction& fracR);
+ friend bool operator==(const fraction& fracL, const int& numR);
+ friend bool operator!=(const fraction& fracL, const int& numR);
 
-	friend bool operator==(const double& numL, const fraction& fracR);
-	friend bool operator!=(const double& numL, const fraction& fracR);
-	friend bool operator==(const fraction& fracL, const double& numR);
-	friend bool operator!=(const fraction& fracL, const double& numR);
+ friend bool operator==(const double& numL, const fraction& fracR);
+ friend bool operator!=(const double& numL, const fraction& fracR);
+ friend bool operator==(const fraction& fracL, const double& numR);
+ friend bool operator!=(const fraction& fracL, const double& numR);
 
-	friend bool operator==(const float& numL, const fraction& fracR);
-	friend bool operator!=(const float& numL, const fraction& fracR);
+ friend bool operator==(const float& numL, const fraction& fracR);
+ friend bool operator!=(const float& numL, const fraction& fracR);
 
-	friend bool operator==(const fraction& fracL, const float& numR);
-	friend bool operator!=(const fraction& fracL, const float& numR);
+ friend bool operator==(const fraction& fracL, const float& numR);
+ friend bool operator!=(const fraction& fracL, const float& numR);
 
-	friend bool operator==(const pair<int, int>& pairL, const fraction& fracR);
-	friend bool operator!=(const pair<int, int>& pairL, const fraction& fracR);
-	friend bool operator==(const fraction& fracL, const pair<int, int>& pairR);
-	friend bool operator!=(const fraction& fracL, const pair<int, int>& pairR);
+ friend bool operator==(const pair<int, int>& pairL, const fraction& fracR);
+ friend bool operator!=(const pair<int, int>& pairL, const fraction& fracR);
+ friend bool operator==(const fraction& fracL, const pair<int, int>& pairR);
+ friend bool operator!=(const fraction& fracL, const pair<int, int>& pairR);
 
-	friend bool operator==(const fraction& fractL, const fraction& fractR);
-	friend bool operator!=(const fraction& fractL, const fraction& fractR);
+ friend bool operator==(const fraction& fractL, const fraction& fractR);
+ friend bool operator!=(const fraction& fractL, const fraction& fractR);
 
-	friend fraction operator+(const fraction&, const fraction&);
-	friend fraction operator-(const fraction&, const fraction&);
-	friend fraction operator*(const fraction&, const fraction&);
-	friend fraction operator/(const fraction&, const fraction&);
-	friend fraction operator-(const fraction&);
-	friend ostream& operator<<(ostream& out, const fraction& rhs);
-	friend istream& operator>>(istream& in, fraction& rhs);
+ friend fraction operator+(const fraction&, const fraction&);
+ friend fraction operator-(const fraction&, const fraction&);
+ friend fraction operator*(const fraction&, const fraction&);
+ friend fraction operator/(const fraction&, const fraction&);
+ friend fraction operator-(const fraction&);
+ friend ostream& operator<<(ostream& out, const fraction& rhs);
+ friend istream& operator>>(istream& in, fraction& rhs);
 };
 
 void blank(int num);
@@ -203,39 +202,39 @@ class fraction2{//How can we treat the error devided by zero.
 	bool is_denominator_one();
 	bool is_zero();
 
-	friend bool operator==(const int& l, const fraction2& r);
-	friend bool operator!=(const int& l, const fraction2& r);
-	friend bool operator==(const fraction2& l, const int& r);
-	friend bool operator!=(const fraction2& l, const int& r);
+ friend bool operator==(const int& l, const fraction2& r);
+ friend bool operator!=(const int& l, const fraction2& r);
+ friend bool operator==(const fraction2& l, const int& r);
+ friend bool operator!=(const fraction2& l, const int& r);
 
-	friend bool operator==(const double& l, const fraction2& r);
-	friend bool operator!=(const double& l, const fraction2& r);
-	friend bool operator==(const fraction2& l, const double& r);
-	friend bool operator!=(const fraction2& l, const double& r);
+ /*
+ friend bool operator==(const double& l, const fraction2& r);
+ friend bool operator!=(const double& l, const fraction2& r);
+ friend bool operator==(const fraction2& l, const double& r);
+ friend bool operator!=(const fraction2& l, const double& r);
 
-	friend bool operator==(const float& l, const fraction2& r);
-	friend bool operator!=(const float& l, const fraction2& r);
+ friend bool operator==(const float& l, const fraction2& r);
+ friend bool operator!=(const float& l, const fraction2& r);
 
-	friend bool operator==(const fraction2& l, const float& r);
-	friend bool operator!=(const fraction2& l, const float& r);
-	
-	friend bool operator==(const pair<int, int>& l, const fraction2& r);
-	friend bool operator!=(const pair<int, int>& l, const fraction2& r);
-	friend bool operator==(const fraction2& l, const pair<int, int>& r);
-	friend bool operator!=(const fraction2& l, const pair<int, int>& r);
+ friend bool operator==(const fraction2& l, const float& r);
+ friend bool operator!=(const fraction2& l, const float& r);
+ */
+
+ friend bool operator==(const pair<int, int>& l, const fraction2& r);
+ friend bool operator!=(const pair<int, int>& l, const fraction2& r);
+ friend bool operator==(const fraction2& l, const pair<int, int>& r);
+ friend bool operator!=(const fraction2& l, const pair<int, int>& r);
   
-	friend bool operator==(const fraction2& l, const fraction2& r);
-	friend bool operator!=(const fraction2& l, const fraction2& r);
+ friend bool operator==(const fraction2& l, const fraction2& r);
+ friend bool operator!=(const fraction2& l, const fraction2& r);
 
-	friend fraction2 operator+(const fraction2& l, const fraction2& r);
-	friend fraction2 operator-(const fraction2& l, const fraction2& r);
-	friend fraction2 operator*(const fraction2& l, const fraction2& r);
-	friend fraction2 operator/(const fraction2& l, const fraction2& r);
-	friend fraction2 operator-(const fraction2& rhs);
-	friend ostream& operator<<(ostream& out, const fraction2& rhs);
-	friend istream& operator>>(istream& in, fraction2& rhs);
-	friend class term;
-	friend class terms;
+ friend fraction2 operator+(const fraction2& l, const fraction2& r);
+ friend fraction2 operator-(const fraction2& l, const fraction2& r);
+ friend fraction2 operator*(const fraction2& l, const fraction2& r);
+ friend fraction2 operator/(const fraction2& l, const fraction2& r);
+ friend fraction2 operator-(const fraction2& rhs);
+ friend ostream& operator<<(ostream& out, const fraction2& rhs);
+ friend istream& operator>>(istream& in, fraction2& rhs);
 };
 void fraction2_output(fraction2*,int,int);
 class matrix{
@@ -269,17 +268,6 @@ class matrix{
 	void increase_permutation_count();
 		
 	matrix& operator= (const matrix& rhs);
-
-	friend matrix operator+ (const matrix& l, const matrix& r);
-	friend matrix operator- (const matrix& l, const matrix& r);
-	friend matrix operator* (const matrix& l, const matrix& r);
-	friend matrix operator* (const fraction& fracL, const matrix& matR);
-	friend matrix operator* (const matrix& matL, const fraction& fracR);
-	friend matrix operator* (const int& intL, const matrix& matR);
-	friend matrix operator* (const matrix& matL, const int& intR);
-	friend bool operator== (const matrix& matL, const matrix& matR);
-	friend bool operator!= (const matrix& matL, const matrix& matR);
-	friend fraction dotproduct(const matrix& matL, const matrix& matR);
 	
 	void fill();
 	void show(bool no_paranthesis = false);
@@ -308,4 +296,15 @@ class matrix{
 	matrix project(const matrix& mat);
 
 	matrix gram_schmidt();
+
+ friend matrix operator+ (const matrix& l, const matrix& r);
+ friend matrix operator- (const matrix& l, const matrix& r);
+ friend matrix operator* (const matrix& l, const matrix& r);
+ friend matrix operator* (const fraction& fracL, const matrix& matR);
+ friend matrix operator* (const matrix& matL, const fraction& fracR);
+ friend matrix operator* (const int& intL, const matrix& matR);
+ friend matrix operator* (const matrix& matL, const int& intR);
+ friend bool operator== (const matrix& matL, const matrix& matR);
+ friend bool operator!= (const matrix& matL, const matrix& matR);
+ friend fraction dotproduct(const matrix& matL, const matrix& matR);
 };
