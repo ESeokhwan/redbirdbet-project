@@ -974,6 +974,7 @@ void fraction::
 simplify(){
 	vector<int> v;
 	terms temp[2] = {fract.first, fract.second};
+	terms one = 1;
 	int common_factor = 1, min = 123456789, temp_int = 0, i = 0, j = 0;
 	bool neg = temp[1].arr[0].coefficient < 0;
 
@@ -999,7 +1000,11 @@ simplify(){
 	for(i = 0 ; i < 2 ; ++i)
 		for(j = 0 ; j < temp[i].num_of_terms ; ++j)
 			temp[i].arr[j].coefficient /= common_factor;
-	fract = make_pair(temp[0], temp[1]);
+
+	if((fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0))
+		fract = make_pair(temp[0], one);
+	else
+		fract = make_pair(temp[0], temp[1]);
 }
 //fraction을 조작하여 string과 int pair를 return하는 함수
 pair<int,string> fraction::
@@ -1008,12 +1013,12 @@ fts(){
 	bool is_neg = true, multi_term = false;
 	string str = "";
 	terms _terms[2] = { fract.first, fract.second };
-
+/*
 	if(is_zero()){
 		str = "0";
 		return make_pair(1, str);
 	}
-
+*/
 	if(!is_denominator_one()) 
 		loop++;
 
