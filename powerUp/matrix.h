@@ -7,6 +7,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cmath>
+#include <iomanip>
 using namespace std;
 
 int gcd(int num1, int num2);
@@ -153,6 +154,7 @@ class fraction{//How can we treat the error devided by zero.
 	void simplify();
 	pair<int,string> fts();
 	bool is_denominator_one();
+	bool is_denominator_zero();
 	bool is_zero();
 	void test_show();
 	fraction pow(const double& exponent);
@@ -238,6 +240,7 @@ class matrix{
 	
 	void fill();
 	void show(bool no_paranthesis = false);
+	void show_double(bool no_paranthesis = false);
 	void matrix_simplification();
 
 	matrix change_two_rows(int row1, int row2);

@@ -899,6 +899,12 @@ is_denominator_one(){
 }
 
 bool fraction::
+is_denominator_zero(){
+	simplify();
+	return (fract.second.num_of_terms == 1) && (fract.second.arr[0].coefficient == 0);
+}
+
+bool fraction::
 is_zero(){
 	simplify();
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
@@ -926,6 +932,7 @@ fraction& fraction::
 operator=(const fraction& r) {
 	fract.first = r.fract.first;
 	fract.second = r.fract.second;
+	value = r.value;
 	return *(this);
 }
 
@@ -933,6 +940,7 @@ fraction& fraction::
 operator=(const pair<terms, terms>& r) {
 	fract.first = r.first;
 	fract.second = r.second;
+	value = r.value;
 	return *(this);
 }
 
@@ -940,6 +948,7 @@ fraction& fraction::
 operator=(const terms& r) {
 	fract.first = r;
 	fract.second = 1;
+	value = r.value;
 	return *(this);
 }
 
@@ -947,6 +956,7 @@ fraction& fraction::
 operator=(const term& r) {
 	fract.first = r;
 	fract.second = 1;
+	value = r.value;
 	return *(this);
 }
 
@@ -954,6 +964,7 @@ fraction& fraction::
 operator=(const int& r) {
 	fract.first = r;
 	fract.second = 1;
+	value = r.value;
 	return *(this);
 }
 
@@ -964,6 +975,8 @@ operator=(const double& r) {
 		denominator *= 10.0;
 	fract.first = int(r * denominator);
 	fract.second = int(denominator);
+	value = r.value;
+	return *(this);//check this!
 }
 
 fraction& fraction::
@@ -973,6 +986,8 @@ operator=(const float& r) {
 		denominator *= 10.0;
 	fract.first = int(r * denominator);
 	fract.second = int(denominator);
+	value = r.value;
+	return *(this)//check this!
 }
 
 /*
@@ -1100,34 +1115,61 @@ bool operator!=(const fraction& l, const fraction& r) {
 }
 
 fraction operator+(const fraction& l, const fraction& r){
-	terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
-		t2 = l.fract.second*r.fract.second;
-	fraction p( make_pair(t1, t2) );
-	p.simplify();
-	return p;
+	if(l.is_denominator_zero || r.is_denominator_zero){
+		fraction temp(1,0);
+		return temp;
+	}
+	else{
+		terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
+			t2 = l.fract.second*r.fract.second;
+		fraction p( make_pair(t1, t2) );
+		p.value = l.value + r.value;
+		p.simplify();
+		return p;
+	}
 }
 
 fraction operator-(const fraction& l, const fraction& r){
-	terms t1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
-		t2 = l.fract.second*r.fract.second;
-
-	fraction p( make_pair(t1, t2) );
-	p.simplify();
-	return p;
+	if(l.is_denominator_zero || r.is_denominator_zero){
+		fraction temp(1,0);
+		return temp;
+	}
+	else{
+		terms t1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
+			t2 = l.fract.second*r.fract.second;
+		fraction p( make_pair(t1, t2) );
+		p.value = l.value - r.value;
+		p.simplify();
+		return p;
+	}
 }
 
 fraction operator*(const fraction& l, const fraction& r){
-	terms t1 = l.fract.first * r.fract.first,
-		t2 = l.fract.second * r.fract.second;
-	fraction p( make_pair(t1, t2) );
-	p.simplify();
-	return p;
+	if(l.is_denominator_zero || r.is_denominator_zero){
+		fraction temp(1,0);
+		return temp;
+	}
+	else{
+		terms t1 = l.fract.first * r.fract.first,
+			t2 = l.fract.second * r.fract.second;
+		fraction p( make_pair(t1, t2) );
+		p.value = r.value * l.value;
+		p.simplify();
+		return p;
+	}
 }
 
 fraction operator/(const fraction& l, const fraction& r){
-	fraction reverse_r( make_pair(r.fract.second , r.fract.first));
-	fraction result = l * reverse_r;
-	return result;
+	if(l.is_denominator_zero || r.is_denominator_zero){
+		fraction temp(1,0);
+		return temp;
+	}
+	else{
+		fraction reverse_r( make_pair(r.fract.second , r.fract.first));
+		fraction result = l * reverse_r;
+		result.value = l.value / r.value;
+		return result;
+	}
 }
 
 fraction operator-(const fraction& rhs){
@@ -1461,38 +1503,63 @@ show(bool no_paranthesis){
 */
 void matrix::
 show(bool no_paranthesis){
+	bool zero_test = false;
+	for(int i = 0 ; i < row ; ++i)
+		for(int j = 0 ; j < col ; ++j)
+			zero_test = zero_test || get_arr()[i][j].is_denominator_zero;
+	if(zero_test)
+		show_double(no_paranthesis);
+
+	else{
+		if(row*col == 0) cout << "[]" << endl;
+		else{
+			int length[row][col] = {0,};
+			int i = 0, j = 0, num = 0;
+			vector<int> colMax, numv;
+			string str[row][col];
+			pair<int,string> ptemp;
+
+			for(i = 0 ; i < row ; ++i)
+				for(j = 0 ; j < col ; ++j){
+					ptemp = arr[i][j].fts();
+					length[i][j] = ptemp.first;
+					str[i][j] = ptemp.second;
+				}
+	
+			for(i = 0 ; i < col ; ++i){
+				for(j = 0 ; j < row ; ++j)
+					numv.push_back( length[j][i] );
+				colMax.push_back(*max_element(numv.begin(), numv.end()));
+				numv.clear();
+			}
+	
+			for(i = 0 ; i < row ; ++i){
+				if(!no_paranthesis) cout << '[' << ' ';
+				else cout << ' ';
+				for(int j = 0 ; j < col ; ++j){
+					blank(colMax[j] - length[i][j]);
+					cout << str[i][j] << ' ';
+				}
+				if(!no_paranthesis) cout << ']' << endl;
+				else cout << endl;
+			}
+		}
+	}
+}
+void matrix::
+show_double(bool no_paranthesis = false) {
 	if(row*col == 0) cout << "[]" << endl;
 	else{
-		int length[row][col] = {0,};
-		int i = 0, j = 0, num = 0;
-		vector<int> colMax, numv;
-		string str[row][col];
-		pair<int,string> ptemp;
-
-		for(i = 0 ; i < row ; ++i)
-			for(j = 0 ; j < col ; ++j){
-				ptemp = arr[i][j].fts();
-				length[i][j] = ptemp.first;
-				str[i][j] = ptemp.second;
-			}
-
-		for(i = 0 ; i < col ; ++i){
-			for(j = 0 ; j < row ; ++j)
-				numv.push_back( length[j][i] );
-			colMax.push_back(*max_element(numv.begin(), numv.end()));
-			numv.clear();
-		}
-
-		for(i = 0 ; i < row ; ++i){
+		int i, j;
+		cout << setprecision(5) << fixed;
+		for(i = 0 ; i <row ; ++i){
 			if(!no_paranthesis) cout << '[' << ' ';
 			else cout << ' ';
-			for(int j = 0 ; j < col ; ++j){
-				blank(colMax[j] - length[i][j]);
-				cout << str[i][j] << ' ';
-			}
-			if(!no_paranthesis) cout << ']' << endl;
-			else cout << endl;
+			for(j = 0 ; j < col ; ++j)
+				cout << get_arr()[i][j].value; << ' ';
 		}
+		if(!no_paranthesis) cout << ']' << endl;
+		else cout << endl;
 	}
 }
 
