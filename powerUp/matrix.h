@@ -155,7 +155,7 @@ class fraction{//How can we treat the error devided by zero.
 	bool is_denominator_one();
 	bool is_zero();
 	void test_show();
-	fraction root();
+	fraction pow(const double& exponent);
 
 	fraction& operator=(const fraction& r);
 	fraction& operator=(const pair<terms, terms>& r);

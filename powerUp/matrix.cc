@@ -609,80 +609,172 @@ fraction() {
 }
 
 fraction::
-fraction(const fraction& rhs) : fract(rhs.fract) {}
+fraction(const fraction& rhs) : fract(rhs.fract), value(rhs.value) {}
 
 fraction::
-fraction(const pair<terms,terms>& p) : fract(p) {}
+fraction(const pair<terms,terms>& p) : fract(p) {
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
+}
 
 fraction::
 fraction(const int& t) {
 	terms terms1 = t, terms2 = 1;
 	fraction(terms1, terms2);
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const term& t) {
 	terms terms1 = t, terms2 = 1;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const terms& t) {
 	terms terms1 = t, terms2 = 1;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const int& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const int& t1, const term& t2){
 	terms terms1 = t1, terms2 = t2;
 	fraction(terms1, terms2);
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const int& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const term& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const term& t1, const term& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const term& t1, const terms& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const terms& t1, const int& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const terms& t1, const term& t2){
 	terms terms1 = t1, terms2 = t2;
 	fract.first = terms1, fract.second = terms2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
 fraction(const terms& t1, const terms& t2) {
 	fract.first = t1, fract.second = t2;
+	double son = 0.0;
+	double mom = 0.0;
+	for(int i = 0; i < fract.first.num_of_terms; i++) {
+		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
+	}
+	value = son/mom;
 }
 
 fraction::
@@ -693,6 +785,7 @@ fraction(const double& r) {
 	fract.first = int(r * denominator);
 	fract.second = int(denominator);
 	simplify();
+	value = double(r);
 }
 
 fraction::
@@ -703,6 +796,7 @@ fraction(const float& r) {
 	fract.first = int(r * denominator);
 	fract.second = int(denominator);
 	simplify();
+	value = float(r);
 }
 
 pair<terms, terms> fraction::
@@ -808,6 +902,24 @@ bool fraction::
 is_zero(){
 	simplify();
 	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
+}
+
+fraction fraction::
+pow(const double& exponent) {
+	simplify();
+	if(fract.first.num_of_terms == 1 && fract.second.num_of_terms == 1) {
+		double denominator = 1.0;
+		while(double(int(exponent * denominator)) != exponent * denominator)
+			denominator *= 10.0;
+		fract.first.arr[0].base = int(pow(double(fract.first.arr[0].base), denominator * exponent));
+		fract.first.arr[0].root = int(pow(double(fract.first.arr[0].root), denominator));
+		fract.second.arr[0].base = int(pow(double(fract.second.arr[0].base), denominator * exponent));
+		fract.second.arr[0].root = int(pow(double(fract.second.arr[0].root), denominator));
+	}
+	else {
+		fract.second = 0;
+	}
+	value = pow(value, exponent);
 }
 
 fraction& fraction::
