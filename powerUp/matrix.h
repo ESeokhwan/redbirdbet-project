@@ -16,6 +16,7 @@ int lcm(int num1, int num2);
 class term {//base가 음수일 때 고려해야함!!
  friend class terms;
  friend class fraction;
+ friend class matrix;
 
  protected :
 	int base;
@@ -54,6 +55,7 @@ class term {//base가 음수일 때 고려해야함!!
 
 class terms {
  friend class fraction;
+ friend class matrix;
 
  protected :
 	vector<term> arr;
@@ -126,6 +128,8 @@ class terms {
 void blank(int num);
 
 class fraction{//How can we treat the error devided by zero.
+ friend class matrix;
+
  protected:
 	pair<terms, terms> fract;
 	double value;
@@ -157,7 +161,7 @@ class fraction{//How can we treat the error devided by zero.
 	bool is_denominator_zero();
 	bool is_zero();
 	void test_show();
-	fraction pow(const double& exponent);
+	fraction power(const double& exponent);
 
 	fraction& operator=(const fraction& r);
 	fraction& operator=(const pair<terms, terms>& r);
@@ -220,7 +224,6 @@ class matrix{
 	void initialize();
 	void make_identity_matrix();
 	void make_all_entry_zero();
-	void normalize();
 
 	matrix();
 	matrix(int r, int c);

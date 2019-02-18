@@ -911,7 +911,7 @@ is_zero(){
 }
 
 fraction fraction::
-pow(const double& exponent) {
+power(const double& exponent) {
 	simplify();
 	if(fract.first.num_of_terms == 1 && fract.second.num_of_terms == 1) {
 		double denominator = 1.0;
@@ -938,33 +938,37 @@ operator=(const fraction& r) {
 
 fraction& fraction::
 operator=(const pair<terms, terms>& r) {
-	fract.first = r.first;
-	fract.second = r.second;
-	value = r.value;
+	fraction tmp(r);
+	fract.first = tmp.fract.first;
+	fract.second = tmp.fract.second;
+	value = tmp.value;
 	return *(this);
 }
 
 fraction& fraction::
 operator=(const terms& r) {
-	fract.first = r;
-	fract.second = 1;
-	value = r.value;
+	fraction tmp(r);
+	fract.first = tmp.fract.first;
+	fract.second = tmp.fract.second;
+	value = tmp.value;
 	return *(this);
 }
 
 fraction& fraction::
 operator=(const term& r) {
-	fract.first = r;
-	fract.second = 1;
-	value = r.value;
+	fraction tmp(r);
+	fract.first = tmp.fract.first;
+	fract.second = tmp.fract.second;
+	value = tmp.value;
 	return *(this);
 }
 
 fraction& fraction::
 operator=(const int& r) {
-	fract.first = r;
-	fract.second = 1;
-	value = r.value;
+	fraction tmp(r);
+	fract.first = tmp.fract.first;
+	fract.second = tmp.fract.second;
+	value = tmp.value;
 	return *(this);
 }
 
@@ -975,7 +979,7 @@ operator=(const double& r) {
 		denominator *= 10.0;
 	fract.first = int(r * denominator);
 	fract.second = int(denominator);
-	value = r.value;
+	value = r;
 	return *(this);//check this!
 }
 
@@ -986,8 +990,8 @@ operator=(const float& r) {
 		denominator *= 10.0;
 	fract.first = int(r * denominator);
 	fract.second = int(denominator);
-	value = r.value;
-	return *(this)//check this!
+	value = double(r);
+	return *(this);//check this!
 }
 
 /*
@@ -1115,7 +1119,7 @@ bool operator!=(const fraction& l, const fraction& r) {
 }
 
 fraction operator+(const fraction& l, const fraction& r){
-	if(l.is_denominator_zero || r.is_denominator_zero){
+	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
 		return temp;
 	}
@@ -1130,7 +1134,7 @@ fraction operator+(const fraction& l, const fraction& r){
 }
 
 fraction operator-(const fraction& l, const fraction& r){
-	if(l.is_denominator_zero || r.is_denominator_zero){
+	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
 		return temp;
 	}
@@ -1145,7 +1149,7 @@ fraction operator-(const fraction& l, const fraction& r){
 }
 
 fraction operator*(const fraction& l, const fraction& r){
-	if(l.is_denominator_zero || r.is_denominator_zero){
+	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
 		return temp;
 	}
@@ -1160,7 +1164,7 @@ fraction operator*(const fraction& l, const fraction& r){
 }
 
 fraction operator/(const fraction& l, const fraction& r){
-	if(l.is_denominator_zero || r.is_denominator_zero){
+	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
 		return temp;
 	}
@@ -1506,7 +1510,7 @@ show(bool no_paranthesis){
 	bool zero_test = false;
 	for(int i = 0 ; i < row ; ++i)
 		for(int j = 0 ; j < col ; ++j)
-			zero_test = zero_test || get_arr()[i][j].is_denominator_zero;
+			zero_test = zero_test || get_arr()[i][j].is_denominator_zero();
 	if(zero_test)
 		show_double(no_paranthesis);
 
@@ -1547,16 +1551,17 @@ show(bool no_paranthesis){
 	}
 }
 void matrix::
-show_double(bool no_paranthesis = false) {
+show_double(bool no_paranthesis) {
 	if(row*col == 0) cout << "[]" << endl;
 	else{
 		int i, j;
+
 		cout << setprecision(5) << fixed;
 		for(i = 0 ; i <row ; ++i){
 			if(!no_paranthesis) cout << '[' << ' ';
 			else cout << ' ';
 			for(j = 0 ; j < col ; ++j)
-				cout << get_arr()[i][j].value; << ' ';
+				cout << get_arr()[i][j].value << ' ';
 		}
 		if(!no_paranthesis) cout << ']' << endl;
 		else cout << endl;
