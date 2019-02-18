@@ -1207,6 +1207,41 @@ bool operator!=(const fraction& l, const fraction& r) {
 	return !(l == r);
 }
 
+bool operator>(const fraction& l, const fraction& r) {
+	double L = 0, R = 0;
+	double denominator = 0;
+	int i,j;
+	term temp;
+
+	for(i = 0 ; i < l.fract.first.num_of_terms ; ++i){
+		temp = l.fract.first.arr[i];
+		L += temp.coefficient * pow(temp.base, 1 / temp.root);
+	}
+	for(i = 0 ; i < l.fract.second.num_of_terms ; ++i){
+		temp = l.fract.second.arr[i];
+		denominator += temp.coefficient * pow(temp.base, 1 / temp.root);
+	}
+	
+	L /= denominator;
+	denominator = 0;
+
+	for(i = 0 ; i < r.fract.first.num_of_terms ; ++i){
+        temp = r.fract.first.arr[i];
+        R += temp.coefficient * pow(temp.base, 1 / temp.root);
+    }
+
+	for(i = 0 ; i < r.fract.first.num_of_terms ; ++i){
+        temp = r.fract.second.arr[i];
+        denominator += temp.coefficient * pow(temp.base, 1 / temp.root);
+	}
+
+	return L > R/denominator;
+}
+
+bool operator<(const fraction& l, const fraction& r) {
+	return !(l>r);
+}
+
 fraction operator+(const fraction& l, const fraction& r){
 	terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
 		t2 = l.fract.second*r.fract.second;
@@ -1241,6 +1276,11 @@ fraction operator/(const fraction& l, const fraction& r){
 fraction operator-(const fraction& rhs){
 	fraction result(-rhs.fract.first, rhs.fract.second); 
 	return result;
+}
+
+ostream& operator<<(ostream& out, fraction& rhs){
+	string str = rhs.fts().second;
+	return out << str;
 }
 
 istream& operator>>(istream& in, fraction& rhs){
@@ -1679,6 +1719,7 @@ eliminate() {
 					//					mat.show();
 					temp = mat.remove_entry(i, k, j);
 					mat = temp * mat;
+				//	temp.show();
 					//					mat.show();
 					//					cout << "k2 end"  << endl;
 				}
@@ -2073,6 +2114,21 @@ gram_schmidt() {
 	delete[] col_arr;
 	return result;
 }
+
+vector<fraction> matrix::
+eigenvalue() {
+	matrix temp = *this;
+	set<fraction> s;
+	vector<fraction> v;
+	temp = temp.eliminate();
+	for(int i = 0 ; i < row ; ++i)
+		s.insert(temp.get_arr()[i][i]);
+	for(auto iter = s.begin() ; iter!=s.end() ; ++iter)
+		v.push_back(*iter);
+	return v;
+}
+
+
 
 //root를 생각해야함!! -> fraction에 대대적인 변화가 필요
 //void matrix::

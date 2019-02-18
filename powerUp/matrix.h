@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <set>
 #include <utility> // pair
 #include <string>
 #include <sstream>
@@ -214,6 +215,7 @@ class fraction{//How can we treat the error devided by zero.
 	fraction& operator=(const double& r);
 	fraction& operator=(const float& r);
 
+
  friend bool operator==(const int& l, const fraction& r);
  friend bool operator!=(const int& l, const fraction& r);
  friend bool operator==(const fraction& l, const int& r);
@@ -240,12 +242,15 @@ class fraction{//How can we treat the error devided by zero.
  friend bool operator==(const fraction& l, const fraction& r);
  friend bool operator!=(const fraction& l, const fraction& r);
 
+ friend bool operator>(const fraction& l, const fraction& r);
+ friend bool operator<(const fraction& l, const fraction& r);
+
  friend fraction operator+(const fraction& l, const fraction& r);
  friend fraction operator-(const fraction& l, const fraction& r);
  friend fraction operator*(const fraction& l, const fraction& r);
  friend fraction operator/(const fraction& l, const fraction& r);
  friend fraction operator-(const fraction& rhs);
- friend ostream& operator<<(ostream& out, const fraction& rhs);
+ friend ostream& operator<<(ostream& out, fraction& rhs);
  friend istream& operator>>(istream& in, fraction& rhs);
 };
 fraction make_entry(int num1, int num2);
@@ -309,7 +314,7 @@ class matrix{
 	matrix project(const matrix& mat);
 
 	matrix gram_schmidt();
-
+	vector<fraction> eigenvalue();
  friend matrix operator+ (const matrix& l, const matrix& r);
  friend matrix operator- (const matrix& l, const matrix& r);
  friend matrix operator* (const matrix& l, const matrix& r);
