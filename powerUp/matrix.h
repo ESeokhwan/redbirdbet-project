@@ -205,6 +205,7 @@ class fraction{//How can we treat the error devided by zero.
 	bool is_denominator_one();
 	bool is_zero();
 	void test_show();
+	fraction root();
 
 	fraction& operator=(const fraction& r);
 	fraction& operator=(const pair<terms, terms>& r);
@@ -228,7 +229,7 @@ class fraction{//How can we treat the error devided by zero.
  friend bool operator==(const float& l, const fraction& r);
  friend bool operator!=(const float& l, const fraction& r);
 
- friend bool operator==(const fraction& l, const float& r);
+ friend bool operator==(const fraction& l,const float& r);
  friend bool operator!=(const fraction& l, const float& r);
  
 
@@ -309,6 +310,7 @@ class matrix{
 	matrix project(const matrix& mat);
 
 	matrix gram_schmidt();
+	matrix normalize();
 
  friend matrix operator+ (const matrix& l, const matrix& r);
  friend matrix operator- (const matrix& l, const matrix& r);

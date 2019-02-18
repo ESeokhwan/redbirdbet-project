@@ -2074,12 +2074,15 @@ gram_schmidt() {
 	return result;
 }
 
-//root를 생각해야함!! -> fraction에 대대적인 변화가 필요
-//void matrix::
-//normalize() {
-//	if(col != 1)
-//		throw exception();
-//	for(int i = 0; i < row; i++)
-//}
+void matrix::
+normalize() {
+	if(col != 1)
+		throw exception();
+	fraction length;
+	for(int i = 0; i < row; i++)
+		length = length + arr[i][0] * arr[i][0];
+	length 
+
+}
 
 
