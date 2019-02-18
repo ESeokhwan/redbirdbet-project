@@ -10,7 +10,7 @@ int main(){
 	mat.show();
 	mat.find_determinant();
 	fraction determinant = mat.get_determinant();
-
+//	mat.eliminate().show();
 	cout << "determinant of matrix : " << determinant << endl;
 
 	return 0;
