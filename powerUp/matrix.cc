@@ -606,6 +606,7 @@ fraction::
 fraction() {
 	terms t1 = 0, t2 = 1;
 	fract.first = t1, fract.second = t2;
+	value = 0.0;
 }
 
 fraction::
@@ -814,6 +815,8 @@ getValue() const {
 //to do
 void fraction::
 simplify(){
+	if(fract.second == 0) 
+		return ;
 	vector<int> v;
 	terms temp[2] = {fract.first, fract.second};
 	terms one = 1;
@@ -2079,7 +2082,6 @@ eigenvalue() {
 	vector<fraction> v;
 	int i, j;
 	fraction tempf;
-	temp = temp.eliminate();
 	if(row!=col){
 		cout << "not square matrix" << endl;
 		return v;

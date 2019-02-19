@@ -8,6 +8,7 @@ int main(){
 
 	cout << endl;
 	mat.show();
+	mat.show_double();
 
 	cout << endl;
 	mat.show(1);
@@ -21,10 +22,13 @@ int main(){
 	cout << endl;
 	cout << "permutation_matrix" << endl;
 	mat.permutation_matrix().show();
+	cout << "double" << endl;
+	mat.permutation_matrix().show_double();
 
 	cout << endl;
 	cout << "elimination_matrix" << endl;
 	mat.elimination_matrix().show();
+	mat.elimination_matrix().show_double();
 	
 	return 0;
 }
