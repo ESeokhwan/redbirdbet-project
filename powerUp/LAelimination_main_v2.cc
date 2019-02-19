@@ -18,6 +18,9 @@ int main(){
 	cout << endl;
 	cout << "eliminated matrix" << endl;
 	eliminated.show();
+	cout << "double" << endl;
+	eliminated.show_double();
+	cout << "?? : " << eliminated.get_arr()[2][1].getValue() << endl;
 
 	cout << endl;
 	cout << "permutation_matrix" << endl;

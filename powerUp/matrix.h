@@ -156,7 +156,7 @@ class fraction{//How can we treat the error devided by zero.
 	pair<terms, terms> getFract();
 	double getValue() const;
 	void simplify();
-	pair<int,string> fts();
+	pair<int,string> fts() const;
 	bool is_denominator_one() const;
 	bool is_denominator_zero() const;
 	bool is_zero() const;
@@ -206,7 +206,7 @@ class fraction{//How can we treat the error devided by zero.
  friend fraction operator*(const fraction& l, const fraction& r);
  friend fraction operator/(const fraction& l, const fraction& r);
  friend fraction operator-(const fraction& rhs);
- friend ostream& operator<<(ostream& out, fraction& rhs);
+ friend ostream& operator<<(ostream& out, const fraction& rhs);
  friend istream& operator>>(istream& in, fraction& rhs);
 };
 fraction make_entry(int num1, int num2);
