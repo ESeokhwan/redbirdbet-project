@@ -1290,7 +1290,7 @@ istream& operator>>(istream& in, fraction& rhs){
 		sign.clear();
 		index.clear();
 	}
-	rhs.fract = make_pair(result[0], result[1]);
+	rhs = make_pair(result[0], result[1]);
 	return in;
 }
 
@@ -1560,11 +1560,12 @@ show_double(bool no_paranthesis) {
 		for(i = 0 ; i <row ; ++i){
 			if(!no_paranthesis) cout << '[' << ' ';
 			else cout << ' ';
-			for(j = 0 ; j < col ; ++j)
+			for(j = 0 ; j < col ; ++j){
 				cout << get_arr()[i][j].value << ' ';
+			}
+			if(!no_paranthesis) cout << ']' << endl;
+			else cout << endl;
 		}
-		if(!no_paranthesis) cout << ']' << endl;
-		else cout << endl;
 	}
 }
 
