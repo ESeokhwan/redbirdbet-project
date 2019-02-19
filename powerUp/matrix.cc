@@ -804,6 +804,11 @@ getFract() {
 	return fract;
 }
 
+double fraction::
+getValue() {
+	return value;
+}
+
 //to do
 void fraction::
 simplify(){
@@ -893,22 +898,26 @@ fts(){
 }
 
 bool fraction::
-is_denominator_one(){
-	simplify();
-	return (fract.second.num_of_terms == 1) && (fract.second.arr[0].coefficient == 1 && fract.second.arr[0].base == 1);
+is_denominator_one() const {
+	fraction tmp(*this);
+	tmp.simplify();
+	return (tmp.fract.second.num_of_terms == 1) && (tmp.fract.second.arr[0].coefficient == 1 && tmp.fract.second.arr[0].base == 1);
 }
 
 bool fraction::
-is_denominator_zero(){
-	simplify();
-	return (fract.second.num_of_terms == 1) && (fract.second.arr[0].coefficient == 0);
+is_denominator_zero() const {
+	fraction tmp(*this);
+	tmp.simplify();
+	return (tmp.fract.second.num_of_terms == 1) && (tmp.fract.second.arr[0].coefficient == 0);
 }
 
 bool fraction::
-is_zero(){
-	simplify();
-	return (fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0);
+is_zero() const {
+	fraction tmp(*this);
+	tmp.simplify();
+	return (tmp.fract.first.num_of_terms == 1 && tmp.fract.first.arr[0].coefficient == 0);
 }
+
 
 fraction fraction::
 power(const double& exponent) {
@@ -2057,17 +2066,38 @@ normalize() {
 }
 */
 
-/*
+bool compare_value(fraction f1, fraction f2){
+	return f1.getValue() < f2.getValue();
+}
+
 vector<fraction> matrix::
 eigenvalue() {
 	matrix temp = *this;
-	set<fraction> s;
 	vector<fraction> v;
+	int i, j;
+	fraction tempf;
 	temp = temp.eliminate();
-	for(int i = 0 ; i < row ; ++i)
-		s.insert(temp.get_arr()[i][i]);
-	for(auto iter = s.begin() ; iter!=s.end() ; ++iter)
-		v.push_back(*iter);
+	if(row!=col){
+		cout << "not square matrix" << endl;
+		return v;
+	}
+	else{
+		temp = temp.eliminate();
+		for(i = 0 ; i < row ; ++i)
+			v.push_back(temp.get_arr()[i][i]);
+		sort(v.begin(), v.end(), compare_value);
+
+		for(i = 0 ; i < v.size() ; ++i){
+			tempf = v[i];
+			for(j = i + 1 ; j < v.size() ; ++j)
+				if(tempf == v[j]){
+					v.erase( v.begin() + j);
+					j--;
+				}
+		}
+	}
+	sort(v.begin(), v.end(), compare_value);
+
 	return v;
 }
-*/
+

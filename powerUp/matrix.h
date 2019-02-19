@@ -157,11 +157,12 @@ class fraction{//How can we treat the error devided by zero.
 	double getValue();
 	void simplify();
 	pair<int,string> fts();
-	bool is_denominator_one();
-	bool is_denominator_zero();
-	bool is_zero();
+	bool is_denominator_one() const;
+	bool is_denominator_zero() const;
+	bool is_zero() const;
 	void test_show();
 	fraction power(const double& exponent);
+	double get_value();
 
 	fraction& operator=(const fraction& r);
 	fraction& operator=(const pair<terms, terms>& r);
@@ -210,6 +211,8 @@ class fraction{//How can we treat the error devided by zero.
 };
 fraction make_entry(int num1, int num2);
 void fraction_output(fraction*,int,int);
+bool compare_value(fraction, fraction);
+
 class matrix{
  protected:
 	int row, col;
