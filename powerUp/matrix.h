@@ -154,14 +154,15 @@ class fraction{//How can we treat the error devided by zero.
 	fraction(const float& r);
 
 	pair<terms, terms> getFract();
-	double getValue();
+	double getValue() const;
 	void simplify();
 	pair<int,string> fts();
-	bool is_denominator_one();
-	bool is_denominator_zero();
-	bool is_zero();
+	bool is_denominator_one() const;
+	bool is_denominator_zero() const;
+	bool is_zero() const;
 	void test_show();
-	fraction power(const double& exponent);
+	fraction power(int exponent);
+	fraction root(int exponene);
 
 	fraction& operator=(const fraction& r);
 	fraction& operator=(const pair<terms, terms>& r);
