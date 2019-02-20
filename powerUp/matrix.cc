@@ -1552,12 +1552,22 @@ show_double(bool no_paranthesis) {
 	if(row*col == 0) cout << "[]" << endl;
 	else{
 		int i, j;
+		bool neg[col];
+		for(i = 0 ; i < col ; ++i)
+			neg[i] = false;
+
+		for(i = 0 ; i < col ; ++i)
+			for(j = 0 ; j < row ; ++j)
+				if( get_arr()[j][i].value < 0)
+					neg[i] = true;
 
 		cout << setprecision(5) << fixed;
 		for(i = 0 ; i <row ; ++i){
 			if(!no_paranthesis) cout << '[' << ' ';
 			else cout << ' ';
 			for(j = 0 ; j < col ; ++j){
+				if(get_arr()[i][j].value > 0 && neg[j])
+					blank(1);
 				cout << get_arr()[i][j].value << ' ';
 			}
 			if(!no_paranthesis) cout << ']' << endl;
