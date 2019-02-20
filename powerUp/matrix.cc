@@ -606,6 +606,7 @@ fraction::
 fraction() {
 	terms t1 = 0, t2 = 1;
 	fract.first = t1, fract.second = t2;
+	value = 0.0;
 }
 
 fraction::
@@ -617,6 +618,8 @@ fraction(const pair<terms,terms>& p) : fract(p) {
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -631,6 +634,8 @@ fraction(const int& t) {
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -644,6 +649,8 @@ fraction(const term& t) {
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -657,6 +664,8 @@ fraction(const terms& t) {
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -670,6 +679,8 @@ fraction(const int& t1, const int& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -684,6 +695,8 @@ fraction(const int& t1, const term& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -697,6 +710,8 @@ fraction(const int& t1, const terms& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -710,6 +725,8 @@ fraction(const term& t1, const int& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -723,6 +740,8 @@ fraction(const term& t1, const term& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -736,6 +755,8 @@ fraction(const term& t1, const terms& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -749,6 +770,8 @@ fraction(const terms& t1, const int& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -762,6 +785,8 @@ fraction(const terms& t1, const term& t2){
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -774,6 +799,8 @@ fraction(const terms& t1, const terms& t2) {
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
 		son += double(fract.first.arr[i].coefficient) * pow(double(fract.first.arr[i].base), 1.0 / double(fract.first.arr[i].root));
+	}
+	for(int i = 0; i < fract.second.num_of_terms; i++) {
 		mom += double(fract.second.arr[i].coefficient) * pow(double(fract.second.arr[i].base), 1.0 / double(fract.second.arr[i].root));
 	}
 	value = son/mom;
@@ -814,6 +841,8 @@ getValue() const {
 //to do
 void fraction::
 simplify(){
+	if(fract.second == 0) 
+		return ;
 	vector<int> v;
 	terms temp[2] = {fract.first, fract.second};
 	terms one = 1;
@@ -850,7 +879,7 @@ simplify(){
 }
 //fraction을 조작하여 string과 int pair를 return하는 함수
 pair<int,string> fraction::
-fts(){
+fts() const {
 	int stack = 0, loop = 1;
 	bool is_neg = true, multi_term = false;
 	string str = "";
@@ -929,18 +958,35 @@ power(int exponent) {
 	fraction result(*this);
 	tmp.simplify();
 	result.simplify();
-	cout <<  "slslsl" << endl;
-	for(int i = 0; i < exponent; i++)
-		tmp = tmp * result;
-	cout << "slslslsl" << endl;
+	for(int i = 0; i < exponent - 1; i++)
+		result = result * tmp;
+	return result;
 }
 
 fraction fraction::
 root(int exponent) {
 	fraction tmp(*this);
 	if(tmp.fract.first.num_of_terms == 1 && tmp.fract.second.num_of_terms == 1) {
-		tmp.fract.first.arr[0].root = int(pow(double(tmp.fract.first.arr[0].root), exponent));
-		tmp.fract.second.arr[0].root = int(pow(double(tmp.fract.second.arr[0].root), exponent));
+		term term_co1(tmp.fract.first.arr[0].coefficient, 1, 1);
+		term term_co2(tmp.fract.second.arr[0].coefficient, 1, 1);
+		term term_ro1(1, tmp.fract.first.arr[0].root, tmp.fract.first.arr[0].base);
+		term term_ro2(1, tmp.fract.second.arr[0].root, tmp.fract.second.arr[0].base);
+
+		fraction tmp_co(term_co1, term_co2);
+		fraction tmp_ro(term_ro1, term_ro2);
+
+		tmp_co.fract.first.arr[0].root = exponent;
+		tmp_co.fract.second.arr[0].root = exponent;
+		tmp_co.fract.first.arr[0].base = tmp_co.fract.first.arr[0].coefficient;
+		tmp_co.fract.second.arr[0].base = tmp_co.fract.second.arr[0].coefficient;
+		tmp_co.fract.first.arr[0].coefficient = 1;
+		tmp_co.fract.first.arr[0].coefficient = 1;
+
+		tmp_ro.fract.first.arr[0].root *= exponent;
+		tmp_ro.fract.second.arr[0].root *= exponent;
+
+		tmp = tmp_co * tmp_ro;
+
 	}
 	else {
 		tmp.fract.second = 0;
@@ -1130,6 +1176,9 @@ bool operator==(const fraction& l, const fraction& r) {
 	tmpl.simplify();
 	tmpr.simplify();
 
+	if(tmpl.fract.second == 0 && tmpr.fract.second == 0)
+		if(tmpl.value == tmpr.value)
+			return true;
 	if(tmpl.fract.first == tmpr.fract.first && tmpl.fract.second == tmpr.fract.second)
 		return true;
 	return false;
@@ -1142,13 +1191,13 @@ bool operator!=(const fraction& l, const fraction& r) {
 fraction operator+(const fraction& l, const fraction& r){
 	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
+		temp.value = l.value + r.value;
 		return temp;
 	}
 	else{
 		terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
 			t2 = l.fract.second*r.fract.second;
-		fraction p( make_pair(t1, t2) );
-		p.value = l.value + r.value;
+		fraction p(make_pair(t1, t2));
 		p.simplify();
 		return p;
 	}
@@ -1157,13 +1206,13 @@ fraction operator+(const fraction& l, const fraction& r){
 fraction operator-(const fraction& l, const fraction& r){
 	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
+		temp.value = l.value - r.value;
 		return temp;
 	}
 	else{
 		terms t1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
 			t2 = l.fract.second*r.fract.second;
 		fraction p( make_pair(t1, t2) );
-		p.value = l.value - r.value;
 		p.simplify();
 		return p;
 	}
@@ -1172,13 +1221,13 @@ fraction operator-(const fraction& l, const fraction& r){
 fraction operator*(const fraction& l, const fraction& r){
 	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
+		temp.value = l.value * r.value;
 		return temp;
 	}
 	else{
 		terms t1 = l.fract.first * r.fract.first,
 			t2 = l.fract.second * r.fract.second;
-		fraction p( make_pair(t1, t2) );
-		p.value = r.value * l.value;
+		fraction p(make_pair(t1, t2));
 		p.simplify();
 		return p;
 	}
@@ -1187,22 +1236,27 @@ fraction operator*(const fraction& l, const fraction& r){
 fraction operator/(const fraction& l, const fraction& r){
 	if(l.is_denominator_zero() || r.is_denominator_zero()){
 		fraction temp(1,0);
+		temp.value = l.value / r.value;
 		return temp;
 	}
 	else{
 		fraction reverse_r( make_pair(r.fract.second , r.fract.first));
 		fraction result = l * reverse_r;
-		result.value = l.value / r.value;
 		return result;
 	}
 }
 
 fraction operator-(const fraction& rhs){
-	fraction result(-rhs.fract.first, rhs.fract.second); 
+	if(rhs.is_denominator_zero()) {
+		fraction result(1,0);
+		result.value = -rhs.value;
+		return result;
+	}
+	fraction result(-rhs.fract.first, rhs.fract.second);
 	return result;
 }
 
-ostream& operator<<(ostream& out, fraction& rhs){
+ostream& operator<<(ostream& out, const fraction& rhs){
 	string str = rhs.fts().second;
 	return out << str;
 }
@@ -1451,7 +1505,7 @@ fill(){
 
 void matrix::
 initialize() {
-	fraction f(make_entry(0,1));
+	fraction f(0);
 	vector<fraction> temp;
 	for(int i = 0 ; i < col ; ++i) temp.push_back(f);
 	for(int i = 0 ; i < row ; ++i) arr.push_back(temp);
@@ -1461,14 +1515,14 @@ initialize() {
 void matrix::
 make_identity_matrix() {
 	initialize();
-	fraction f(make_entry(1,1));
+	fraction f(1);
 	for(int i = 0; i < min(row,col); i++)
 		arr[i][i] = f;
 }
 
 void matrix::
 make_all_entry_zero() {
-	fraction zero_entry(make_entry(0,1));
+	fraction zero_entry(0);
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
 			arr[i][j] = zero_entry;
@@ -1505,6 +1559,7 @@ show(bool no_paranthesis){
 void matrix::
 show(bool no_paranthesis){
 	bool zero_test = false;
+	matrix_simplification();
 	for(int i = 0 ; i < row ; ++i)
 		for(int j = 0 ; j < col ; ++j)
 			zero_test = zero_test || get_arr()[i][j].is_denominator_zero();
@@ -1581,6 +1636,22 @@ matrix_simplification(){
 	for(int i = 0 ; i < row ; ++i)
 		for(int j = 0 ; j < col ; ++j)
 			arr[i][j].simplify();
+}
+
+matrix matrix::
+normalize() {
+	if(col != 1)
+		throw  "error occurs in 'matrix::normalize()'.\nyou can nomarlize when 'matrix::col' is 1.";
+	fraction length(0);
+
+	for(int i = 0; i < row; i++) {
+		length = length + arr[i][0].power(2);
+	}
+	length = length.root(2);
+	matrix result = *this;
+	for(int i = 0; i < row; i++)
+		result.arr[i][0] = result.arr[i][0] / length;
+	return result;
 }
 
 matrix matrix::
@@ -2025,9 +2096,11 @@ all_solution(matrix b){
 		particular.set_arr(pivot[i], 0, temp.get_arr()[i][temp.get_col() - 1]);
 	return particular;
 }
-/*
+
 matrix matrix::
 gram_schmidt() {
+	if(row < col) 
+		throw "error occurs in matrix::gram_schmidt(). You can use gram-schmidt process when row >= col.";
 	matrix* col_arr = new matrix[col];
 	for(int i = 0; i < col; i++) {
 		col_arr[i] = matrix(row, 1);
@@ -2035,50 +2108,66 @@ gram_schmidt() {
 			col_arr[i].arr[j][0] = arr[j][i];
 		}
 	}
+	matrix* result_col_arr = new matrix[col];
 	for(int i = 0; i < col; i++) {
-		cout << "AAA" << i <<  endl;
-		col_arr[i].normalize();
-		cout << "AAA" << endl;
-		if(i < col - 1) {
-			for(int j = 0; j < i + 1; j++) {
-				col_arr[i+1] = col_arr[i+1] - dotproduct(col_arr[j], col_arr[i+1])*(fraction()/dotproduct(col_arr[j],col_arr[j]))*col_arr[j];
-				cout << j << endl;
-			}
+		result_col_arr[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			result_col_arr[i].arr[j][0] = arr[j][i];
 		}
+	}
+
+	for(int i = 0; i < col - 1; i++) {
+		for(int j = 0; j < i + 1; j++) {
+			result_col_arr[i+1] = result_col_arr[i+1] - (dotproduct(result_col_arr[j], col_arr[i+1])*(fraction(1)/dotproduct(result_col_arr[j], result_col_arr[j])))*result_col_arr[j];
+		}
+	}
+	for(int i = 0; i < col; i++) { 
+		result_col_arr[i] = result_col_arr[i].normalize();
 	}
 	matrix result(row, col);
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
-			result.arr[i][j] = col_arr[j].arr[i][0];
+			result.arr[i][j] = result_col_arr[j].arr[i][0];
 	delete[] col_arr;
+	delete[] result_col_arr;
 	return result;
 }
-*/
 
-/*
 matrix matrix::
-normalize() {
-	if(col != 1)
-		throw  "error occurs in 'matrix::normalize()'.\nyou can nomarlize when 'matrix::col' is 1.";
-	fraction length(0);
-	cout << "normalize" << endl;
-	cout << ":" <<  length.fts().second << endl;
-
-	for(int i = 0; i < row; i++) {
-		cout << i << endl;
-		cout << "..." << arr[i][0].power(2).fts().second << endl;
-		cout << "KKKK" << endl;
-		length = length + arr[i][0].power(2);
-		cout << ":" <<  length.fts().second << endl;
+Rfactor() {
+	throw "error occurs in matrix::Rfactor(). You can QRfactorize when row >= col.";
+	matrix* A = new matrix[col];
+	for(int i = 0; i < col; i++) {
+		A[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			A[i].arr[j][0] = arr[j][i];
+		}
 	}
-	cout << "Z" << endl;
-	length = length.root(2);
-	matrix result = *this;
-	for(int i = 0; i < row; i++)
-		result.arr[i][0] = result.arr[i][0] / length;
-	return result;
+
+	matrix gram_sh = gram_schmidt();
+	matrix* Q = new matrix[col];
+	for(int i = 0; i < col; i++) {
+		Q[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			Q[i].arr[j][0] = gram_sh.arr[j][i];
+		}
+	}
+	matrix R(col, col);
+	for(int i = 0; i < col; i++) {
+		for(int j = 0; j < i+1; j++) {
+			R.arr[j][i] = dotproduct(Q[j], A[i]);
+		}
+	}
+	delete[] A;
+	delete[] Q;
+
+	return R;
 }
-*/
+
+
+
+
+
 
 bool compare_value(fraction f1, fraction f2){
 	return f1.getValue() < f2.getValue();
@@ -2090,7 +2179,6 @@ eigenvalue() {
 	vector<fraction> v;
 	int i, j;
 	fraction tempf;
-	temp = temp.eliminate();
 	if(row!=col){
 		cout << "not square matrix" << endl;
 		return v;
