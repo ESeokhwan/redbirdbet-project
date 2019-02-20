@@ -248,6 +248,7 @@ class matrix{
 	void show(bool no_paranthesis = false);
 	void show_double(bool no_paranthesis = false);
 	void matrix_simplification();
+	matrix normalize();
 
 	matrix change_two_rows(int row1, int row2);
 	matrix move_a_row_to_last_row(int row);
@@ -272,7 +273,8 @@ class matrix{
 	matrix project(const matrix& mat);
 
 	matrix gram_schmidt();
-	matrix normalize();
+	
+	matrix Rfactor();
 
 	vector<fraction> eigenvalue();
 

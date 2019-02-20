@@ -1559,6 +1559,7 @@ show(bool no_paranthesis){
 void matrix::
 show(bool no_paranthesis){
 	bool zero_test = false;
+	matrix_simplification();
 	for(int i = 0 ; i < row ; ++i)
 		for(int j = 0 ; j < col ; ++j)
 			zero_test = zero_test || get_arr()[i][j].is_denominator_zero();
@@ -1625,6 +1626,22 @@ matrix_simplification(){
 	for(int i = 0 ; i < row ; ++i)
 		for(int j = 0 ; j < col ; ++j)
 			arr[i][j].simplify();
+}
+
+matrix matrix::
+normalize() {
+	if(col != 1)
+		throw  "error occurs in 'matrix::normalize()'.\nyou can nomarlize when 'matrix::col' is 1.";
+	fraction length(0);
+
+	for(int i = 0; i < row; i++) {
+		length = length + arr[i][0].power(2);
+	}
+	length = length.root(2);
+	matrix result = *this;
+	for(int i = 0; i < row; i++)
+		result.arr[i][0] = result.arr[i][0] / length;
+	return result;
 }
 
 matrix matrix::
@@ -2072,6 +2089,8 @@ all_solution(matrix b){
 
 matrix matrix::
 gram_schmidt() {
+	if(row < col) 
+		throw "error occurs in matrix::gram_schmidt(). You can use gram-schmidt process when row >= col.";
 	matrix* col_arr = new matrix[col];
 	for(int i = 0; i < col; i++) {
 		col_arr[i] = matrix(row, 1);
@@ -2079,39 +2098,65 @@ gram_schmidt() {
 			col_arr[i].arr[j][0] = arr[j][i];
 		}
 	}
+	matrix* result_col_arr = new matrix[col];
 	for(int i = 0; i < col; i++) {
-		col_arr[i] = col_arr[i].normalize();
-		if(i < col - 1) {
-			for(int j = 0; j < i + 1; j++) {
-				col_arr[i+1] = col_arr[i+1] - dotproduct(col_arr[j], col_arr[i+1])*(fraction()/dotproduct(col_arr[j],col_arr[j]))*col_arr[j];
-			}
+		result_col_arr[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			result_col_arr[i].arr[j][0] = arr[j][i];
 		}
+	}
+
+	for(int i = 0; i < col - 1; i++) {
+		for(int j = 0; j < i + 1; j++) {
+			result_col_arr[i+1] = result_col_arr[i+1] - (dotproduct(result_col_arr[j], col_arr[i+1])*(fraction(1)/dotproduct(result_col_arr[j], result_col_arr[j])))*result_col_arr[j];
+		}
+	}
+	for(int i = 0; i < col; i++) { 
+		result_col_arr[i] = result_col_arr[i].normalize();
 	}
 	matrix result(row, col);
 	for(int i = 0; i < row; i++)
 		for(int j = 0; j < col; j++)
-			result.arr[i][j] = col_arr[j].arr[i][0];
+			result.arr[i][j] = result_col_arr[j].arr[i][0];
 	delete[] col_arr;
+	delete[] result_col_arr;
 	return result;
 }
-
-
 
 matrix matrix::
-normalize() {
-	if(col != 1)
-		throw  "error occurs in 'matrix::normalize()'.\nyou can nomarlize when 'matrix::col' is 1.";
-	fraction length(0);
-
-	for(int i = 0; i < row; i++) {
-		length = length + arr[i][0].power(2);
+Rfactor() {
+	throw "error occurs in matrix::Rfactor(). You can QRfactorize when row >= col.";
+	matrix* A = new matrix[col];
+	for(int i = 0; i < col; i++) {
+		A[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			A[i].arr[j][0] = arr[j][i];
+		}
 	}
-	length = length.root(2);
-	matrix result = *this;
-	for(int i = 0; i < row; i++)
-		result.arr[i][0] = result.arr[i][0] / length;
-	return result;
+
+	matrix gram_sh = gram_schmidt();
+	matrix* Q = new matrix[col];
+	for(int i = 0; i < col; i++) {
+		Q[i] = matrix(row, 1);
+		for(int j = 0; j < row; j++) {
+			Q[i].arr[j][0] = gram_sh.arr[j][i];
+		}
+	}
+	matrix R(col, col);
+	for(int i = 0; i < col; i++) {
+		for(int j = 0; j < i+1; j++) {
+			R.arr[j][i] = dotproduct(Q[j], A[i]);
+		}
+	}
+	delete[] A;
+	delete[] Q;
+
+	return R;
 }
+
+
+
+
 
 
 bool compare_value(fraction f1, fraction f2){
