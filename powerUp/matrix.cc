@@ -837,16 +837,43 @@ double fraction::
 getValue() const {
 	return value;
 }
+void fraction::
+rationalize() {
+	if(fract.second.num_of_terms == 1) {
+		term tmp(1, fract.second.arr[0].root, fract.second.arr[0].base);
+		for(int i = 0; i < fract.second.arr[0].root - 1; i++) {
+			fract.first = fract.first * tmp;
+			fract.second = fract.second * tmp;
+		}
+	}
+	else if(fract.second.num_of_terms == 2) {
+		if(fract.second.arr[0].root < 3 && fract.second.arr[1].root < 3) {
+			terms ts_tmp;
+			ts_tmp = fract.second.arr[0] - fract.second.arr[1];
+			fract.first = fract.first * ts_tmp;
+			fract.second = fract.second * ts_tmp;
+		}
+	}
+}
+
 
 //to do
 void fraction::
-simplify(){
-	if(fract.second == 0) 
-		return ;
+simplify_without_rationalize(){
+	if(fract.second == 0) {
+		fract.first = 1;
+		return;
+	}
+	else if(fract.first == 0) {
+		fract.second = 1;
+		return;
+	}
 	vector<int> v;
 	terms temp[2] = {fract.first, fract.second};
+	temp[0].simplify();
+	temp[1].simplify();
 	terms one = 1;
-	int common_factor = 1, min = 123456789, temp_int = 0, i = 0, j = 0;
+	int common_factor = 1, coef_min = -1, temp_int = 0, i = 0, j = 0;// min의 초기값을 -1로 바꿈
 	bool neg = temp[1].arr[0].coefficient < 0;
 
 	for(i = 0 ; i < 2 ; ++i)
@@ -855,9 +882,9 @@ simplify(){
 			if(temp_int < 0) temp_int = -temp_int;
 			v.push_back(temp_int);
 		}
-	min = *min_element(v.begin(), v.end());
+	coef_min = *min_element(v.begin(), v.end());
 
-	for(i = min ; i > 1 ; --i){
+	for(i = coef_min ; i > 1 ; --i){
 		for(j = 0 ; j < v.size() ; ++j)
 			if(v[j]%i!=0) break;
 		if(j == v.size()){
@@ -872,11 +899,122 @@ simplify(){
 		for(j = 0 ; j < temp[i].num_of_terms ; ++j)
 			temp[i].arr[j].coefficient /= common_factor;
 
-	if((fract.first.num_of_terms == 1 && fract.first.arr[0].coefficient == 0))
-		fract = make_pair(temp[0], one);
-	else
-		fract = make_pair(temp[0], temp[1]);
+	fract = make_pair(temp[0], temp[1]);
+	//여기까지는 정수 게수만 처리한 것임
+	
+	temp[0] = fract.first;
+	temp[1] = fract.second;
+	int gcd_of_roots;
+	vector< map<int, pair<int, int> > > factors[2];
+	vector< int > cofactors[2]; //fract.fist와 second 각각의 공통 factor
+	vector<int> cofactors_deleted; //분모와 분자의 공통 factor
+	for(i = 0; i < 2; i++) {
+		vector<int> tmpcofactors;
+		//뒤에는 fraction의 terms들에 첫번째 term의 factor를 담는 과정이다.
+		int tmp = temp[i].arr[0].base;
+		for(j = 2; j <= temp[i].arr[0].base; j++) {
+			if(tmp % j == 0) {
+				tmp /= j;
+				tmpcofactors.push_back(j);
+//				cout << "j " << j << endl;
+			}
+			while(tmp % j == 0) {
+				tmp /= j;
+			}
+		}
+
+		//뒤에는 fraction의 terms들의 term들이 공통으로 갖고 조건에 맞는 factor들만 남기는 과정이다.
+		for(j = 0; j < temp[i].num_of_terms; j++) {
+			gcd_of_roots = gcd(gcd_of_roots, temp[i].arr[j].root);
+//			cout << j << endl;
+		}
+//		cout << gcd_of_roots << endl;
+		for(j = 0; j < temp[i].num_of_terms;j++) {
+			tmp = temp[i].arr[j].base;
+			for(vector<int>::iterator it = tmpcofactors.begin(); it < tmpcofactors.end(); it++) {
+				int num_of_power = 0;
+//				cout << "*it " <<  *it << endl;
+				if(tmp % *it != 0) {
+					tmpcofactors.erase(it);
+				}
+				while(tmp % *(it) == 0) {
+					tmp /= *(it);
+					num_of_power++;
+				}
+				if(gcd_of_roots * num_of_power < temp[i].arr[j].root && num_of_power != 0) {
+					tmpcofactors.erase(it);
+				}
+			}
+		}
+//		cout << "여긴 왔니?" << endl;
+		cofactors[i] = tmpcofactors;
+//		cout << "check" << endl;
+
+		//뒤의 과정은 fraction의 terms들의 term들의 공통 factor와 그 factor가 몇번 곱해지는지 저장하는 과정이다.
+		for(j = 0; j < temp[i].num_of_terms;j++) {
+			tmp = temp[i].arr[j].base;
+			map<int, pair< int, int > > tmpfactors; //<인수, < 곱해진 횟수, 몇제곱근의 base에 대한 거인지>>
+			for(vector<int>::iterator it = tmpcofactors.begin(); it != tmpcofactors.end(); it++) {
+				tmpfactors.insert(make_pair(*(it), make_pair(1, temp[i].arr[j].root)));
+				tmp /= *(it);
+//				cout << "여긴??" <<endl;
+				while(tmp % *(it) == 0) {
+					tmp /= *(it);
+					tmpfactors[*(it)].first++;
+				}
+			}
+			factors[i].push_back(tmpfactors);
+		}
+	}
+//	cout << "Hey?" << endl;
+	for(i = 0; i < cofactors[0].size(); i++) {
+		for(vector<int>::iterator it = cofactors[1].begin(); it < cofactors[1].end(); it++) {
+			if(cofactors[0][i] == *(it)) {
+				cofactors_deleted.push_back(*(it));
+				cofactors[1].erase(it);
+			}
+		}
+	}
+//	cout << "excuse me?" << endl;
+	double root_min = -1;
+	for(vector<int>::iterator it = cofactors_deleted.begin(); it < cofactors_deleted.end(); it++) {
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < temp[i].num_of_terms;j++) {
+//				cout << "J" << j << endl;
+				if(root_min == -1) {
+					root_min = double(factors[i][j][*(it)].first)/double(factors[i][j][*(it)].second);
+				}
+				root_min = min(root_min, double(factors[i][j][*(it)].first)/double(factors[i][j][*(it)].second));
+			}
+		}
+	}
+	for(i = 1; double(i)/double(gcd_of_roots) <= root_min; i++) { }
+	int exponent_of_delete = i - 1;
+//	cout << exponent_of_delete << endl;
+	
+	for(vector<int>::iterator it =  cofactors_deleted.begin(); it < cofactors_deleted.end(); it++) {
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < temp[i].num_of_terms;j++) {
+				int root_per_gcd = temp[i].arr[j].root / gcd_of_roots;
+//				cout << "root_per_gcd : " << root_per_gcd << " *it : " << *(it) << endl;
+				for(int k = 0; k < exponent_of_delete * root_per_gcd; k++) {
+					temp[i].arr[j].base /= *(it);
+				}
+			}
+		}
+	}
+	fract = make_pair(temp[0], temp[1]);
+	fract.first.simplify();
+	fract.second.simplify();
 }
+
+void fraction::
+simplify() {
+	simplify_without_rationalize();
+	rationalize();
+	simplify_without_rationalize();
+}
+
 //fraction을 조작하여 string과 int pair를 return하는 함수
 pair<int,string> fraction::
 fts() const {
@@ -2135,7 +2273,8 @@ gram_schmidt() {
 
 matrix matrix::
 Rfactor() {
-	throw "error occurs in matrix::Rfactor(). You can QRfactorize when row >= col.";
+	if(row < col)
+		throw "error occurs in matrix::Rfactor(). You can QRfactorize when row >= col.";
 	matrix* A = new matrix[col];
 	for(int i = 0; i < col; i++) {
 		A[i] = matrix(row, 1);

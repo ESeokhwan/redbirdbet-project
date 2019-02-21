@@ -155,6 +155,8 @@ class fraction{//How can we treat the error devided by zero.
 
 	pair<terms, terms> getFract();
 	double getValue() const;
+	void rationalize();
+	void simplify_without_rationalize();
 	void simplify();
 	pair<int,string> fts() const;
 	bool is_denominator_one() const;
