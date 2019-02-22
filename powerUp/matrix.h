@@ -25,9 +25,8 @@ class term {//base가 음수일 때 고려해야함!!
 
 	void simplify();
 
-
  public :
-	term();
+ 	term();
 	term(int _coefficient);
 	term(int _root, int _base);
 	term(int _coefficient, int _root, int _base);

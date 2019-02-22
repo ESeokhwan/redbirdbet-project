@@ -5,8 +5,10 @@ int matrix::permutation_count = 0;
 
 int gcd(int num1, int num2)
 {
-	if(num1 <= 0  && num2 <= 0)
+	if(num1 < 0  && num2 < 0)
 		throw "error occurs in 'gcd(int num1, int num2)'.\nnum1 and num2 must be positive.";
+	if(num1 == 0 || num2 == 0)
+		return 1;
 
 	int tmp;
 	while (num2 != 0)
@@ -795,6 +797,8 @@ fraction(const terms& t1, const term& t2){
 fraction::
 fraction(const terms& t1, const terms& t2) {
 	fract.first = t1, fract.second = t2;
+	cout << "hey ";
+	cout << *this << endl;
 	double son = 0.0;
 	double mom = 0.0;
 	for(int i = 0; i < fract.first.num_of_terms; i++) {
@@ -869,9 +873,11 @@ simplify_without_rationalize(){
 		return;
 	}
 	vector<int> v;
+	int gcd_of_coefficients[2];
 	terms temp[2] = {fract.first, fract.second};
 	temp[0].simplify();
 	temp[1].simplify();
+	terms abandoned_terms[2] = {temp[0], temp[1]};
 	terms one = 1;
 	int common_factor = 1, coef_min = -1, temp_int = 0, i = 0, j = 0;// min의 초기값을 -1로 바꿈
 	bool neg = temp[1].arr[0].coefficient < 0;
@@ -900,23 +906,36 @@ simplify_without_rationalize(){
 			temp[i].arr[j].coefficient /= common_factor;
 
 	fract = make_pair(temp[0], temp[1]);
+
+	for(i = 0; i < 2; i++) {
+		gcd_of_coefficients[i] = abandoned_terms[i].arr[0].coefficient;
+		for(j = 0; j < abandoned_terms[i].num_of_terms; j++) {
+			gcd_of_coefficients[i] = gcd(gcd_of_coefficients[i], abs(abandoned_terms[i].arr[j].coefficient));
+		}
+		for(j = 0; j < abandoned_terms[i].num_of_terms; j++) {
+			abandoned_terms[i].arr[j].coefficient /= gcd_of_coefficients[i];
+		}
+	}
 	//여기까지는 정수 게수만 처리한 것임
 	
 	temp[0] = fract.first;
 	temp[1] = fract.second;
-	int gcd_of_roots;
+	int gcd_of_roots_arr[2];
+	int gcd_of_roots = temp[0].arr[0].root;
+	int I_need_this[2];
 	vector< map<int, pair<int, int> > > factors[2];
 	vector< int > cofactors[2]; //fract.fist와 second 각각의 공통 factor
 	vector<int> cofactors_deleted; //분모와 분자의 공통 factor
 	for(i = 0; i < 2; i++) {
+//		cout << "start" << i << endl;
 		vector<int> tmpcofactors;
 		//뒤에는 fraction의 terms들에 첫번째 term의 factor를 담는 과정이다.
 		int tmp = temp[i].arr[0].base;
+		gcd_of_roots_arr[i] = temp[i].arr[0].root;
 		for(j = 2; j <= temp[i].arr[0].base; j++) {
 			if(tmp % j == 0) {
 				tmp /= j;
 				tmpcofactors.push_back(j);
-//				cout << "j " << j << endl;
 			}
 			while(tmp % j == 0) {
 				tmp /= j;
@@ -925,15 +944,13 @@ simplify_without_rationalize(){
 
 		//뒤에는 fraction의 terms들의 term들이 공통으로 갖고 조건에 맞는 factor들만 남기는 과정이다.
 		for(j = 0; j < temp[i].num_of_terms; j++) {
+			gcd_of_roots_arr[i] = gcd(gcd_of_roots_arr[i], temp[i].arr[j].root);
 			gcd_of_roots = gcd(gcd_of_roots, temp[i].arr[j].root);
-//			cout << j << endl;
 		}
-//		cout << gcd_of_roots << endl;
 		for(j = 0; j < temp[i].num_of_terms;j++) {
 			tmp = temp[i].arr[j].base;
 			for(vector<int>::iterator it = tmpcofactors.begin(); it < tmpcofactors.end(); it++) {
 				int num_of_power = 0;
-//				cout << "*it " <<  *it << endl;
 				if(tmp % *it != 0) {
 					tmpcofactors.erase(it);
 				}
@@ -941,7 +958,7 @@ simplify_without_rationalize(){
 					tmp /= *(it);
 					num_of_power++;
 				}
-				if(gcd_of_roots * num_of_power < temp[i].arr[j].root && num_of_power != 0) {
+				if(gcd_of_roots_arr[i] * num_of_power < temp[i].arr[j].root && num_of_power != 0) {
 					tmpcofactors.erase(it);
 				}
 			}
@@ -954,7 +971,7 @@ simplify_without_rationalize(){
 		for(j = 0; j < temp[i].num_of_terms;j++) {
 			tmp = temp[i].arr[j].base;
 			map<int, pair< int, int > > tmpfactors; //<인수, < 곱해진 횟수, 몇제곱근의 base에 대한 거인지>>
-			for(vector<int>::iterator it = tmpcofactors.begin(); it != tmpcofactors.end(); it++) {
+			for(vector<int>::iterator it = cofactors[i].begin(); it != cofactors[i].end(); it++) {
 				tmpfactors.insert(make_pair(*(it), make_pair(1, temp[i].arr[j].root)));
 				tmp /= *(it);
 //				cout << "여긴??" <<endl;
@@ -965,7 +982,44 @@ simplify_without_rationalize(){
 			}
 			factors[i].push_back(tmpfactors);
 		}
+
+		double root_min = -1;
+		for(vector<int>::iterator it = cofactors[i].begin(); it < cofactors[i].end(); it++) {
+			for(j = 0; j < temp[i].num_of_terms;j++) {
+				if(root_min == -1) {
+					root_min = double(factors[i][j][*(it)].first)/double(factors[i][j][*(it)].second);
+				}
+				root_min = min(root_min, double(factors[i][j][*(it)].first)/double(factors[i][j][*(it)].second));
+			}
+		}
+		for(j = 1; double(j)/double(gcd_of_roots_arr[i]) <= root_min; j++) { }
+		int exponent_of_delete = j - 1;
+		I_need_this[i] = exponent_of_delete;
+
+		for(vector<int>::iterator it = cofactors[i].begin(); it < cofactors[i].end(); it++) {
+			for(j = 0; j < abandoned_terms[i].num_of_terms;j++) {
+				int root_per_gcd = abandoned_terms[i].arr[j].root / gcd_of_roots_arr[i];
+				for(int k = 0; k < exponent_of_delete * root_per_gcd; k++) {
+					abandoned_terms[i].arr[j].base /= *(it);
+				}
+			}
+		}
+		abandoned_terms[i].simplify();
 	}
+	if(abandoned_terms[0] == abandoned_terms[1] && abandoned_terms[0] != 1) {
+		for(i = 0; i < 2; i++) {
+			temp[i] = 1;
+			for(vector<int>::iterator it = cofactors[i].begin(); it < cofactors[i].end(); it++) {
+				temp[i] = temp[i] * term(1, gcd_of_roots_arr[i], int(pow(double(*(it)), double(I_need_this[i]))));
+			}
+			temp[i] = temp[i] * gcd_of_coefficients[i];
+		}
+		fract = make_pair(temp[0], temp[1]);
+		fract.first.simplify();
+		fract.second.simplify();
+		simplify();
+	}	
+
 //	cout << "Hey?" << endl;
 	for(i = 0; i < cofactors[0].size(); i++) {
 		for(vector<int>::iterator it = cofactors[1].begin(); it < cofactors[1].end(); it++) {
@@ -980,7 +1034,6 @@ simplify_without_rationalize(){
 	for(vector<int>::iterator it = cofactors_deleted.begin(); it < cofactors_deleted.end(); it++) {
 		for(i = 0; i < 2; i++) {
 			for(j = 0; j < temp[i].num_of_terms;j++) {
-//				cout << "J" << j << endl;
 				if(root_min == -1) {
 					root_min = double(factors[i][j][*(it)].first)/double(factors[i][j][*(it)].second);
 				}
@@ -990,13 +1043,11 @@ simplify_without_rationalize(){
 	}
 	for(i = 1; double(i)/double(gcd_of_roots) <= root_min; i++) { }
 	int exponent_of_delete = i - 1;
-//	cout << exponent_of_delete << endl;
 	
 	for(vector<int>::iterator it =  cofactors_deleted.begin(); it < cofactors_deleted.end(); it++) {
 		for(i = 0; i < 2; i++) {
 			for(j = 0; j < temp[i].num_of_terms;j++) {
 				int root_per_gcd = temp[i].arr[j].root / gcd_of_roots;
-//				cout << "root_per_gcd : " << root_per_gcd << " *it : " << *(it) << endl;
 				for(int k = 0; k < exponent_of_delete * root_per_gcd; k++) {
 					temp[i].arr[j].base /= *(it);
 				}
