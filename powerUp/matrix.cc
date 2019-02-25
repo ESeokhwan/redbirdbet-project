@@ -368,9 +368,9 @@ terms operator+(const terms& _terms) {
 
 terms operator-(const terms& _terms) {
 	terms result(_terms);
-//	cout << _terms.num_of_terms<< endl;
+	//	cout << _terms.num_of_terms<< endl;
 	for(int i = 0; i < _terms.num_of_terms; i++) {
-//		result.arr[i].test_show();
+		//		result.arr[i].test_show();
 		result.arr[i] = -1 * result.arr[i];
 	}
 	return result;
@@ -596,8 +596,8 @@ bool operator!=(const int& l, const terms& r) {
 }
 
 fraction make_entry(int num1, int num2){
-    fraction result(num1, num2); 
-    return result;
+	fraction result(num1, num2); 
+	return result;
 }
 
 void blank(int num){
@@ -841,6 +841,12 @@ double fraction::
 getValue() const {
 	return value;
 }
+
+void fraction::
+setValue(double num) {
+	value = num;
+}
+
 void fraction::
 rationalize() {
 	if(fract.second.num_of_terms == 1) {
@@ -917,7 +923,7 @@ simplify_without_rationalize(){
 		}
 	}
 	//여기까지는 정수 게수만 처리한 것임
-	
+
 	temp[0] = fract.first;
 	temp[1] = fract.second;
 	int gcd_of_roots_arr[2];
@@ -927,7 +933,7 @@ simplify_without_rationalize(){
 	vector< int > cofactors[2]; //fract.fist와 second 각각의 공통 factor
 	vector<int> cofactors_deleted; //분모와 분자의 공통 factor
 	for(i = 0; i < 2; i++) {
-//		cout << "start" << i << endl;
+		//		cout << "start" << i << endl;
 		vector<int> tmpcofactors;
 		//뒤에는 fraction의 terms들에 첫번째 term의 factor를 담는 과정이다.
 		int tmp = temp[i].arr[0].base;
@@ -963,9 +969,9 @@ simplify_without_rationalize(){
 				}
 			}
 		}
-//		cout << "여긴 왔니?" << endl;
+		//		cout << "여긴 왔니?" << endl;
 		cofactors[i] = tmpcofactors;
-//		cout << "check" << endl;
+		//		cout << "check" << endl;
 
 		//뒤의 과정은 fraction의 terms들의 term들의 공통 factor와 그 factor가 몇번 곱해지는지 저장하는 과정이다.
 		for(j = 0; j < temp[i].num_of_terms;j++) {
@@ -974,7 +980,7 @@ simplify_without_rationalize(){
 			for(vector<int>::iterator it = cofactors[i].begin(); it != cofactors[i].end(); it++) {
 				tmpfactors.insert(make_pair(*(it), make_pair(1, temp[i].arr[j].root)));
 				tmp /= *(it);
-//				cout << "여긴??" <<endl;
+				//				cout << "여긴??" <<endl;
 				while(tmp % *(it) == 0) {
 					tmp /= *(it);
 					tmpfactors[*(it)].first++;
@@ -1020,7 +1026,7 @@ simplify_without_rationalize(){
 		simplify();
 	}	
 
-//	cout << "Hey?" << endl;
+	//	cout << "Hey?" << endl;
 	for(i = 0; i < cofactors[0].size(); i++) {
 		for(vector<int>::iterator it = cofactors[1].begin(); it < cofactors[1].end(); it++) {
 			if(cofactors[0][i] == *(it)) {
@@ -1029,7 +1035,7 @@ simplify_without_rationalize(){
 			}
 		}
 	}
-//	cout << "excuse me?" << endl;
+	//	cout << "excuse me?" << endl;
 	double root_min = -1;
 	for(vector<int>::iterator it = cofactors_deleted.begin(); it < cofactors_deleted.end(); it++) {
 		for(i = 0; i < 2; i++) {
@@ -1043,7 +1049,7 @@ simplify_without_rationalize(){
 	}
 	for(i = 1; double(i)/double(gcd_of_roots) <= root_min; i++) { }
 	int exponent_of_delete = i - 1;
-	
+
 	for(vector<int>::iterator it =  cofactors_deleted.begin(); it < cofactors_deleted.end(); it++) {
 		for(i = 0; i < 2; i++) {
 			for(j = 0; j < temp[i].num_of_terms;j++) {
@@ -1073,12 +1079,12 @@ fts() const {
 	bool is_neg = true, multi_term = false;
 	string str = "";
 	terms _terms[2] = { fract.first, fract.second };
-/*
-	if(is_zero()){
-		str = "0";
-		return make_pair(1, str);
-	}
-*/
+	/*
+	   if(is_zero()){
+	   str = "0";
+	   return make_pair(1, str);
+	   }
+	   */
 	if(!is_denominator_one()) 
 		loop++;
 
@@ -1088,8 +1094,8 @@ fts() const {
 			is_neg = (temp.coefficient < 0);
 			multi_term = ( j > 0 );
 			if(is_neg) temp.coefficient = -temp.coefficient;
-			
-			
+
+
 			if(multi_term) {
 				if(!is_neg)
 					str = str + "+";
@@ -1103,13 +1109,13 @@ fts() const {
 			switch(temp.root) {
 				case 1 :str = str + to_string(temp.coefficient); break;
 				case 2 :if(temp.coefficient != 1) str = str + to_string(temp.coefficient);
-						str = str + "√" + to_string(temp.base); stack++; break;
+							str = str + "√" + to_string(temp.base); stack++; break;
 				case 3 :if(temp.coefficient != 1) str = str + to_string(temp.coefficient);
-						str = str + "∛" + to_string(temp.base); stack++; break;
+							str = str + "∛" + to_string(temp.base); stack++; break;
 				case 4 :if(temp.coefficient != 1) str = str + to_string(temp.coefficient);
-						str = str + "∜" + to_string(temp.base); stack++; break;
+							str = str + "∜" + to_string(temp.base); stack++; break;
 				default:if(temp.coefficient != 1) str = str + to_string(temp.coefficient);
-						str = str + "r" + to_string(temp.root) + "v" + to_string(temp.base); break;
+							str = str + "r" + to_string(temp.root) + "v" + to_string(temp.base); break;
 			}
 		}
 		if(loop == 2 && i == 0) str = str + "/";
@@ -1251,43 +1257,43 @@ operator=(const float& r) {
 }
 
 /*
-bool fraction::
-operator>(const fraction& r) {
-	double L = 0, R = 0;
-	double denominator = 0;
-	int i,j;
-	term temp;
+   bool fraction::
+   operator>(const fraction& r) {
+   double L = 0, R = 0;
+   double denominator = 0;
+   int i,j;
+   term temp;
 
-	for(i = 0 ; i < this -> fract.first.num_of_terms ; ++i){
-		temp = this -> fract.first.arr[i];
-		L += temp.coefficient * pow(temp.base, 1 / temp.root);
-	}
-	for(i = 0 ; i < this -> fract.second.num_of_terms ; ++i){
-		temp = this -> fract.second.arr[i];
-		denominator += temp.coefficient * pow(temp.base, 1 / temp.root);
-	}
+   for(i = 0 ; i < this -> fract.first.num_of_terms ; ++i){
+   temp = this -> fract.first.arr[i];
+   L += temp.coefficient * pow(temp.base, 1 / temp.root);
+   }
+   for(i = 0 ; i < this -> fract.second.num_of_terms ; ++i){
+   temp = this -> fract.second.arr[i];
+   denominator += temp.coefficient * pow(temp.base, 1 / temp.root);
+   }
 
-	L /= denominator;
-	denominator = 0;
+   L /= denominator;
+   denominator = 0;
 
-	for(i = 0 ; i < r.fract.first.num_of_terms ; ++i){
-        temp = r.fract.first.arr[i];
-        R += temp.coefficient * pow(temp.base, 1 / temp.root);
-    }
+   for(i = 0 ; i < r.fract.first.num_of_terms ; ++i){
+   temp = r.fract.first.arr[i];
+   R += temp.coefficient * pow(temp.base, 1 / temp.root);
+   }
 
-	for(i = 0 ; i < r.fract.first.num_of_terms ; ++i){
-        temp = r.fract.second.arr[i];
-        denominator += temp.coefficient * pow(temp.base, 1 / temp.root);
-	}
+   for(i = 0 ; i < r.fract.first.num_of_terms ; ++i){
+   temp = r.fract.second.arr[i];
+   denominator += temp.coefficient * pow(temp.base, 1 / temp.root);
+   }
 
-	return L > R/denominator;
-}
+   return L > R/denominator;
+   }
 
-bool fraction::
-operator<(const fraction& r) {
-		return !(*(this)>r && *(this) == r);
-}
-*/
+   bool fraction::
+   operator<(const fraction& r) {
+   return !(*(this)>r && *(this) == r);
+   }
+   */
 
 bool operator==(const int& l, const fraction& r) {
 	fraction tmp(l);
@@ -1357,7 +1363,7 @@ bool operator==(const fraction& l, const pair<int, int>& r) {
 bool operator!=(const fraction& l, const pair<int, int>& r) {
 	return !(r == l);
 }
-  
+
 bool operator==(const fraction& l, const fraction& r) {
 	fraction tmpl(l);
 	fraction tmpr(r);
@@ -1385,7 +1391,7 @@ fraction operator+(const fraction& l, const fraction& r){
 	}
 	else{
 		terms t1 = l.fract.first * r.fract.second + l.fract.second*r.fract.first,
-			t2 = l.fract.second*r.fract.second;
+			  t2 = l.fract.second*r.fract.second;
 		fraction p(make_pair(t1, t2));
 		p.simplify();
 		return p;
@@ -1400,7 +1406,7 @@ fraction operator-(const fraction& l, const fraction& r){
 	}
 	else{
 		terms t1 = l.fract.first * r.fract.second - l.fract.second*r.fract.first,
-			t2 = l.fract.second*r.fract.second;
+			  t2 = l.fract.second*r.fract.second;
 		fraction p( make_pair(t1, t2) );
 		p.simplify();
 		return p;
@@ -1415,7 +1421,7 @@ fraction operator*(const fraction& l, const fraction& r){
 	}
 	else{
 		terms t1 = l.fract.first * r.fract.first,
-			t2 = l.fract.second * r.fract.second;
+			  t2 = l.fract.second * r.fract.second;
 		fraction p(make_pair(t1, t2));
 		p.simplify();
 		return p;
@@ -1717,34 +1723,43 @@ make_all_entry_zero() {
 			arr[i][j] = zero_entry;
 }
 
-/*
 void matrix::
-show(bool no_paranthesis){
-	if(row*col==0) cout << "[]" << endl;
-	else{
-		int colNum[row] = {0,};
-		vector<int> colMax; 
-		for(int i = 0 ; i < col ; ++i){
-			for(int j = 0 ; j < row ; ++j)
-				colNum[j] = arr[j][i].getLength();
-			int max = -1; 
-			for(int k = 0 ; k < row ; ++k) max = max > colNum[k] ? max : colNum[k];
-			colMax.push_back(max);
-		}
-
-		for(int i = 0 ; i < row ; ++i){
-			if(!no_paranthesis) cout << '[' << ' '; 
-			else cout << ' ';
-			for(int j = 0 ; j < col ; ++j){
-				blank(colMax[j] - arr[i][j].getLength());
-				cout << arr[i][j];
-			}
-			if(!no_paranthesis) cout << ']' << endl;
-			else cout << endl;
-		}
-	}
+make_all_entry_null() {
+	fraction null(1,0);
+	int i, j;
+	for(i = 0 ; i < row ; ++i)
+		for(j = 0 ; j < col ; ++j)
+			arr[i][j] = null;
 }
-*/
+
+/*
+   void matrix::
+   show(bool no_paranthesis){
+   if(row*col==0) cout << "[]" << endl;
+   else{
+   int colNum[row] = {0,};
+   vector<int> colMax; 
+   for(int i = 0 ; i < col ; ++i){
+   for(int j = 0 ; j < row ; ++j)
+   colNum[j] = arr[j][i].getLength();
+   int max = -1; 
+   for(int k = 0 ; k < row ; ++k) max = max > colNum[k] ? max : colNum[k];
+   colMax.push_back(max);
+   }
+
+   for(int i = 0 ; i < row ; ++i){
+   if(!no_paranthesis) cout << '[' << ' '; 
+   else cout << ' ';
+   for(int j = 0 ; j < col ; ++j){
+   blank(colMax[j] - arr[i][j].getLength());
+   cout << arr[i][j];
+   }
+   if(!no_paranthesis) cout << ']' << endl;
+   else cout << endl;
+   }
+   }
+   }
+   */
 void matrix::
 show(bool no_paranthesis){
 	bool zero_test = false;
@@ -1770,14 +1785,14 @@ show(bool no_paranthesis){
 					length[i][j] = ptemp.first;
 					str[i][j] = ptemp.second;
 				}
-	
+
 			for(i = 0 ; i < col ; ++i){
 				for(j = 0 ; j < row ; ++j)
 					numv.push_back( length[j][i] );
 				colMax.push_back(*max_element(numv.begin(), numv.end()));
 				numv.clear();
 			}
-	
+
 			for(i = 0 ; i < row ; ++i){
 				if(!no_paranthesis) cout << '[' << ' ';
 				else cout << ' ';
@@ -1916,7 +1931,7 @@ eliminate() {
 					//					mat.show();
 					temp = mat.remove_entry(i, k, j);
 					mat = temp * mat;
-				//	temp.show();
+					//	temp.show();
 					//					mat.show();
 					//					cout << "k2 end"  << endl;
 				}
@@ -2354,7 +2369,222 @@ Rfactor() {
 	return R;
 }
 
+matrix matrix::
+eigen(bool eigenvectors)
+{
+	double *v, *d, *a;
+	double *bw, *zw;
+	double c, g, gapq, h;
+	double s, t, tau, term, termp, termq, theta, thresh, w;  
+	int i, j, k, l, m, p, q, it_num, rot_num;
+	int n = this -> get_row();
+	int it_max = n * 4;
 
+	if(this -> get_row() != get_col()) {
+		matrix result;
+		return result;
+	}
+
+	a = new double[n*n];
+	v = new double[n*n];
+	d = new double[n];
+
+	for(i = 0 ; i < n ; ++i)
+		for(j = 0 ; j < n ; ++j)
+			a[i*n + j] = this->get_arr()[i][j].getValue();
+
+	for(i = 0 ; i < n ; ++i)
+		for(j = 0 ; j < n ; ++j) {
+			if(i==j)
+				v[i*n + j] = 1.0;
+			else
+				v[i*n + j] = 0;
+		}
+
+	for(i = 0 ; i < n ; ++i)
+		d[i] = a[i*n + i];
+
+	bw = new double[n];
+	zw = new double[n];
+
+	for ( i = 0; i < n; i++ )
+	{
+		bw[i] = d[i];
+		zw[i] = 0.0;
+	}
+	it_num = 0;
+	rot_num = 0;
+
+	while ( it_num < it_max )
+	{
+		it_num = it_num + 1;
+
+		thresh = 0.0;
+		for ( j = 0; j < n; j++ )
+		{
+			for ( i = 0; i < j; i++ )
+			{
+				thresh = thresh + a[i+j*n] * a[i+j*n];
+			}
+		}
+
+		thresh = sqrt ( thresh ) / ( double ) ( 4 * n );
+
+		if ( thresh == 0.0 )
+		{
+			break;
+		}
+
+		for ( p = 0; p < n; p++ )
+		{
+			for ( q = p + 1; q < n; q++ )
+			{
+				gapq = 10.0 * fabs ( a[p+q*n] );
+				termp = gapq + fabs ( d[p] );
+				termq = gapq + fabs ( d[q] );
+
+				if ( 4 < it_num &&
+						termp == fabs ( d[p] ) &&
+						termq == fabs ( d[q] ) )
+				{
+					a[p+q*n] = 0.0;
+				}
+
+				else if ( thresh <= fabs ( a[p+q*n] ) )
+				{
+					h = d[q] - d[p];
+					term = fabs ( h ) + gapq;
+
+					if ( term == fabs ( h ) )
+					{
+						t = a[p+q*n] / h;
+					}
+					else
+					{
+						theta = 0.5 * h / a[p+q*n];
+						t = 1.0 / ( fabs ( theta ) + sqrt ( 1.0 + theta * theta ) );
+						if ( theta < 0.0 )
+						{
+							t = - t;
+						}
+					}
+					c = 1.0 / sqrt ( 1.0 + t * t );
+					s = t * c;
+					tau = s / ( 1.0 + c );
+					h = t * a[p+q*n];
+
+					zw[p] = zw[p] - h;                 
+					zw[q] = zw[q] + h;
+					d[p] = d[p] - h;
+					d[q] = d[q] + h;
+
+					a[p+q*n] = 0.0;
+
+					for ( j = 0; j < p; j++ )
+					{
+						g = a[j+p*n];
+						h = a[j+q*n];
+						a[j+p*n] = g - s * ( h + g * tau );
+						a[j+q*n] = h + s * ( g - h * tau );
+					}
+
+					for ( j = p + 1; j < q; j++ )
+					{
+						g = a[p+j*n];
+						h = a[j+q*n];
+						a[p+j*n] = g - s * ( h + g * tau );
+						a[j+q*n] = h + s * ( g - h * tau );
+					}
+
+					for ( j = q + 1; j < n; j++ )
+					{
+						g = a[p+j*n];
+						h = a[q+j*n];
+						a[p+j*n] = g - s * ( h + g * tau );
+						a[q+j*n] = h + s * ( g - h * tau );
+					}
+
+					for ( j = 0; j < n; j++ )
+					{
+						g = v[j+p*n];
+						h = v[j+q*n];
+						v[j+p*n] = g - s * ( h + g * tau );
+						v[j+q*n] = h + s * ( g - h * tau );
+					}
+					rot_num = rot_num + 1;
+				}
+			}
+		}
+
+		for ( i = 0; i < n; i++ )
+		{
+			bw[i] = bw[i] + zw[i];
+			d[i] = bw[i];
+			zw[i] = 0.0;
+		}
+	}
+
+	for ( j = 0; j < n; j++ )
+	{
+		for ( i = 0; i < j; i++ )
+		{
+			a[i+j*n] = a[j+i*n];
+		}
+	}
+
+	for ( k = 0; k < n - 1; k++ )
+	{
+		m = k;
+		for ( l = k + 1; l < n; l++ )
+		{
+			if ( d[l] < d[m] )
+			{
+				m = l;
+			}
+		}
+
+		if ( m != k )
+		{
+			t    = d[m];
+			d[m] = d[k];
+			d[k] = t;
+			for ( i = 0; i < n; i++ )
+			{
+				w        = v[i+m*n];
+				v[i+m*n] = v[i+k*n];
+				v[i+k*n] = w;
+			}
+		}
+	}
+
+	delete [] bw;
+	delete [] zw;
+
+	if(eigenvectors) {
+		matrix result(n,n);
+		result.make_all_entry_null();
+		fraction temp(1,0);
+		for(i = 0 ; i < n ; ++i) {
+			for(j = 0 ; j < n ; ++j) {
+				temp.setValue(v[i*n + j]);
+				result.set_arr(i, j, temp);
+			}
+		}
+		return result;
+	}
+	else {
+		matrix result(n,1);
+		result.make_all_entry_null();
+		fraction temp(1,0);
+		for(i = 0 ; i < n ; ++i) {
+			temp.setValue(d[i]);
+			result.set_arr(i, 0, temp);
+		}
+		return result;
+	}
+
+
+}
 
 
 

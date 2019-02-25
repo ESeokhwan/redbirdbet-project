@@ -154,6 +154,7 @@ class fraction{//How can we treat the error devided by zero.
 
 	pair<terms, terms> getFract();
 	double getValue() const;
+	void setValue(double);
 	void rationalize();
 	void simplify_without_rationalize();
 	void simplify();
@@ -228,6 +229,7 @@ class matrix{
 	void initialize();
 	void make_identity_matrix();
 	void make_all_entry_zero();
+	void make_all_entry_null();
 
 	matrix();
 	matrix(int r, int c);
@@ -276,7 +278,7 @@ class matrix{
 	matrix gram_schmidt();
 	
 	matrix Rfactor();
-
+	matrix eigen(bool);
 	vector<fraction> eigenvalue();
 
  friend matrix operator+ (const matrix& l, const matrix& r);
