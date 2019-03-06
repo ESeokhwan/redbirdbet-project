@@ -3,6 +3,7 @@
 
 int main() {
 	bool quit = false;
+	string yes_or_no;
 	string* action[NUM_OF_ACTION] =
 		{"0. Readme.txt",
 		 "1. Matrix addition",
@@ -40,12 +41,32 @@ int main() {
 		cout << "input column : " << endl;
 		cin >> col;
 
-		matrix mat(row, col);
+		matrix mat1(row, col);
 		cout << "input " << row << " by " << col << "matrix" << endl;
 		mat.fill();
 
+		/*
+		cout << "input row : " << endl;
+		cin >> row;
+		cout << "input column : " << endl;
+		cin >> col;
+
+		matrix mat2(row, col);
+		cout << "input " << row << " by " << col << "matrix" << endl;
+		mat2.fill();
+		*/
+
+		//여기에 case문을 쓰던 if문을 쓰던 1번 부터 17번까지 구현하기
+
+
 		cout << "Do you have another work to do(y or n)" << endl;
-		//cin << //yes or no
+		cin >> yes_or_no;
+		while(cin.fail()||yes_or_no != "y" || yes_or_no != "n") {
+			cout << "Give correct input(y or n)\n Do you have another work?" << endl;
+			cin >> yes_or_no;
+		}
+		if(yes_or_no == "n")
+			quit = true;
 	}
 	return 0;
 }
